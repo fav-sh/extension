@@ -1,0 +1,31 @@
+{
+  "name": "fav.sh",
+  "version": "2.0",
+  "description": "Fav bookmark manager",
+  "manifest_version": 2,
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "16": "icons/16.png",
+      "24": "icons/24.png",
+      "32": "icons/32.png"
+    },
+    "default_title": "Fav",
+    "default_popup": "entry/extension.html"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "extension@fav.sh"
+    }
+  },  
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "identity"
+  ]
+}

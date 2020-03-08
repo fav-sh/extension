@@ -1,0 +1,5 @@
+dist
+.cache
+web-ext-artifacts/
+.env
+node_modules
