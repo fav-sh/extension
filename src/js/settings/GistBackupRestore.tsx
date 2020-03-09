@@ -10,6 +10,7 @@ import {
 } from './common'
 import { Typography } from '@material-ui/core'
 import { authorize } from '~/browser/githubAuth'
+import { getAuthToken } from '~/api/getAuthToken'
 
 const GistPreAuth = ({ onLogin }: { onLogin: () => void }) => {
   return <SettingsButton onClick={onLogin} text="Log in With Github" />
@@ -22,7 +23,11 @@ const GistPostAuth = ({ onLogout }: { onLogout: () => void }) => {
 export const GistBackupRestore = () => {
   const [authenticated, setAuthenticated] = useState(false)
 
-  const handleAuth = () => authorize()
+  const handleAuth = async () => {
+    const authCode = await authorize()
+    const token = await getAuthToken(authCode)
+    console.log(token)
+  }
 
   return (
     <SectionContainer>

@@ -9,5 +9,5 @@ export async function authorize() {
     url: authURL,
   })
 
-  console.log(auth)
+  return auth.split('?code=')[1]
 }
