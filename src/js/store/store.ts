@@ -12,11 +12,6 @@ import {
 } from './modules/bookmarks'
 
 import {
-  initialState as syncState,
-  reducer as syncReducer,
-} from './modules/sync'
-
-import {
   initialState as navigationState,
   reducer as navigationReducer,
 } from './modules/navigation'
@@ -48,7 +43,6 @@ const extensionConfig = {
 
 const appInitialState: AppState = {
   bookmarks: bookmarksState,
-  sync: syncState,
   navigation: navigationState,
   editing: editingState,
   auth: authState,
@@ -58,7 +52,6 @@ const appInitialState: AppState = {
 
 const rootReducer = combineReducers({
   bookmarks: bookmarksReducer,
-  sync: syncReducer,
   navigation: navigationReducer,
   editing: editingReducer,
   auth: authReducer,

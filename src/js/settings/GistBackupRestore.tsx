@@ -12,15 +12,25 @@ import { Typography, Button } from '@material-ui/core'
 import { authorize } from '~/browser/githubAuth'
 import { getAuthToken } from '~/api/getAuthToken'
 import { useDispatch, useSelector } from 'react-redux'
-import { actions as authActions, getAuthenticated } from '~/store/modules/auth'
+import {
+  actions as authActions,
+  getAuthenticated,
+  getToken,
+} from '~/store/modules/auth'
 import styled from 'styled-components'
-import { isBlank } from '~/helpers'
+import { isBlank, transformExportBookmark } from '~/helpers'
+import { getBookmarks } from '~/store/modules/bookmarks'
+import { createBackup } from '~/api/createBackup'
 
 export const GistBackupRestore = () => {
   const dispatch = useDispatch()
+
   const authenticated = useSelector(getAuthenticated)
+  const token = useSelector(getToken)
+  const bookmarks = useSelector(getBookmarks)
 
   const [gistFilename, setGistFilename] = useState('')
+
   const [gistDescription, setGistDesciption] = useState('')
 
   const handleAuth = async () => {
@@ -28,6 +38,28 @@ export const GistBackupRestore = () => {
     const data = await getAuthToken(authCode)
     if (data && data.access_token) {
       dispatch(authActions.storeToken(data.access_token))
+    }
+  }
+
+  const handleBackup = async () => {
+    if (token && bookmarks && Object.keys(bookmarks).length > 0) {
+      const transformedBookmarks = Object.keys(bookmarks).map((key) => {
+        return transformExportBookmark(bookmarks[key])
+      })
+
+      const bookmarksToExport = JSON.stringify(transformedBookmarks, null, 2)
+
+      console.log('exporting bookmarks')
+
+      const resp = await createBackup(
+        token,
+        gistFilename,
+        false,
+        bookmarksToExport,
+        gistDescription
+      )
+
+      console.log(resp.data)
     }
   }
 
@@ -50,7 +82,11 @@ export const GistBackupRestore = () => {
           onChange={setGistDesciption}
           label="Description (Optional)"
         />
-        <Button disabled={isBlank(gistFilename)} variant="outlined">
+        <Button
+          disabled={isBlank(gistFilename)}
+          onClick={handleBackup}
+          variant="outlined"
+        >
           Backup
         </Button>
       </PostAuthContainer>

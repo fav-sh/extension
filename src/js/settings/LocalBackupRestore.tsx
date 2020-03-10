@@ -18,25 +18,13 @@ import {
   validateBookmark,
   generateBookmarkGuid,
 } from '~/helpers'
-import { Bookmark, ExportedBookmark } from '~/types/Bookmark'
+import { ExportedBookmark } from '~/types/Bookmark'
 import { useSelector, useDispatch } from 'react-redux'
 
 export const LocalRestore = () => {
   const dispatch = useDispatch()
 
   const handleFile = (content: any) => {
-    /** File handling
-     *  1. Validate the file
-     *  2. Get the current redux store
-     *  3. Deserialize the store
-     *  4. Insert the boomkmarks in the store
-     *  5. Serialize the store again
-     *  6. Set the new store
-     *
-     *  This should be as generic as possible
-     *  because we will be re-using the component
-     *  when we will work on gist restoration
-     */
     const error = () => alert('Could not import bookmarks')
 
     let bookmarks: BookmarkState = {}
@@ -93,13 +81,9 @@ export const LocalBackup = () => {
   const handleBackup = () => {
     if (bookmarks && Object.keys(bookmarks).length > 0) {
       // Transform the bookmarks
-      const transformedBookmarks = Object.keys(bookmarks as BookmarkState).map(
-        (key) => {
-          return transformExportBookmark(
-            (bookmarks as BookmarkState)[key] as Bookmark
-          )
-        }
-      )
+      const transformedBookmarks = Object.keys(bookmarks).map((key) => {
+        return transformExportBookmark(bookmarks[key])
+      })
 
       // Stringify the results
       const bookmarksToExport = JSON.stringify(transformedBookmarks, null, 2)
