@@ -17,11 +17,6 @@ import {
 } from './modules/sync'
 
 import {
-  initialState as tagsState,
-  reducer as tagsReducer,
-} from './modules/tags'
-
-import {
   initialState as navigationState,
   reducer as navigationReducer,
 } from './modules/navigation'
@@ -36,6 +31,11 @@ import {
   reducer as authReducer,
 } from './modules/auth'
 
+import {
+  initialState as backupState,
+  reducer as backupReducer,
+} from './modules/backup'
+
 const extensionConfig = {
   key: 'extension',
   storage: localStorage,
@@ -44,19 +44,19 @@ const extensionConfig = {
 const appInitialState: AppState = {
   bookmarks: bookmarksState,
   sync: syncState,
-  tags: tagsState,
   navigation: navigationState,
   editing: editingState,
   auth: authState,
+  backup: backupState,
 }
 
 const rootReducer = combineReducers({
   bookmarks: bookmarksReducer,
   sync: syncReducer,
-  tags: tagsReducer,
   navigation: navigationReducer,
   editing: editingReducer,
   auth: authReducer,
+  backup: backupReducer,
 })
 
 const createPersistReducer = (config: any) =>

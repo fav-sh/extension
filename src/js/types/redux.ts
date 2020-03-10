@@ -1,9 +1,9 @@
 import { BookmarkState } from '~/store/modules/bookmarks'
 import { SyncState } from '~/store/modules/sync'
-import { TagsState } from '~/store/modules/tags'
 import { NavigationState } from '~/store/modules/navigation'
 import { EditingState } from '~/store/modules/editing'
 import { AuthState } from '~/store/modules/auth'
+import { BackupState } from '~/store/modules/backup'
 
 export type AppAction = {
   type: string
@@ -13,8 +13,8 @@ export type AppAction = {
 export type AppState = {
   bookmarks: BookmarkState
   sync: SyncState
-  tags: TagsState
   navigation: NavigationState
   editing: EditingState
   auth: AuthState
+  backup: BackupState
 }
