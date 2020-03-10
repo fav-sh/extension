@@ -4,6 +4,7 @@ import { NavigationState } from '~/store/modules/navigation'
 import { EditingState } from '~/store/modules/editing'
 import { AuthState } from '~/store/modules/auth'
 import { BackupState } from '~/store/modules/backup'
+import { TagsState } from '~/store/modules/tags'
 
 export type AppAction = {
   type: string
@@ -17,4 +18,5 @@ export type AppState = {
   editing: EditingState
   auth: AuthState
   backup: BackupState
+  tags: TagsState
 }

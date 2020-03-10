@@ -36,6 +36,11 @@ import {
   reducer as backupReducer,
 } from './modules/backup'
 
+import {
+  initialState as tagsState,
+  reducer as tagsReducer,
+} from './modules/tags'
+
 const extensionConfig = {
   key: 'extension',
   storage: localStorage,
@@ -48,6 +53,7 @@ const appInitialState: AppState = {
   editing: editingState,
   auth: authState,
   backup: backupState,
+  tags: tagsState,
 }
 
 const rootReducer = combineReducers({
@@ -57,6 +63,7 @@ const rootReducer = combineReducers({
   editing: editingReducer,
   auth: authReducer,
   backup: backupReducer,
+  tags: tagsReducer,
 })
 
 const createPersistReducer = (config: any) =>
