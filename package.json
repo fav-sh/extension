@@ -8,10 +8,8 @@
     "chrome": "run-p bundle start:chrome",
     "bundle": "NODE_ENV=development parcel ./src/manifest.json ./src/entry/settings.html",
     "build:firefox": "yarn clean && NODE_ENV=production parcel build ./src/manifest.json --no-source-maps && web-ext build --source-dir ./dist",
-    "start:chrome": "web-ext run -t chromium --source-dir ./dist",
     "start:firefox": "web-ext run -t firefox-desktop --source-dir ./dist",
-    "start:settings": "parcel ./src/entry/settings.html",
-    "start:web": "parcel ./src/entry/web.html -p 9000",
+    "start:chrome": "web-ext run -t chromium --source-dir ./dist",
     "format": "prettier --write './src/js/**/*.{ts,tsx}'",
     "clean": "rm -rf ./dist ./.cache ./web-ext-artifacts",
     "ci": "tsc && yarn run format"

@@ -22,7 +22,6 @@
       "id": "extension@fav.sh"
     }
   },
-  "content_security_policy": "script-src 'self' https://auth.fav.sh; object-src 'self'",
   "permissions": [
     "tabs",
     "activeTab",

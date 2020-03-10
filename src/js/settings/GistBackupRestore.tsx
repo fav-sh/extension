@@ -25,8 +25,8 @@ export const GistBackupRestore = () => {
 
   const handleAuth = async () => {
     const authCode = await authorize()
-    const token = await getAuthToken(authCode)
-    console.log(token)
+    const data = await getAuthToken(authCode)
+    console.log(data.access_token)
   }
 
   return (

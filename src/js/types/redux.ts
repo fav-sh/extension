@@ -3,6 +3,7 @@ import { SyncState } from '~/store/modules/sync'
 import { TagsState } from '~/store/modules/tags'
 import { NavigationState } from '~/store/modules/navigation'
 import { EditingState } from '~/store/modules/editing'
+import { AuthState } from '~/store/modules/auth'
 
 export type AppAction = {
   type: string
@@ -15,4 +16,5 @@ export type AppState = {
   tags: TagsState
   navigation: NavigationState
   editing: EditingState
+  auth: AuthState
 }

@@ -6,5 +6,6 @@ import axios from 'axios'
 
 export async function getAuthToken(code: string) {
   const url = `https://auth.fav.sh/.netlify/functions/auth?code=${code}`
-  return axios.post(url)
+  const resp = await axios.post(url)
+  return resp.data
 }

@@ -4,8 +4,8 @@
 export function openSettingsWindow() {
   const url = browser.runtime.getURL('/entry/settings.html')
   console.log(url)
-  browser.windows.create({
+  browser.tabs.create({
     url,
-    type: 'panel',
+    active: true,
   })
 }
