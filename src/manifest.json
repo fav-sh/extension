@@ -21,11 +21,15 @@
     "gecko": {
       "id": "extension@fav.sh"
     }
-  },  
+  },
+  "content_security_policy": "script-src 'self' https://auth.fav.sh; object-src 'self'",
   "permissions": [
     "tabs",
     "activeTab",
     "storage",
-    "identity"
+    "identity",
+    "https://*.fav.sh/*",
+    "https://fav-sh-auth.netlify.com/*",
+    "https://*.github.com/*"
   ]
 }
