@@ -39,11 +39,13 @@ export const SettingsTextField = ({
   onChange,
   label,
   disabled,
+  style,
 }: {
   value: string
   onChange: (text: string) => void
   label: string
   disabled?: boolean
+  style?: object
 }) => (
   <TextField
     variant="outlined"
@@ -51,6 +53,7 @@ export const SettingsTextField = ({
     onChange={(e) => onChange(e.target.value)}
     label={label}
     disabled={disabled}
+    style={style}
   />
 )
 

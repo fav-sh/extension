@@ -32,4 +32,4 @@ export function reducer(state: AuthState = initialState, action: AppAction) {
 
 export const getToken = (state: AppState) => state.auth.token
 
-export const isAuthenticated = (state: AppState) => !!state.auth.token
+export const getAuthenticated = (state: AppState) => !!state.auth.token

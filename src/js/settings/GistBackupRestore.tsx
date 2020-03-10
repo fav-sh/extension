@@ -8,39 +8,70 @@ import {
   PaddedAction,
   DownloadInputContainer,
 } from './common'
-import { Typography } from '@material-ui/core'
+import { Typography, Button } from '@material-ui/core'
 import { authorize } from '~/browser/githubAuth'
 import { getAuthToken } from '~/api/getAuthToken'
-
-const GistPreAuth = ({ onLogin }: { onLogin: () => void }) => {
-  return <SettingsButton onClick={onLogin} text="Log in With Github" />
-}
-
-const GistPostAuth = ({ onLogout }: { onLogout: () => void }) => {
-  return <SettingsButton onClick={onLogout} text="Log out" />
-}
+import { useDispatch, useSelector } from 'react-redux'
+import { actions as authActions, getAuthenticated } from '~/store/modules/auth'
+import styled from 'styled-components'
+import { isBlank } from '~/helpers'
 
 export const GistBackupRestore = () => {
-  const [authenticated, setAuthenticated] = useState(false)
+  const dispatch = useDispatch()
+  const authenticated = useSelector(getAuthenticated)
+
+  const [gistFilename, setGistFilename] = useState('')
+  const [gistDescription, setGistDesciption] = useState('')
 
   const handleAuth = async () => {
     const authCode = await authorize()
     const data = await getAuthToken(authCode)
-    console.log(data.access_token)
+    if (data && data.access_token) {
+      dispatch(authActions.storeToken(data.access_token))
+    }
+  }
+
+  const handleLogout = () => {
+    dispatch(authActions.logout())
+  }
+
+  const renderPostAuth = () => {
+    return (
+      <PostAuthContainer>
+        <SettingsTextField
+          style={{ marginBottom: 5 }}
+          value={gistFilename}
+          onChange={setGistFilename}
+          label="Filename"
+        />
+        <SettingsTextField
+          style={{ marginTop: 5, marginBottom: 5 }}
+          value={gistDescription}
+          onChange={setGistDesciption}
+          label="Description (Optional)"
+        />
+        <Button disabled={isBlank(gistFilename)} variant="outlined">
+          Backup
+        </Button>
+      </PostAuthContainer>
+    )
   }
 
   return (
     <SectionContainer>
-      <SectionHeader>Backup to Gist</SectionHeader>
+      <HeaderContainer>
+        <SectionHeader>Backup to Gist</SectionHeader>
+        {authenticated && <Button onClick={handleLogout}>Log Out</Button>}
+      </HeaderContainer>
       <SectionContent>
         <Typography>
           Backup and restore your bookmarks to a Gist on Github
         </Typography>
         <PaddedAction>
           {authenticated ? (
-            <GistPostAuth onLogout={() => setAuthenticated(false)} />
+            renderPostAuth()
           ) : (
-            <GistPreAuth onLogin={handleAuth} />
+            <SettingsButton onClick={handleAuth} text="Log in With Github" />
           )}
         </PaddedAction>
       </SectionContent>
@@ -72,3 +103,16 @@ export const AnonymousGistRestore = () => {
     </SectionContainer>
   )
 }
+
+const HeaderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  max-width: 400px;
+  justify-content: space-between;
+`
+
+const PostAuthContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+`
