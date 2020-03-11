@@ -18,23 +18,19 @@ import {
 import { authorize } from '~/browser/githubAuth'
 import { getAuthToken } from '~/api/getAuthToken'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  actions as authActions,
-  getAuthenticated,
-  getToken,
-} from '~/store/modules/auth'
+import { actions as authActions, getAuthenticated } from '~/store/modules/auth'
 import styled from 'styled-components'
-import { isBlank, transformExportBookmark } from '~/helpers'
-import { getBookmarks } from '~/store/modules/bookmarks'
-import { createBackup } from '~/api/createBackup'
-import { actions as backupActions, getBackup } from '~/store/modules/backup'
+import { isBlank } from '~/helpers'
+import {
+  actions as backupActions,
+  getBackup,
+  createBackupThunk,
+} from '~/store/modules/backup'
 
 export const GistBackupRestore = () => {
   const dispatch = useDispatch()
 
   const authenticated = useSelector(getAuthenticated)
-  const token = useSelector(getToken)
-  const bookmarks = useSelector(getBookmarks)
   const backup = useSelector(getBackup)
 
   const [gistFilename, setGistFilename] = useState('')
@@ -49,40 +45,8 @@ export const GistBackupRestore = () => {
     }
   }
 
-  const handleBackup = async () => {
-    if (token && bookmarks && Object.keys(bookmarks).length > 0) {
-      const transformedBookmarks = Object.keys(bookmarks).map((key) => {
-        return transformExportBookmark(bookmarks[key])
-      })
-
-      const bookmarksToExport = JSON.stringify(transformedBookmarks, null, 2)
-
-      try {
-        const resp = await createBackup(
-          token,
-          `${gistFilename}.json`,
-          false,
-          bookmarksToExport,
-          gistDescription
-        )
-
-        const { id, html_url } = resp.data
-
-        dispatch(backupActions.setGistId(id))
-
-        dispatch(backupActions.setUrl(html_url))
-
-        dispatch(backupActions.setFilename(gistFilename))
-
-        if (gistDescription) {
-          dispatch(backupActions.setDescription(gistDescription))
-        }
-      } catch {
-        alert('There was an error backing up your bookmarks')
-      }
-    } else {
-      alert('There was an error backing up your bookmarks')
-    }
+  const handleBackup = () => {
+    dispatch(createBackupThunk(gistFilename, gistDescription))
   }
 
   const handleLogout = () => {

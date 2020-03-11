@@ -18,3 +18,6 @@ export type AppState = {
   backup: BackupState
   tags: TagsState
 }
+
+export type ThunkDispatch = (action: any) => any
+export type ThunkState = () => AppState
