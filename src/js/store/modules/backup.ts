@@ -5,13 +5,16 @@ import { transformExportBookmark } from '~/helpers'
 import { createBackup } from '~/api/createBackup'
 
 export type BackupState = Partial<{
+  backupLoading: boolean
   backupFilename: string
   backupDescription: string
   backupUrl: string
   backupGistID: string
 }>
 
-export const initialState: BackupState = {}
+export const initialState: BackupState = {
+  backupLoading: false,
+}
 
 export const actions = {
   setFilename: (filename: string) => ({
@@ -33,10 +36,19 @@ export const actions = {
   clearBackup: () => ({
     type: 'CLEAR_BACKUP',
   }),
+  setLoading: (loading: boolean) => ({
+    type: 'SET_LOADING',
+    payload: loading,
+  }),
 }
 
 export function reducer(state: BackupState = initialState, action: AppAction) {
   switch (action.type) {
+    case 'SET_LOADING':
+      return {
+        ...state,
+        backupLoading: action.payload,
+      }
     case 'SET_BACKUP_FILENAME':
       return {
         ...state,
@@ -77,6 +89,7 @@ export const getBackupGistId = (state: AppState) => state.backup.backupGistID
 
 export function createBackupThunk(filename: string, description?: string) {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
+    dispatch(actions.setLoading(true))
     const bookmarks = getBookmarks(getState())
     const token = getToken(getState())
 
@@ -112,6 +125,7 @@ export function createBackupThunk(filename: string, description?: string) {
         if (description) {
           dispatch(actions.setDescription(description))
         }
+        dispatch(actions.setLoading(false))
       } catch {
         alert('There was an error backing up your bookmarks')
       }
