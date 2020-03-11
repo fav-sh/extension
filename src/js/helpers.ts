@@ -2,6 +2,7 @@ import { Bookmark, ExportedBookmark } from './types/Bookmark'
 import pickBy from 'lodash/fp/pickBy'
 import identity from 'lodash/fp/identity'
 import uuid from 'uuid/v1'
+import { BookmarkState } from './store/modules/bookmarks'
 // Various helper methods for things around the codebase
 
 export function isBlank(str: string) {
@@ -60,4 +61,16 @@ export function transformImportBookmark(
     tags: bookmark.tags || [],
   }
   return draftBookmark
+}
+
+// Transforms bookmarks into a JSON format
+export function transformExportBookmarks(bookmarks: BookmarkState) {
+  if (Object.keys(bookmarks).length === 0) {
+    return JSON.stringify({})
+  }
+  const minifiedBookmarks = Object.keys(bookmarks).map((key) => {
+    return transformExportBookmark(bookmarks[key])
+  })
+
+  return JSON.stringify(minifiedBookmarks, null, 2)
 }

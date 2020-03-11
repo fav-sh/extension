@@ -1,8 +1,9 @@
 import { AppAction, AppState, ThunkState, ThunkDispatch } from '~/types/redux'
 import { getBookmarks } from './bookmarks'
 import { getToken } from './auth'
-import { transformExportBookmark } from '~/helpers'
+import { transformExportBookmark, transformExportBookmarks } from '~/helpers'
 import { createBackup } from '~/api/createBackup'
+import { updateBackup } from '~/api/updateBackup'
 
 export type BackupState = Partial<{
   backupLoading: boolean
@@ -93,13 +94,7 @@ export function createBackupThunk(filename: string, description?: string) {
     const bookmarks = getBookmarks(getState())
     const token = getToken(getState())
 
-    // Remove any extra fields from bookmarks before export
-    const minifiedBookmarks = Object.keys(bookmarks).map((key) => {
-      return transformExportBookmark(bookmarks[key])
-    })
-
-    // Convert bookmarks to JSON
-    const jsonBookmarks = JSON.stringify(minifiedBookmarks, null, 2)
+    const minifiedBookmarks = transformExportBookmarks(bookmarks)
 
     // Add a .json to the end of the filename
     // TODO: We should check if the user has already done this
@@ -111,7 +106,7 @@ export function createBackupThunk(filename: string, description?: string) {
           token,
           filenameWithExtension,
           false,
-          jsonBookmarks,
+          minifiedBookmarks,
           description
         )
 
@@ -131,6 +126,36 @@ export function createBackupThunk(filename: string, description?: string) {
       }
     } else {
       alert('Could not create backup, missing token')
+    }
+  }
+}
+
+export function updateBackupThunk() {
+  return async (dispatch: ThunkDispatch, getState: ThunkState) => {
+    dispatch(actions.setLoading(true))
+    const bookmarks = getBookmarks(getState())
+    const token = getToken(getState())
+    const filename = getBackupFilename(getState())
+    const description = getBackupDescription(getState())
+    const gistId = getBackupGistId(getState())
+
+    const minifiedBookmarks = transformExportBookmarks(bookmarks)
+
+    if (token && filename && gistId) {
+      try {
+        await updateBackup(
+          token,
+          filename,
+          false,
+          minifiedBookmarks,
+          gistId,
+          description
+        )
+      } catch {
+        alert('Could not update bookmarks')
+      }
+    } else {
+      alert('Could not update bookmarks')
     }
   }
 }
