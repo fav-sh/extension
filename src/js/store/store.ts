@@ -1,8 +1,9 @@
-import { combineReducers, createStore, compose } from 'redux'
+import { combineReducers, createStore, compose, applyMiddleware } from 'redux'
 import { persistStore, persistReducer } from 'redux-persist'
 import { DevTools } from './DevTools'
 import { AppState } from '~/types/redux'
 import { createLocalStorage } from './storageAdapter'
+import thunk from 'redux-thunk'
 
 const localStorage = createLocalStorage()
 
@@ -62,7 +63,7 @@ const rootReducer = combineReducers({
 const createPersistReducer = (config: any) =>
   persistReducer(config, rootReducer)
 
-const enhancer = compose(DevTools.instrument())
+const enhancer = compose(applyMiddleware(thunk), DevTools.instrument())
 
 export function configureStore() {
   const store = createStore(
