@@ -14,6 +14,7 @@ import {
   Card,
   CardContent,
   CardActions,
+  CircularProgress,
 } from '@material-ui/core'
 import { authorize } from '~/browser/githubAuth'
 import { getAuthToken } from '~/api/getAuthToken'
@@ -25,6 +26,8 @@ import {
   actions as backupActions,
   getBackup,
   createBackupThunk,
+  updateBackupThunk,
+  getBackupLoading,
 } from '~/store/modules/backup'
 
 export const GistBackupRestore = () => {
@@ -32,6 +35,7 @@ export const GistBackupRestore = () => {
 
   const authenticated = useSelector(getAuthenticated)
   const backup = useSelector(getBackup)
+  const backupLoading = useSelector(getBackupLoading)
 
   const [gistFilename, setGistFilename] = useState('')
 
@@ -48,6 +52,8 @@ export const GistBackupRestore = () => {
   const handleBackup = () => {
     dispatch(createBackupThunk(gistFilename, gistDescription))
   }
+
+  const handleUpdate = () => dispatch(updateBackupThunk())
 
   const handleLogout = () => {
     dispatch(authActions.logout())
@@ -75,7 +81,7 @@ export const GistBackupRestore = () => {
         <Button size="small" color="primary" href={backup.backupUrl}>
           Open on Web
         </Button>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={handleUpdate}>
           Update
         </Button>
         <Button
@@ -90,6 +96,9 @@ export const GistBackupRestore = () => {
   )
 
   const renderPostAuth = () => {
+    if (backupLoading) {
+      return <CircularProgress />
+    }
     return (
       <PostAuthContainer>
         <SettingsTextField

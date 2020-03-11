@@ -77,6 +77,8 @@ export function reducer(state: BackupState = initialState, action: AppAction) {
   }
 }
 
+export const getBackupLoading = (state: AppState) => state.backup.backupLoading
+
 export const getBackup = (state: AppState) => state.backup
 
 export const getBackupFilename = (state: AppState) =>
@@ -120,13 +122,13 @@ export function createBackupThunk(filename: string, description?: string) {
         if (description) {
           dispatch(actions.setDescription(description))
         }
-        dispatch(actions.setLoading(false))
       } catch {
         alert('There was an error backing up your bookmarks')
       }
     } else {
       alert('Could not create backup, missing token')
     }
+    dispatch(actions.setLoading(false))
   }
 }
 
@@ -157,5 +159,6 @@ export function updateBackupThunk() {
     } else {
       alert('Could not update bookmarks')
     }
+    dispatch(actions.setLoading(false))
   }
 }
