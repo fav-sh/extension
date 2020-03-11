@@ -1,4 +1,4 @@
-import axios from 'axios'
+import Github from 'github-api'
 
 // https://developer.github.com/v3/gists/#create-a-gist
 
@@ -9,24 +9,17 @@ export async function createBackup(
   fileContent: string,
   description?: string
 ) {
-  const url = 'https://api.github.com/gists'
-
-  const headers = {
-    Authentication: `Bearer ${token}`,
-  }
+  const gh = new Github({ token })
+  const gist = gh.getGist()
 
   const data = {
     description,
     public: isPublic,
     files: {
-      [filename]: fileContent,
+      [filename]: {
+        content: fileContent,
+      },
     },
   }
-
-  return axios.request({
-    method: 'POST',
-    url,
-    headers,
-    data,
-  })
+  return gist.create(data)
 }

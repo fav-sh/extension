@@ -8,7 +8,13 @@ import {
   PaddedAction,
   DownloadInputContainer,
 } from './common'
-import { Typography, Button } from '@material-ui/core'
+import {
+  Typography,
+  Button,
+  Card,
+  CardContent,
+  CardActions,
+} from '@material-ui/core'
 import { authorize } from '~/browser/githubAuth'
 import { getAuthToken } from '~/api/getAuthToken'
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,6 +27,7 @@ import styled from 'styled-components'
 import { isBlank, transformExportBookmark } from '~/helpers'
 import { getBookmarks } from '~/store/modules/bookmarks'
 import { createBackup } from '~/api/createBackup'
+import { actions as backupActions, getBackup } from '~/store/modules/backup'
 
 export const GistBackupRestore = () => {
   const dispatch = useDispatch()
@@ -28,6 +35,7 @@ export const GistBackupRestore = () => {
   const authenticated = useSelector(getAuthenticated)
   const token = useSelector(getToken)
   const bookmarks = useSelector(getBookmarks)
+  const backup = useSelector(getBackup)
 
   const [gistFilename, setGistFilename] = useState('')
 
@@ -49,23 +57,73 @@ export const GistBackupRestore = () => {
 
       const bookmarksToExport = JSON.stringify(transformedBookmarks, null, 2)
 
-      console.log('exporting bookmarks')
+      try {
+        const resp = await createBackup(
+          token,
+          `${gistFilename}.json`,
+          false,
+          bookmarksToExport,
+          gistDescription
+        )
 
-      const resp = await createBackup(
-        token,
-        gistFilename,
-        false,
-        bookmarksToExport,
-        gistDescription
-      )
+        const { id, html_url } = resp.data
 
-      console.log(resp.data)
+        dispatch(backupActions.setGistId(id))
+
+        dispatch(backupActions.setUrl(html_url))
+
+        dispatch(backupActions.setFilename(gistFilename))
+
+        if (gistDescription) {
+          dispatch(backupActions.setDescription(gistDescription))
+        }
+      } catch {
+        alert('There was an error backing up your bookmarks')
+      }
+    } else {
+      alert('There was an error backing up your bookmarks')
     }
   }
 
   const handleLogout = () => {
     dispatch(authActions.logout())
   }
+
+  const renderBackupCard = () => (
+    <MarginCard>
+      <CardContent>
+        <Typography gutterBottom variant="h6" component="h3">
+          Backup Created
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {`Filename: ${backup.backupFilename}`}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {`Gist ID: ${backup.backupGistID}`}
+        </Typography>
+        {backup.backupDescription && (
+          <Typography variant="body2" color="textSecondary" component="p">
+            {`Description: ${backup.backupDescription}`}
+          </Typography>
+        )}
+      </CardContent>
+      <CardActions>
+        <Button size="small" color="primary" href={backup.backupUrl}>
+          Open on Web
+        </Button>
+        <Button size="small" color="primary">
+          Update
+        </Button>
+        <Button
+          size="small"
+          color="secondary"
+          onClick={() => dispatch(backupActions.clearBackup())}
+        >
+          Delete
+        </Button>
+      </CardActions>
+    </MarginCard>
+  )
 
   const renderPostAuth = () => {
     return (
@@ -89,6 +147,7 @@ export const GistBackupRestore = () => {
         >
           Backup
         </Button>
+        {backup && backup.backupFilename && renderBackupCard()}
       </PostAuthContainer>
     )
   }
@@ -151,4 +210,8 @@ const PostAuthContainer = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 400px;
+`
+
+const MarginCard = styled(Card)`
+  margin-top: 0.5em;
 `
