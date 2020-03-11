@@ -1,9 +1,13 @@
 import { AppAction, AppState, ThunkState, ThunkDispatch } from '~/types/redux'
 import { getBookmarks } from './bookmarks'
 import { getToken } from './auth'
-import { transformExportBookmark, transformExportBookmarks } from '~/helpers'
+import { transformExportBookmarks } from '~/helpers'
 import { createBackup } from '~/api/createBackup'
 import { updateBackup } from '~/api/updateBackup'
+import {
+  restoreGistAuthenticated,
+  restoreGistAnonymously,
+} from '~/api/restoreBackup'
 
 export type BackupState = Partial<{
   backupLoading: boolean
@@ -158,6 +162,45 @@ export function updateBackupThunk() {
       }
     } else {
       alert('Could not update bookmarks')
+    }
+    dispatch(actions.setLoading(false))
+  }
+}
+
+// If the user is authenticated and the gist belongs to them
+// We can restore the gist and hook it up so  the user backs up to
+// It on the next backup
+export function restoreBackupAuthenticatedThunk(gistId: string) {
+  return async (dispatch: ThunkDispatch, getState: ThunkState) => {
+    dispatch(actions.setLoading(true))
+    const token = getToken(getState())
+
+    if (token) {
+      try {
+        const resp = await restoreGistAuthenticated(gistId, token)
+        console.log(resp.data)
+      } catch {
+        alert('Could not restore bookmarks')
+      }
+    } else {
+      alert('Clould not restore bookmarks, token not found')
+    }
+
+    dispatch(actions.setLoading(false))
+  }
+}
+
+// If the user is not authenticated we can restore an anonymous gist
+// However we do not hook it up for backup as the user does not own that
+// Gist
+export function restoreBackupAnonymouslyThunk(gistId: string) {
+  return async (dispatch: ThunkDispatch) => {
+    dispatch(actions.setLoading(true))
+    try {
+      const resp = await restoreGistAnonymously(gistId)
+      console.log(resp.data)
+    } catch {
+      alert('Could not restore bookmarks')
     }
     dispatch(actions.setLoading(false))
   }
