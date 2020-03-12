@@ -9,10 +9,7 @@ import {
 } from '~/helpers'
 import { createBackup } from '~/api/createBackup'
 import { updateBackup } from '~/api/updateBackup'
-import {
-  restoreGistAuthenticated,
-  restoreGistAnonymously,
-} from '~/api/restoreBackup'
+import { restoreGistAnonymously } from '~/api/restoreBackup'
 
 export type BackupState = Partial<{
   backupLoading: boolean
