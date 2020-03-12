@@ -1,7 +1,12 @@
 import { AppAction, AppState, ThunkState, ThunkDispatch } from '~/types/redux'
-import { getBookmarks } from './bookmarks'
+import { getBookmarks, actions as bookmarkActions } from './bookmarks'
 import { getToken } from './auth'
-import { transformExportBookmarks } from '~/helpers'
+import {
+  transformExportBookmarks,
+  validateBookmark,
+  generateBookmarkGuid,
+  transformImportBookmark,
+} from '~/helpers'
 import { createBackup } from '~/api/createBackup'
 import { updateBackup } from '~/api/updateBackup'
 import {
@@ -171,28 +176,29 @@ export function updateBackupThunk() {
   }
 }
 
-// If the user is authenticated and the gist belongs to them
-// We can restore the gist and hook it up so  the user backs up to
-// It on the next backup
-export function restoreBackupAuthenticatedThunk(gistId: string) {
-  return async (dispatch: ThunkDispatch, getState: ThunkState) => {
-    dispatch(actions.setLoading(true))
-    const token = getToken(getState())
+// TODO: Implement Later
+// // If the user is authenticated and the gist belongs to them
+// // We can restore the gist and hook it up so  the user backs up to
+// // It on the next backup
+// export function restoreBackupAuthenticatedThunk(gistId: string) {
+//   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
+//     dispatch(actions.setLoading(true))
+//     const token = getToken(getState())
 
-    if (token) {
-      try {
-        const resp = await restoreGistAuthenticated(gistId, token)
-        console.log(resp.data)
-      } catch {
-        alert('Could not restore bookmarks')
-      }
-    } else {
-      alert('Clould not restore bookmarks, token not found')
-    }
+//     if (token) {
+//       try {
+//         const resp = await restoreGistAuthenticated(gistId, token)
+//         console.log(resp.data)
+//       } catch {
+//         alert('Could not restore bookmarks')
+//       }
+//     } else {
+//       alert('Clould not restore bookmarks, token not found')
+//     }
 
-    dispatch(actions.setLoading(false))
-  }
-}
+//     dispatch(actions.setLoading(false))
+//   }
+// }
 
 // If the user is not authenticated we can restore an anonymous gist
 // However we do not hook it up for backup as the user does not own that
@@ -202,7 +208,30 @@ export function restoreBackupAnonymouslyThunk(gistId: string) {
     dispatch(actions.setLoading(true))
     try {
       const resp = await restoreGistAnonymously(gistId)
-      console.log(resp.data)
+      // For now our backups only contain a single file
+      // We get the filename by getting the first key in
+      // the files object of the gist response
+      const filename = Object.keys(resp.data.files)[0]
+      // Grab the content out of the response and parse it
+      const { content } = resp.data.files[filename]
+      const bookmarks = JSON.parse(content)
+      // Validate + expand bookmarks
+      let expandedBookmarks = {}
+      bookmarks.map((bookmark: any) => {
+        if (validateBookmark(bookmark)) {
+          // Once the bookmark is validated we then create a fresh
+          // guid for the bookmark and expand it
+          const freshGuid = generateBookmarkGuid()
+          const expandedBookmark = transformImportBookmark(bookmark, freshGuid)
+
+          // Convert to a structure understood by the app
+          expandedBookmarks = {
+            [expandedBookmark.guid]: expandedBookmark,
+          }
+        }
+      })
+      dispatch(bookmarkActions.setBookmarks(expandedBookmarks))
+      alert('Import success!')
     } catch {
       alert('Could not restore bookmarks')
     }

@@ -30,6 +30,7 @@ import {
   createBackupThunk,
   updateBackupThunk,
   getBackupLoading,
+  restoreBackupAnonymouslyThunk,
 } from '~/store/modules/backup'
 
 export const GistBackupRestore = () => {
@@ -171,13 +172,16 @@ export const GistBackupRestore = () => {
 }
 
 export const AnonymousGistRestore = () => {
+  const dispatch = useDispatch()
   const [gistId, setGistId] = useState('')
-  const handleRestore = () => {}
+
+  const handleRestore = () => dispatch(restoreBackupAnonymouslyThunk(gistId))
+
   return (
     <SectionContainer>
-      <SectionHeader>Restore from Anonymous Gist</SectionHeader>
+      <SectionHeader>Restore from Gist</SectionHeader>
       <SectionContent>
-        <Typography>Restore bookmarks from an anonymous Gist</Typography>
+        <Typography>Restore bookmarks from a Gist</Typography>
         <DownloadInputContainer>
           <SettingsTextField
             value={gistId}
@@ -187,7 +191,7 @@ export const AnonymousGistRestore = () => {
           <SettingsButton
             disabled={!gistId}
             onClick={handleRestore}
-            text="Download"
+            text="Import"
           />
         </DownloadInputContainer>
       </SectionContent>
