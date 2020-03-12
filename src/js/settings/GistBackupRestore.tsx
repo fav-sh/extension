@@ -15,6 +15,8 @@ import {
   CardContent,
   CardActions,
   CircularProgress,
+  FormControlLabel,
+  Radio,
 } from '@material-ui/core'
 import { authorize } from '~/browser/githubAuth'
 import { getAuthToken } from '~/api/getAuthToken'
@@ -41,6 +43,8 @@ export const GistBackupRestore = () => {
 
   const [gistDescription, setGistDesciption] = useState('')
 
+  const [isPublic, setIsPublic] = useState(false)
+
   const handleAuth = async () => {
     const authCode = await authorize()
     const data = await getAuthToken(authCode)
@@ -50,7 +54,7 @@ export const GistBackupRestore = () => {
   }
 
   const handleBackup = () => {
-    dispatch(createBackupThunk(gistFilename, gistDescription))
+    dispatch(createBackupThunk(gistFilename, isPublic, gistDescription))
   }
 
   const handleUpdate = () => dispatch(updateBackupThunk())
@@ -99,6 +103,7 @@ export const GistBackupRestore = () => {
     if (backupLoading) {
       return <CircularProgress />
     }
+
     return (
       <PostAuthContainer>
         <SettingsTextField
@@ -113,6 +118,24 @@ export const GistBackupRestore = () => {
           onChange={setGistDesciption}
           label="Description (Optional)"
         />
+        <RadioButtonContainer>
+          <FormControlLabel
+            checked={!isPublic}
+            onClick={() => setIsPublic(false)}
+            value="private"
+            control={<Radio color="primary" />}
+            label="Private"
+            labelPlacement="start"
+          />
+          <FormControlLabel
+            checked={isPublic}
+            onClick={() => setIsPublic(true)}
+            value="public"
+            control={<Radio color="secondary" />}
+            label="Public"
+            labelPlacement="start"
+          />
+        </RadioButtonContainer>
         <Button
           disabled={isBlank(gistFilename)}
           onClick={handleBackup}
@@ -187,4 +210,11 @@ const PostAuthContainer = styled.div`
 
 const MarginCard = styled(Card)`
   margin-top: 0.5em;
+`
+
+const RadioButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  max-width: 400px;
+  justify-content: space-around;
 `

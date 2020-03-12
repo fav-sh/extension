@@ -94,7 +94,11 @@ export const getBackupUrl = (state: AppState) => state.backup.backupUrl
 
 export const getBackupGistId = (state: AppState) => state.backup.backupGistID
 
-export function createBackupThunk(filename: string, description?: string) {
+export function createBackupThunk(
+  filename: string,
+  isPublic: boolean,
+  description?: string
+) {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
     dispatch(actions.setLoading(true))
     const bookmarks = getBookmarks(getState())
@@ -111,7 +115,7 @@ export function createBackupThunk(filename: string, description?: string) {
         const resp = await createBackup(
           token,
           filenameWithExtension,
-          false,
+          isPublic,
           minifiedBookmarks,
           description
         )
