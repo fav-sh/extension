@@ -27,7 +27,7 @@ const getUrl = () => {
 export async function getAuthToken(code: string) {
   const url = getUrl()
   if (url && code) {
-    const resp = await axios.post(url)
+    const resp = await axios.post(`${url}/?code=${code}`)
     return resp.data
   }
 }

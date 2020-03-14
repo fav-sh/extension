@@ -46,14 +46,17 @@ function chromeVersion(clientId: string) {
   const redirectURL = chrome.identity.getRedirectURL()
   const authURL = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=${scope}&redirect_uri=${redirectURL}`
 
-  return chrome.identity.launchWebAuthFlow(
-    {
-      interactive: true,
-      url: authURL,
-    },
-    (responseUrl?: string) => {
-      console.log(responseUrl)
-      return responseUrl && responseUrl.split('?code=')[1]
-    }
-  )
+  const authCode = () =>
+    chrome.identity.launchWebAuthFlow(
+      {
+        interactive: true,
+        url: authURL,
+      },
+      (responseUrl?: string) => {
+        return responseUrl
+      }
+    )
+
+  const code = authCode()
+  console.log('authorization code', code)
 }
