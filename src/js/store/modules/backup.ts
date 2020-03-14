@@ -13,6 +13,7 @@ import {
   restoreGistAnonymously,
   restoreGistAuthenticated,
 } from '~/api/restoreBackup'
+import { getAutoUpdateBackup } from './settings'
 
 export type BackupState = Partial<{
   backupLoading: boolean
@@ -153,6 +154,47 @@ export function createBackupThunk(
   }
 }
 
+// Just like regular update but this one does not
+// Yell at you. For creating / updating bookmarks
+export function passiveUpdate() {
+  console.log('PASSIVE UPDATE')
+  return async (dispatch: ThunkDispatch, getState: ThunkState) => {
+    const passiveUpdateEnabled = getAutoUpdateBackup(getState())
+    if (!passiveUpdateEnabled) {
+      console.log('Passive update disabled')
+      return
+    }
+    dispatch(actions.setLoading(true))
+    const token = getToken(getState())
+    const filename = getBackupFilename(getState())
+    const gistId = getBackupGistId(getState())
+    console.log(token, filename, gistId)
+
+    if (token && filename && gistId) {
+      const bookmarks = getBookmarks(getState())
+      const minifiedBookmarks = transformExportBookmarks(bookmarks)
+      const description = getBackupDescription(getState())
+
+      try {
+        console.log('trying....')
+        await updateBackup(
+          token,
+          filename,
+          false,
+          minifiedBookmarks,
+          gistId,
+          description
+        )
+
+        console.log('success')
+      } catch {
+        console.warn('An error has occurred updating bookmarks')
+      }
+    }
+    dispatch(actions.setLoading(false))
+  }
+}
+
 export function updateBackupThunk() {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
     dispatch(actions.setLoading(true))
@@ -260,6 +302,7 @@ export function restoreBackupAnonymouslyThunk(gistId: string) {
 
           // Convert to a structure understood by the app
           expandedBookmarks = {
+            ...expandedBookmarks,
             [expandedBookmark.guid]: expandedBookmark,
           }
         }

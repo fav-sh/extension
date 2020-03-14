@@ -1,3 +1,5 @@
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   CardContent,
   Typography,
@@ -6,18 +8,24 @@ import {
   Card,
   Checkbox,
 } from '@material-ui/core'
-import { useSelector, useDispatch } from 'react-redux'
-import React from 'react'
 import {
   getBackup,
   updateBackupThunk,
   actions as backupActions,
 } from '~/store/modules/backup'
 import styled from 'styled-components'
+import {
+  actions as settingsActions,
+  getAutoUpdateBackup,
+} from '~/store/modules/settings'
 
 export const BackupCard = ({ noCard }: { noCard?: boolean }) => {
   const dispatch = useDispatch()
   const backup = useSelector(getBackup)
+  const passiveUpdateEnabled = useSelector(getAutoUpdateBackup)
+
+  const togglePassiveUpdate = () =>
+    dispatch(settingsActions.toggleAutoUpdate(!passiveUpdateEnabled))
 
   const handleUpdate = () => dispatch(updateBackupThunk())
 
@@ -40,7 +48,10 @@ export const BackupCard = ({ noCard }: { noCard?: boolean }) => {
             </Typography>
           )}
           <Typography variant="body2" color="textSecondary" component="p">
-            <Checkbox />
+            <Checkbox
+              onChange={togglePassiveUpdate}
+              checked={passiveUpdateEnabled}
+            />
             Automatically backup on file changes
           </Typography>
         </CardContent>
