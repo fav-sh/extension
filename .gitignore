@@ -4,3 +4,4 @@ web-ext-artifacts/
 .env
 node_modules
 *.log
+buildkey.pem

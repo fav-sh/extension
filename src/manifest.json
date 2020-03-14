@@ -1,5 +1,6 @@
 {
   "name": "fav.sh",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm+BB4BK+M1Wcr+841mORuh+T9rT/jKfKDPTRBuVvcWwNO47OAoDKYNY3nR3UqD0NTYxRRjaq6n7VynVnWE53FHOa0VgsL4TexkOZo1VNtwPZwhhBaTXnTbEOtxbhvWllDBxX28lclBCmZN3a4sJjVCYww18U38JGrUGkDvjOsXV0fXj4V/lsnJCqGGr5zOcnpTTNIF0BK+j1+vuWlAALgHv2GPKPRFZ8xf5qovugPRBsdav2A1bsqOxRPo5cfX4YESbDkAYJ5vurhMLlDy31fy0KZWz0cycA7rqxhTCG0pTWqQL/sgIU9B45ywwdTXFwqHLcFtDLKPPHndUGB0fgEwIDAQAB",
   "version": "2.0",
   "description": "Fav bookmark manager",
   "manifest_version": 2,
