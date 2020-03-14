@@ -5,3 +5,4 @@ declare module 'svg' {
 }
 
 declare module 'github-api'
+declare module 'chrome'
