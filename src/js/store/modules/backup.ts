@@ -183,19 +183,44 @@ export function updateBackupThunk() {
 export function restoreBackupAuthenticatedThunk(gistId: string) {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
     dispatch(actions.setLoading(true))
-    const token = getToken(getState())
-
-    if (token) {
-      try {
-        const resp = await restoreGistAuthenticated(gistId, token)
-        console.log(resp.data)
-      } catch {
-        alert('Could not restore bookmarks')
+    try {
+      const token = getToken(getState())
+      if (!token) {
+        throw 'Token not found'
       }
-    } else {
-      alert('Clould not restore bookmarks, token not found')
-    }
+      const resp = await restoreGistAuthenticated(gistId, token)
+      console.log(resp)
+      // For now our backups only contain a single file
+      // We get the filename by getting the first key in
+      // the files object of the gist response
+      const filename = Object.keys(resp.data.files)[0]
+      // Grab the content out of the response and parse it
+      const { content } = resp.data.files[filename]
+      const bookmarks = JSON.parse(content)
+      // Validate + expand bookmarks
+      let expandedBookmarks = {}
+      bookmarks.map((bookmark: any) => {
+        if (validateBookmark(bookmark)) {
+          // Once the bookmark is validated we then create a fresh
+          // guid for the bookmark and expand it
+          const freshGuid = generateBookmarkGuid()
+          const expandedBookmark = transformImportBookmark(bookmark, freshGuid)
 
+          // Convert to a structure understood by the app
+          expandedBookmarks = {
+            [expandedBookmark.guid]: expandedBookmark,
+          }
+        }
+      })
+      dispatch(bookmarkActions.setBookmarks(expandedBookmarks))
+      dispatch(actions.setFilename(filename))
+      dispatch(actions.setGistId(gistId))
+      dispatch(actions.setDescription(resp.data.description))
+      dispatch(actions.setUrl(resp.data.html_url))
+      alert('Import success!')
+    } catch {
+      alert('Could not restore bookmarks')
+    }
     dispatch(actions.setLoading(false))
   }
 }

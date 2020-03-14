@@ -4,6 +4,7 @@ import {
   CardActions,
   Button,
   Card,
+  Checkbox,
 } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
 import React from 'react'
@@ -19,10 +20,6 @@ export const BackupCard = () => {
   const backup = useSelector(getBackup)
 
   const handleUpdate = () => dispatch(updateBackupThunk())
-
-  if (!backup) {
-    return null
-  }
 
   return (
     <MarginCard>
@@ -41,6 +38,10 @@ export const BackupCard = () => {
             {`Description: ${backup.backupDescription}`}
           </Typography>
         )}
+        <Typography variant="body2" color="textSecondary" component="p">
+          <Checkbox />
+          Automatically backup on file changes
+        </Typography>
       </CardContent>
       <CardActions>
         <Button size="small" color="primary" href={backup.backupUrl}>
@@ -63,4 +64,5 @@ export const BackupCard = () => {
 
 const MarginCard = styled(Card)`
   margin-top: 0.5em;
+  max-width: 400px;
 `

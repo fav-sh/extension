@@ -2,11 +2,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import React, { useState } from 'react'
 import {
   restoreBackupAnonymouslyThunk,
-  restoreGistAuthenticated,
+  restoreBackupAuthenticatedThunk,
   getBackupLoading,
 } from '~/store/modules/backup'
 import {
-  SectionHeader,
+  SectionContainer,
   SectionContent,
   DownloadInputContainer,
   SettingsTextField,
@@ -21,12 +21,10 @@ export const AnonymousRestore = () => {
 
   const handleRestore = () => dispatch(restoreBackupAnonymouslyThunk(gistId))
 
-  if (backupLoading) {
-    return <CircularProgress />
-  }
   return (
     <SectionContainer>
       <Typography variant="h6">Restore Public Backup</Typography>
+      {backupLoading && <CircularProgress />}
       <SectionContent>
         <Typography>Restore any public bookmark file from Gist</Typography>
         <DownloadInputContainer>
@@ -51,14 +49,12 @@ export const BackupRestore = () => {
   const [gistId, setGistId] = useState('')
   const backupLoading = useSelector(getBackupLoading)
 
-  const handleRestore = () => dispatch(restoreBackupAnonymouslyThunk(gistId))
+  const handleRestore = () => dispatch(restoreBackupAuthenticatedThunk(gistId))
 
-  if (backupLoading) {
-    return <CircularProgress />
-  }
   return (
     <SectionContainer>
       <Typography variant="h6">Restore Your Backup</Typography>
+      {backupLoading && <CircularProgress />}
       <SectionContent>
         <Typography>
           Restore one of your backups and continue backing up to it
