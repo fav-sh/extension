@@ -4,8 +4,30 @@
  */
 import axios from 'axios'
 
+const baseURL = `https://auth.fav.sh/.netlify/functions`
+
+const getUrl = () => {
+  if (process.env.NODE_ENV === 'development') {
+    if (process.env.TARGET === 'chrome') {
+      return `${baseURL}/chrome-dev`
+    } else {
+      return `${baseURL}/firefox-dev`
+    }
+  }
+  if (process.env.NODE_ENV === 'production') {
+    if (process.env.TARGET === 'chrome') {
+      return `${baseURL}/chrome-prod`
+    } else {
+      return `${baseURL}/firefox-prod`
+    }
+  }
+  return undefined
+}
+
 export async function getAuthToken(code: string) {
-  const url = `https://auth.fav.sh/.netlify/functions/auth?code=${code}`
-  const resp = await axios.post(url)
-  return resp.data
+  const url = getUrl()
+  if (url && code) {
+    const resp = await axios.post(url)
+    return resp.data
+  }
 }
