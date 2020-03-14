@@ -1,9 +1,5 @@
 ## Fav.sh 2.0
 
-## Wait why rebuild the project?
-
-Long story short I have learned quite a bit about how Javascript and Bundling works since Fav.sh v1, rather than going back and trying to fix my mistakes in the original version, I've decided to rebuild the app from ground up instead.
-
 ## Dependencies
 
 * NodeJS
