@@ -216,6 +216,7 @@ export function restoreBackupAuthenticatedThunk(gistId: string) {
 
           // Convert to a structure understood by the app
           expandedBookmarks = {
+            ...expandedBookmarks,
             [expandedBookmark.guid]: expandedBookmark,
           }
         }
