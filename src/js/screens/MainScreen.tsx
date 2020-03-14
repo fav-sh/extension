@@ -16,6 +16,8 @@ import { isBlank } from '~/helpers'
 import Sidebar from 'react-sidebar'
 import MenuIcon from '~/icons/menu'
 import SettingsIcon from '~/icons/settings'
+import { BackupPopover } from '~/components/BackupPopover'
+import { getBackupExists } from '~/store/modules/backup'
 
 const HeaderLeftButton = ({ onClick }: { onClick: () => void }) => (
   <IconButton onClick={onClick}>
@@ -26,11 +28,14 @@ const HeaderLeftButton = ({ onClick }: { onClick: () => void }) => (
 const HeaderRightButton = ({
   onClick,
   onAdd,
+  backupPopoverEnabled,
 }: {
   onClick: () => void
   onAdd: () => void
+  backupPopoverEnabled: boolean
 }) => (
   <>
+    {backupPopoverEnabled && <BackupPopover />}
     <IconButton onClick={onClick}>
       <SettingsIcon />
     </IconButton>
@@ -55,6 +60,7 @@ export const MainScreen = () => {
   const bookmarks = useSelector(getBookmarks)
   const bookmarksAsArray = Object.keys(bookmarks).map((key) => bookmarks[key])
   const activeTags = useSelector(getActiveTags)
+  const backupExists = useSelector(getBackupExists)
   const dispatch = useDispatch()
 
   const [showSidebar, setShowSidebar] = useState<boolean>(false)
@@ -141,7 +147,11 @@ export const MainScreen = () => {
             />
           </Section>
           <Section>
-            <HeaderRightButton onAdd={handleAdd} onClick={handleSettings} />
+            <HeaderRightButton
+              backupPopoverEnabled={backupExists}
+              onAdd={handleAdd}
+              onClick={handleSettings}
+            />
           </Section>
         </FlexContainer>
       </Header>

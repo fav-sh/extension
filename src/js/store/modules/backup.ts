@@ -90,6 +90,14 @@ export const getBackupLoading = (state: AppState) => state.backup.backupLoading
 
 export const getBackup = (state: AppState) => state.backup
 
+export const getBackupExists = (state: AppState) =>
+  !!(
+    state.backup &&
+    state.backup.backupFilename &&
+    state.backup.backupGistID &&
+    state.backup.backupUrl
+  )
+
 export const getBackupFilename = (state: AppState) =>
   state.backup.backupFilename
 
