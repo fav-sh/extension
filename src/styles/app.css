@@ -1,6 +1,6 @@
 html,body {
-  min-height: 600px;
-  min-width: 800px;
+  min-height: 30rem;
+  min-width: 40rem;
 }
 
 .sidebar-content {
