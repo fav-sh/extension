@@ -9,7 +9,10 @@ import {
 } from '~/helpers'
 import { createBackup } from '~/api/createBackup'
 import { updateBackup } from '~/api/updateBackup'
-import { restoreGistAnonymously } from '~/api/restoreBackup'
+import {
+  restoreGistAnonymously,
+  restoreGistAuthenticated,
+} from '~/api/restoreBackup'
 
 export type BackupState = Partial<{
   backupLoading: boolean
@@ -174,28 +177,28 @@ export function updateBackupThunk() {
 }
 
 // TODO: Implement Later
-// // If the user is authenticated and the gist belongs to them
-// // We can restore the gist and hook it up so  the user backs up to
-// // It on the next backup
-// export function restoreBackupAuthenticatedThunk(gistId: string) {
-//   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
-//     dispatch(actions.setLoading(true))
-//     const token = getToken(getState())
+// If the user is authenticated and the gist belongs to them
+// We can restore the gist and hook it up so  the user backs up to
+// It on the next backup
+export function restoreBackupAuthenticatedThunk(gistId: string) {
+  return async (dispatch: ThunkDispatch, getState: ThunkState) => {
+    dispatch(actions.setLoading(true))
+    const token = getToken(getState())
 
-//     if (token) {
-//       try {
-//         const resp = await restoreGistAuthenticated(gistId, token)
-//         console.log(resp.data)
-//       } catch {
-//         alert('Could not restore bookmarks')
-//       }
-//     } else {
-//       alert('Clould not restore bookmarks, token not found')
-//     }
+    if (token) {
+      try {
+        const resp = await restoreGistAuthenticated(gistId, token)
+        console.log(resp.data)
+      } catch {
+        alert('Could not restore bookmarks')
+      }
+    } else {
+      alert('Clould not restore bookmarks, token not found')
+    }
 
-//     dispatch(actions.setLoading(false))
-//   }
-// }
+    dispatch(actions.setLoading(false))
+  }
+}
 
 // If the user is not authenticated we can restore an anonymous gist
 // However we do not hook it up for backup as the user does not own that
