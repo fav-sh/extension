@@ -1,4 +1,4 @@
-import { AppAction, AppState, ThunkState, ThunkDispatch } from '~/types/redux'
+import { AppAction, AppState, ThunkDispatch } from '~/types/redux'
 import { openWebAuth } from '~/browser/githubAuth'
 import {
   CHROME_PROD_CLIENT_ID,
@@ -78,7 +78,7 @@ export function authenticationFlowThunk() {
   const redirectUri = browserSpecific.identity.getRedirectURL()
   const authURL = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=${GIST_SCOPE}&redirect_uri=${redirectUri}`
 
-  return async (dispatch: ThunkDispatch, getState: ThunkState) => {
+  return async (dispatch: ThunkDispatch) => {
     dispatch(actions.authLoading(true))
     openWebAuth(authURL, async (code: string) => {
       const data = await getAuthToken(code)

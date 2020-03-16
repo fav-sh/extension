@@ -1,8 +1,8 @@
 import { Bookmark } from '~/types/Bookmark'
-import { AppAction, AppState, ThunkDispatch, ThunkState } from '~/types/redux'
+import { AppAction, AppState, ThunkDispatch } from '~/types/redux'
 import omit from 'lodash/fp/omit'
 import uniq from 'lodash/fp/uniq'
-import { updateBackupThunk, passiveUpdate } from './backup'
+import { passiveUpdate } from './backup'
 
 export type BookmarkState = {
   [guid: string]: Bookmark
