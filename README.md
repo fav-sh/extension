@@ -1,71 +1,55 @@
-## Fav.sh 2.0
 
-## Dependencies
+<div align="center">
+  <image src="icon.png" height="256" width="256">
+  <h2>Fav Bookmark Manager</h2>
+  <hr />
+</div>
 
-* NodeJS
-* yarn (npm install -g yarn)
+Fav is an open souce bookmark manager that syncronizes with Github Gist. This is the source code for the extension on Chrome and Firefox.
 
-## Installation
+## Setup
 
-* Ensure that you have NodeJS and Yarn
-
-* `yarn` to install dependencies
-
-
-
-## How to run
-
-**firefox** - run `yarn firefox`, this will build the extension and open Firefox with the extension installed. Note if this is your fist time building the command will fail. To get around this run yarn bundle then close the bundler and rerun yarn firefox. The same applies for chrome. This only needs to be done on a fresh install
-
-**chrome** - run `yarn chrome`, this will build the extension and open Chrome with the extension installed
-
-**settings page** - While the settings page can be accessed via the extension, if you want to just run the settings page use `yarn start:settings`
-
-**web** - For easier debugging you can run the app as a web-app. Note this is very buggy right now.
-
-## How to build
-
-**firefox** - run `yarn build:firefox` to build the extension, the resulting zip file will be under `web-ext-artifacts`. Right now you if you want to run the extension you must do so under Addons > Debug > Install Temporary Extension. It will fail under a regular install because I haven't signed it.
+* Make sure you have a NodeJS enviorment setup with `yarn` installed (`npm install -g yarn`)
+* Clone the repository using `git clone` and install the dependencies with `yarn`
 
 
-## Project Structure
+## Running the Extension
 
-The project is structured with this basic structure
+### Before you Run
 
-```
-src/
-  styles/
-  js/
-  entry/
-  icons/
-  manifest.json
+Prior to running `yarn chrome` and `yarn firefox` for the first time, run `yarn bundle` and then quit once the bundle is built. 
+If you do not do this then both these commands will fail
 
-```
+### Running in Firefox
 
-`styles/` - stores the root styles of the extension, all components within the app are styled using `styled-components`
+To run the extension in Firefox use the command `yarn firefox` to run both the bundle and web-ext commands
 
-`js/` - stores all Javascript code to the app.
+### Running in Chrome
 
-`entry/` - stores all entry points into the app
-
-`icons/` - stores extension icons
-
-`manifest.json` - extension manifest
+To run the extension in Chrome use the command `yarn chrome` to run both the bundle and web-ext commands
 
 
-## Keeping things clean
+## Building the Extension
 
-Typecheck - `yarn tsc` will check the typescript types
+To build the extnsion for production follow the steps below for each platform
 
-Prettier - `yarn format` will format the projects code with prettier
+### Building Firefox
 
-You can run both with `yarn ci`
+1. Run `yarn build:firefox` to build the extension with the firefox target.
 
-## Debugging
+### Building for Chrome
 
-Redux - This project ships with Redux devtools. Press ctrl + p to toggle the  redux panel. Note this panel is only included in the development version
+1. Run `yarn build:chrome` to build the extension for chrome.
+2. Open chrome and navigate to `chrome://extensions` and enable developer settings
+3. In developer settings pack the extension from the `dist/` directory
 
 
-## Contributing 
+## Enviorment Varibles
 
-Feel free to check out this projects [TODO](TODO.md) to get a sense of things that need to be done. From there feel free to open a pull request. For non-technical users I really appreciate bug reports.
+TARGET (chrome | firefox): Which browser to bundle for
+NODE_ENV (development | production): Enviorment to bundle for
+
+
+## Liscense
+
+[MIT](LISCENSE.md)
