@@ -7,10 +7,12 @@ import {
   PaddedAction,
 } from '../common'
 import { Button } from '@material-ui/core'
-import { authorize } from '~/browser/githubAuth'
-import { getAuthToken } from '~/api/getAuthToken'
 import { useDispatch, useSelector } from 'react-redux'
-import { actions as authActions, getAuthenticated } from '~/store/modules/auth'
+import {
+  actions as authActions,
+  getAuthenticated,
+  authenticationFlowThunk,
+} from '~/store/modules/auth'
 import { getBackup } from '~/store/modules/backup'
 import styled from 'styled-components'
 import { Backup } from './Backup'
@@ -23,11 +25,7 @@ export const GistBackupRestore = () => {
 
   const authenticated = useSelector(getAuthenticated)
   const handleAuth = async () => {
-    const authCode = await authorize()
-    const data = await getAuthToken(authCode)
-    if (data && data.access_token) {
-      dispatch(authActions.storeToken(data.access_token))
-    }
+    dispatch(authenticationFlowThunk())
   }
 
   const handleLogout = () => {
