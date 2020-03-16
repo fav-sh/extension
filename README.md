@@ -2,7 +2,6 @@
 <div align="center">
   <image src="icon.png" height="256" width="256">
   <h2>Fav Bookmark Manager</h2>
-  <hr />
 </div>
 
 Fav is an open souce bookmark manager that syncronizes with Github Gist. This is the source code for the extension on Chrome and Firefox.
@@ -46,10 +45,10 @@ To build the extnsion for production follow the steps below for each platform
 
 ## Enviorment Varibles
 
-TARGET (chrome | firefox): Which browser to bundle for
-NODE_ENV (development | production): Enviorment to bundle for
+* TARGET (chrome | firefox): Which browser to bundle for
+* NODE_ENV (development | production): Enviorment to bundle for
 
 
 ## Liscense
 
-[MIT](LISCENSE.md)
+[MIT](LICENSE.md)
