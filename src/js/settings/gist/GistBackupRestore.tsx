@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   SectionContainer,
   SectionHeader,
@@ -11,12 +11,15 @@ import { authorize } from '~/browser/githubAuth'
 import { getAuthToken } from '~/api/getAuthToken'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions as authActions, getAuthenticated } from '~/store/modules/auth'
+import { getBackup } from '~/store/modules/backup'
 import styled from 'styled-components'
 import { Backup } from './Backup'
 import { BackupRestore, AnonymousRestore } from './Restore'
+import { BackupCard } from './BackupCard'
 
 export const GistBackupRestore = () => {
   const dispatch = useDispatch()
+  const backup = useSelector(getBackup)
 
   const authenticated = useSelector(getAuthenticated)
   const handleAuth = async () => {
@@ -43,6 +46,10 @@ export const GistBackupRestore = () => {
             <>
               <Backup />
               <BackupRestore />
+              {backup &&
+                backup.backupFilename &&
+                backup.backupGistID &&
+                backup.backupUrl && <BackupCard />}
             </>
           ) : (
             <SettingsButton onClick={handleAuth} text="Log in With Github" />

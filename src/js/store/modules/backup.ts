@@ -13,6 +13,7 @@ import {
   restoreGistAnonymously,
   restoreGistAuthenticated,
 } from '~/api/restoreBackup'
+import { getAutoUpdateBackup } from './settings'
 
 export type BackupState = Partial<{
   backupLoading: boolean
@@ -90,6 +91,14 @@ export const getBackupLoading = (state: AppState) => state.backup.backupLoading
 
 export const getBackup = (state: AppState) => state.backup
 
+export const getBackupExists = (state: AppState) =>
+  !!(
+    state.backup &&
+    state.backup.backupFilename &&
+    state.backup.backupGistID &&
+    state.backup.backupUrl
+  )
+
 export const getBackupFilename = (state: AppState) =>
   state.backup.backupFilename
 
@@ -145,6 +154,47 @@ export function createBackupThunk(
   }
 }
 
+// Just like regular update but this one does not
+// Yell at you. For creating / updating bookmarks
+export function passiveUpdate() {
+  console.log('PASSIVE UPDATE')
+  return async (dispatch: ThunkDispatch, getState: ThunkState) => {
+    const passiveUpdateEnabled = getAutoUpdateBackup(getState())
+    if (!passiveUpdateEnabled) {
+      console.log('Passive update disabled')
+      return
+    }
+    dispatch(actions.setLoading(true))
+    const token = getToken(getState())
+    const filename = getBackupFilename(getState())
+    const gistId = getBackupGistId(getState())
+    console.log(token, filename, gistId)
+
+    if (token && filename && gistId) {
+      const bookmarks = getBookmarks(getState())
+      const minifiedBookmarks = transformExportBookmarks(bookmarks)
+      const description = getBackupDescription(getState())
+
+      try {
+        console.log('trying....')
+        await updateBackup(
+          token,
+          filename,
+          false,
+          minifiedBookmarks,
+          gistId,
+          description
+        )
+
+        console.log('success')
+      } catch {
+        console.warn('An error has occurred updating bookmarks')
+      }
+    }
+    dispatch(actions.setLoading(false))
+  }
+}
+
 export function updateBackupThunk() {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
     dispatch(actions.setLoading(true))
@@ -183,19 +233,45 @@ export function updateBackupThunk() {
 export function restoreBackupAuthenticatedThunk(gistId: string) {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
     dispatch(actions.setLoading(true))
-    const token = getToken(getState())
-
-    if (token) {
-      try {
-        const resp = await restoreGistAuthenticated(gistId, token)
-        console.log(resp.data)
-      } catch {
-        alert('Could not restore bookmarks')
+    try {
+      const token = getToken(getState())
+      if (!token) {
+        throw 'Token not found'
       }
-    } else {
-      alert('Clould not restore bookmarks, token not found')
-    }
+      const resp = await restoreGistAuthenticated(gistId, token)
+      console.log(resp)
+      // For now our backups only contain a single file
+      // We get the filename by getting the first key in
+      // the files object of the gist response
+      const filename = Object.keys(resp.data.files)[0]
+      // Grab the content out of the response and parse it
+      const { content } = resp.data.files[filename]
+      const bookmarks = JSON.parse(content)
+      // Validate + expand bookmarks
+      let expandedBookmarks = {}
+      bookmarks.map((bookmark: any) => {
+        if (validateBookmark(bookmark)) {
+          // Once the bookmark is validated we then create a fresh
+          // guid for the bookmark and expand it
+          const freshGuid = generateBookmarkGuid()
+          const expandedBookmark = transformImportBookmark(bookmark, freshGuid)
 
+          // Convert to a structure understood by the app
+          expandedBookmarks = {
+            ...expandedBookmarks,
+            [expandedBookmark.guid]: expandedBookmark,
+          }
+        }
+      })
+      dispatch(bookmarkActions.setBookmarks(expandedBookmarks))
+      dispatch(actions.setFilename(filename))
+      dispatch(actions.setGistId(gistId))
+      dispatch(actions.setDescription(resp.data.description))
+      dispatch(actions.setUrl(resp.data.html_url))
+      alert('Import success!')
+    } catch {
+      alert('Could not restore bookmarks')
+    }
     dispatch(actions.setLoading(false))
   }
 }
@@ -226,6 +302,7 @@ export function restoreBackupAnonymouslyThunk(gistId: string) {
 
           // Convert to a structure understood by the app
           expandedBookmarks = {
+            ...expandedBookmarks,
             [expandedBookmark.guid]: expandedBookmark,
           }
         }

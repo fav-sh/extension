@@ -9,11 +9,7 @@ import React, { useState } from 'react'
 import { SettingsTextField } from '../common'
 import { isBlank } from '~/helpers'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  getBackup,
-  getBackupLoading,
-  createBackupThunk,
-} from '~/store/modules/backup'
+import { getBackupLoading, createBackupThunk } from '~/store/modules/backup'
 import styled from 'styled-components'
 
 export const Backup = () => {

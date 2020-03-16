@@ -1,7 +1,8 @@
 import { Bookmark } from '~/types/Bookmark'
-import { AppAction, AppState } from '~/types/redux'
+import { AppAction, AppState, ThunkDispatch, ThunkState } from '~/types/redux'
 import omit from 'lodash/fp/omit'
 import uniq from 'lodash/fp/uniq'
+import { updateBackupThunk, passiveUpdate } from './backup'
 
 export type BookmarkState = {
   [guid: string]: Bookmark
@@ -61,4 +62,18 @@ export const getTags = (state: AppState) => {
   )
 
   return tags
+}
+
+export function addBookmarkThunk(bookmark: Bookmark) {
+  return (dispatch: ThunkDispatch) => {
+    dispatch(actions.add(bookmark))
+    dispatch(passiveUpdate())
+  }
+}
+
+export function removeBookmarkThunk(guid: string) {
+  return (dispatch: ThunkDispatch) => {
+    dispatch(actions.remove(guid))
+    dispatch(passiveUpdate())
+  }
 }

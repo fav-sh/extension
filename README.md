@@ -1,9 +1,5 @@
 ## Fav.sh 2.0
 
-## Wait why rebuild the project?
-
-Long story short I have learned quite a bit about how Javascript and Bundling works since Fav.sh v1, rather than going back and trying to fix my mistakes in the original version, I've decided to rebuild the app from ground up instead.
-
 ## Dependencies
 
 * NodeJS
@@ -15,7 +11,6 @@ Long story short I have learned quite a bit about how Javascript and Bundling wo
 
 * `yarn` to install dependencies
 
-* If you want working Github Gist intergraiton you will need to supply both a `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` in an .env file. To get either you must create an Oauth application in Github. More info on this coming soon.
 
 
 ## How to run

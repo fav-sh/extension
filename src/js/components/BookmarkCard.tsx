@@ -3,7 +3,7 @@ import { IconButton } from '@material-ui/core'
 import { Bookmark } from '~/types/Bookmark'
 import styled from 'styled-components'
 import { actions as editingActions } from '~/store/modules/editing'
-import { actions as bookmarkActions } from '~/store/modules/bookmarks'
+import { removeBookmarkThunk } from '~/store/modules/bookmarks'
 import { navigate } from '~/store/modules/navigation'
 import { useDispatch } from 'react-redux'
 
@@ -18,7 +18,7 @@ export const BookmarkCard = (bookmark: Bookmark) => {
     dispatch(navigate('add'))
   }
 
-  const onRemove = () => dispatch(bookmarkActions.remove(bookmark.guid))
+  const onRemove = () => dispatch(removeBookmarkThunk(bookmark.guid))
 
   return (
     <Card>

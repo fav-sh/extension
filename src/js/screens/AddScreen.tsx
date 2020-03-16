@@ -11,7 +11,7 @@ import {
 import styled from 'styled-components'
 import { navigate } from '~/store/modules/navigation'
 import { useDispatch, useSelector } from 'react-redux'
-import { actions, getTags } from '~/store/modules/bookmarks'
+import { getTags, addBookmarkThunk } from '~/store/modules/bookmarks'
 import { Bookmark } from '~/types/Bookmark'
 import { generateBookmarkGuid } from '~/helpers'
 import { getActiveTab, Tab } from '~/browser/getTabInfo'
@@ -83,7 +83,7 @@ export const AddScreen = () => {
       tags,
     }
 
-    dispatch(actions.add(bookmark))
+    dispatch(addBookmarkThunk(bookmark))
     dispatch(editingActions.clearEditing())
     dispatch(navigate('home'))
   }
