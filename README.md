@@ -38,9 +38,13 @@ To build the extnsion for production follow the steps below for each platform
 
 ### Building for Chrome
 
+NOTE: You must have a build key in your home directory named `buidkey.pem` before trying to use the command `yarn build:chrome`
+
 1. Run `yarn build:chrome` to build the extension for chrome.
 2. Open chrome and navigate to `chrome://extensions` and enable developer settings
 3. In developer settings pack the extension from the `dist/` directory
+
+
 
 
 ## Enviorment Varibles
