@@ -69,6 +69,5 @@ export const Categories = () => {
 
 const TagsContainer = styled.div`
   height: 100%;
-  overflow-y: scroll;
   width: 300px;
 `
