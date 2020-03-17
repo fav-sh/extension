@@ -1,6 +1,4 @@
 export function openWebAuth(authUrl: string, callback: (code: string) => void) {
-  console.log('opening web auth')
-  console.log(process.env.TARGET)
   if (process.env.TARGET === 'chrome') {
     chrome.identity.launchWebAuthFlow(
       {

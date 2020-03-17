@@ -67,10 +67,6 @@ export const MainScreen = () => {
 
   const [searchTerm, setSearchTerm] = useState('')
 
-  useEffect(() => {
-    console.log(searchTerm)
-  }, [searchTerm])
-
   const handleCategories = () => {
     setShowSidebar(!showSidebar)
   }
