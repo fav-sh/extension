@@ -1,6 +1,6 @@
 {
   "name": "fav.sh",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Fav Bookmark Manager",
   "main": "index.js",
   "scripts": {
