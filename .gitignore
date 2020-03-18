@@ -6,3 +6,5 @@ node_modules
 *.log
 *.pem
 .DS_Store
+*.crx
+*.zip
