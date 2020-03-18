@@ -36,7 +36,10 @@ To build the extnsion for production follow the steps below for each platform
 
 1. Run `yarn build:firefox` to build the extension with the firefox target.
 
-**Releasing for Production**: To build a version to release to the app store, run `yarn build:firefox` then run zip the dist directory (`run zip -r extension-firefox.zip dist` on ubuntu) 
+**Releasing for Production**: To build a version to release to the app store, run `yarn build:firefox` then upload the zip file found in web-ext-artifacts
+
+**Uploading Source Code**: The easiest way of uploading the source code for release is to run `yarn clean` to remove any temorary files then running `zip -r extension-source.zip .`
+
 
 ### Building for Chrome
 
