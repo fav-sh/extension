@@ -135,7 +135,6 @@ export function createBackupThunk(
         )
 
         const { id, html_url } = resp.data
-        console.log(resp)
 
         dispatch(actions.setGistId(id))
         dispatch(actions.setUrl(html_url))
@@ -157,18 +156,15 @@ export function createBackupThunk(
 // Just like regular update but this one does not
 // Yell at you. For creating / updating bookmarks
 export function passiveUpdate() {
-  console.log('PASSIVE UPDATE')
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
     const passiveUpdateEnabled = getAutoUpdateBackup(getState())
     if (!passiveUpdateEnabled) {
-      console.log('Passive update disabled')
       return
     }
     dispatch(actions.setLoading(true))
     const token = getToken(getState())
     const filename = getBackupFilename(getState())
     const gistId = getBackupGistId(getState())
-    console.log(token, filename, gistId)
 
     if (token && filename && gistId) {
       const bookmarks = getBookmarks(getState())
@@ -176,7 +172,6 @@ export function passiveUpdate() {
       const description = getBackupDescription(getState())
 
       try {
-        console.log('trying....')
         await updateBackup(
           token,
           filename,
@@ -185,8 +180,6 @@ export function passiveUpdate() {
           gistId,
           description
         )
-
-        console.log('success')
       } catch {
         console.warn('An error has occurred updating bookmarks')
       }
@@ -239,7 +232,6 @@ export function restoreBackupAuthenticatedThunk(gistId: string) {
         throw 'Token not found'
       }
       const resp = await restoreGistAuthenticated(gistId, token)
-      console.log(resp)
       // For now our backups only contain a single file
       // We get the filename by getting the first key in
       // the files object of the gist response
