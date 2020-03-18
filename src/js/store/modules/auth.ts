@@ -77,7 +77,7 @@ export function authenticationFlowThunk() {
 
   const redirectUri = browserSpecific.identity.getRedirectURL()
   const authURL = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=${GIST_SCOPE}&redirect_uri=${redirectUri}`
-
+  console.log('opening URL: ', authURL)
   return async (dispatch: ThunkDispatch) => {
     dispatch(actions.authLoading(true))
     openWebAuth(authURL, async (code: string) => {
