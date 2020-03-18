@@ -22,7 +22,7 @@
       "id": "extension@fav.sh"
     }
   },
-  "content_security_policy": "script-src 'self' https://github.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://github.com; object-src 'self'",
   "permissions": [
     "tabs",
     "storage",
