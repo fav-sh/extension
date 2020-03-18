@@ -36,6 +36,8 @@ To build the extnsion for production follow the steps below for each platform
 
 1. Run `yarn build:firefox` to build the extension with the firefox target.
 
+**Releasing for Production**: To build a version to release to the app store, run `yarn build:firefox` then run zip the dist directory (`run zip -r extension-firefox.zip dist` on ubuntu) 
+
 ### Building for Chrome
 
 NOTE: You must have a build key in your home directory named `buidkey.pem` before trying to use the command `yarn build:chrome`
