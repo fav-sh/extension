@@ -17,12 +17,6 @@
     "default_title": "Fav",
     "default_popup": "entry/extension.html"
   },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "extension@fav.sh"
-    }
-  },
-  "content_security_policy": "script-src 'self' 'unsafe-eval' https://github.com; object-src 'self'",
   "permissions": [
     "tabs",
     "storage",
