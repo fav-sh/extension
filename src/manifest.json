@@ -26,8 +26,6 @@
   "permissions": [
     "tabs",
     "storage",
-    "identity",
-    "https://*.fav.sh/*",
     "https://*.github.com/*"
   ]
 }

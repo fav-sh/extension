@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   SectionContainer,
   SectionHeader,
@@ -6,13 +6,9 @@ import {
   SettingsButton,
   PaddedAction,
 } from '../common'
-import { Button } from '@material-ui/core'
+import { Button, TextField } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  actions as authActions,
-  getAuthenticated,
-  authenticationFlowThunk,
-} from '~/store/modules/auth'
+import { actions as authActions, getAuthenticated } from '~/store/modules/auth'
 import { getBackup } from '~/store/modules/backup'
 import styled from 'styled-components'
 import { Backup } from './Backup'
@@ -22,10 +18,11 @@ import { BackupCard } from './BackupCard'
 export const GistBackupRestore = () => {
   const dispatch = useDispatch()
   const backup = useSelector(getBackup)
+  const [authKey, setAuthKey] = useState('')
 
   const authenticated = useSelector(getAuthenticated)
   const handleAuth = async () => {
-    dispatch(authenticationFlowThunk())
+    dispatch(authActions.storeToken(authKey))
   }
 
   const handleLogout = () => {
@@ -50,7 +47,25 @@ export const GistBackupRestore = () => {
                 backup.backupUrl && <BackupCard />}
             </>
           ) : (
-            <SettingsButton onClick={handleAuth} text="Log in With Github" />
+            <PreLogincontainer>
+              <LoginText>
+                Get a personal access token{' '}
+                <a href="https://github.com/settings/tokens">here</a>
+              </LoginText>
+              <TextField
+                value={authKey}
+                onChange={(e: any) => setAuthKey(e.target.value)}
+                variant="outlined"
+                placeholder="Your personal access token"
+                label="Personal Access Token"
+              />
+              <ButtonContainer>
+                <SettingsButton
+                  onClick={handleAuth}
+                  text="Store your Access token"
+                />
+              </ButtonContainer>
+            </PreLogincontainer>
           )}
         </PaddedAction>
         <AnonymousRestore />
@@ -64,4 +79,27 @@ const HeaderContainer = styled.div`
   flex-direction: row;
   max-width: 400px;
   justify-content: space-between;
+`
+
+const PreLogincontainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+`
+
+const ButtonContainer = styled.div`
+  margin-top: 1em;
+  margin-bottom: 1em;
+`
+
+const LoginText = styled.p`
+  margin-top: 0.25em;
+  margin-bottom: 1em;
+  font-weight: bold;
+  text-decoration: none;
+  color: #696969;
+  a {
+    color: #a9a9a9;
+    text-decoration: none;
+  }
 `
