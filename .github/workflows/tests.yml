@@ -16,19 +16,19 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
-      - name: 'Use NodeJS'
+      - name: Use NodeJS
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
       
-      - name: 'Install dependencies'
+      - name: Install dependencies
       run: npm install -g yarn
       run: yarn
       
-      - name: 'Typecheck'
+      - name: Typecheck
       run: yarn tsc
 
-      - name: 'Prettier'
+      - name: Prettier
       run: yarn format
 
       env:
