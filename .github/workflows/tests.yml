@@ -1,4 +1,4 @@
-name: Fav.sh CI
+name: tests
 
 on:
   push:

@@ -6,6 +6,10 @@
 
 Fav is an open souce bookmark manager that syncronizes with Github Gist. This is the source code for the extension on Chrome and Firefox.
 
+## Status
+
+[![Actions Status](https://github.com/fav-sh/extension/workflows/tests/badge.svg)](https://github.com/fav-sh/extension/actions)
+
 ## Download
 
 <a href="https://chrome.google.com/webstore/detail/fav-bookmark-manager/gammmbkeceiljlgijimbhhgkfmiejnkl?hl=en" target="_blank" alt="chrome-download"><image src="resources/chrome.png"></a>
