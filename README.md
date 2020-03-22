@@ -8,8 +8,8 @@ Fav is an open souce bookmark manager that syncronizes with Github Gist. This is
 
 ## Download
 
-<a href="#" alt="chrome-download"><image src="resources/chrome.png"></a>
-<a href="#" alt="firefox-download"><image src="resources/firefox.png"></a>
+<a href="https://chrome.google.com/webstore/detail/fav-bookmark-manager/gammmbkeceiljlgijimbhhgkfmiejnkl?hl=en" target="_blank" alt="chrome-download"><image src="resources/chrome.png"></a>
+<a href="https://addons.mozilla.org/en-US/firefox/addon/fav/" target="_blank" alt="firefox-download"><image src="resources/firefox.png"></a>
 
 
 ## Setup
