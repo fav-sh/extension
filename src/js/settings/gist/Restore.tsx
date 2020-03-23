@@ -3,8 +3,13 @@ import React, { useState } from 'react'
 import {
   restoreBackupAnonymouslyThunk,
   restoreBackupAuthenticatedThunk,
-  getBackupLoading,
 } from '~/store/modules/backup'
+
+import {
+  getBackupReadUpdate,
+  getBackupReadCreate,
+} from '~/store/modules/backup.loaders'
+
 import {
   SectionContainer,
   SectionContent,
@@ -17,7 +22,7 @@ import { Typography, CircularProgress } from '@material-ui/core'
 export const AnonymousRestore = () => {
   const dispatch = useDispatch()
   const [gistId, setGistId] = useState('')
-  const backupLoading = useSelector(getBackupLoading)
+  const backupLoading = useSelector(getBackupReadCreate)
 
   const handleRestore = () => dispatch(restoreBackupAnonymouslyThunk(gistId))
 
@@ -47,7 +52,7 @@ export const AnonymousRestore = () => {
 export const BackupRestore = () => {
   const dispatch = useDispatch()
   const [gistId, setGistId] = useState('')
-  const backupLoading = useSelector(getBackupLoading)
+  const backupLoading = useSelector(getBackupReadUpdate)
 
   const handleRestore = () => dispatch(restoreBackupAuthenticatedThunk(gistId))
 

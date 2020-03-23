@@ -9,12 +9,14 @@ import React, { useState } from 'react'
 import { SettingsTextField } from '../common'
 import { isBlank } from '~/helpers'
 import { useSelector, useDispatch } from 'react-redux'
-import { getBackupLoading, createBackupThunk } from '~/store/modules/backup'
+import { createBackupThunk } from '~/store/modules/backup'
+import { getBackupWriteCreate } from '~/store/modules/backup.loaders'
+
 import styled from 'styled-components'
 
 export const Backup = () => {
   const dispatch = useDispatch()
-  const backupLoading = useSelector(getBackupLoading)
+  const backupLoading = useSelector(getBackupWriteCreate)
   const [gistFilename, setGistFilename] = useState('')
   const [gistDescription, setGistDesciption] = useState('')
   const [isPublic, setIsPublic] = useState(false)

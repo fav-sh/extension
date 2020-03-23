@@ -17,16 +17,13 @@ import { getAutoUpdateBackup } from './settings'
 import { actions as loaderActions } from './backup.loaders'
 
 export type BackupState = Partial<{
-  backupLoading: boolean
   backupFilename: string
   backupDescription: string
   backupUrl: string
   backupGistID: string
 }>
 
-export const initialState: BackupState = {
-  backupLoading: false,
-}
+export const initialState: BackupState = {}
 
 export const actions = {
   setFilename: (filename: string) => ({
@@ -48,19 +45,10 @@ export const actions = {
   clearBackup: () => ({
     type: 'CLEAR_BACKUP',
   }),
-  setLoading: (loading: boolean) => ({
-    type: 'SET_LOADING',
-    payload: loading,
-  }),
 }
 
 export function reducer(state: BackupState = initialState, action: AppAction) {
   switch (action.type) {
-    case 'SET_LOADING':
-      return {
-        ...state,
-        backupLoading: action.payload,
-      }
     case 'SET_BACKUP_FILENAME':
       return {
         ...state,
@@ -87,8 +75,6 @@ export function reducer(state: BackupState = initialState, action: AppAction) {
       return state
   }
 }
-
-export const getBackupLoading = (state: AppState) => state.backup.backupLoading
 
 export const getBackup = (state: AppState) => state.backup
 

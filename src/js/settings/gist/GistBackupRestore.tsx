@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   SectionContainer,
   SectionHeader,
@@ -19,6 +19,15 @@ export const GistBackupRestore = () => {
   const dispatch = useDispatch()
   const backup = useSelector(getBackup)
   const [authKey, setAuthKey] = useState('')
+
+  useEffect(() => {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      process.env.GITHUB_PERSONAL_ACCESS_TOKEN
+    ) {
+      setAuthKey(process.env.GITHUB_PERSONAL_ACCESS_TOKEN)
+    }
+  }, [])
 
   const authenticated = useSelector(getAuthenticated)
   const handleAuth = async () => {

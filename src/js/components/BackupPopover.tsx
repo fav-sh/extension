@@ -7,11 +7,18 @@ import { IconButton, Popover, CircularProgress } from '@material-ui/core'
 import SyncIcon from '~/icons/sync'
 import { BackupCard } from '~/settings/gist/BackupCard'
 import { useSelector } from 'react-redux'
-import { getBackupLoading } from '~/store/modules/backup'
+import {
+  getBackupReadUpdate,
+  getBackupWriteUpdate,
+} from '~/store/modules/backup.loaders'
 import styled from 'styled-components'
 
 export const BackupPopover = () => {
-  const backupLoading = useSelector(getBackupLoading)
+  const backupReadUpdate = useSelector(getBackupReadUpdate)
+  const backupWriteUpdate = useSelector(getBackupWriteUpdate)
+
+  const backupLoading = backupReadUpdate || backupWriteUpdate
+
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const open = Boolean(anchorEl)
 
