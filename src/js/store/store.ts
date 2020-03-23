@@ -47,9 +47,12 @@ import {
   reducer as settingsReducer,
 } from './modules/settings'
 
+const reducerWhitelist = ['bookmarks', 'auth', 'backup', 'settings']
+
 const extensionConfig = {
   key: 'extension',
   storage: localStorage,
+  whitelist: reducerWhitelist,
 }
 
 const appInitialState: AppState = {
