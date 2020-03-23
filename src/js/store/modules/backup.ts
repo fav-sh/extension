@@ -14,6 +14,7 @@ import {
   restoreGistAuthenticated,
 } from '~/api/restoreBackup'
 import { getAutoUpdateBackup } from './settings'
+import { actions as loaderActions } from './backup.loaders'
 
 export type BackupState = Partial<{
   backupLoading: boolean
@@ -114,7 +115,7 @@ export function createBackupThunk(
   description?: string
 ) {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
-    dispatch(actions.setLoading(true))
+    dispatch(loaderActions.toggleWriteCreate(true))
     const bookmarks = getBookmarks(getState())
     const token = getToken(getState())
 
@@ -149,7 +150,7 @@ export function createBackupThunk(
     } else {
       alert('Could not create backup, missing token')
     }
-    dispatch(actions.setLoading(false))
+    dispatch(loaderActions.toggleWriteCreate(false))
   }
 }
 
@@ -161,7 +162,7 @@ export function passiveUpdate() {
     if (!passiveUpdateEnabled) {
       return
     }
-    dispatch(actions.setLoading(true))
+    dispatch(loaderActions.toggleWriteUpdate(true))
     const token = getToken(getState())
     const filename = getBackupFilename(getState())
     const gistId = getBackupGistId(getState())
@@ -184,13 +185,13 @@ export function passiveUpdate() {
         console.warn('An error has occurred updating bookmarks')
       }
     }
-    dispatch(actions.setLoading(false))
+    dispatch(loaderActions.toggleWriteUpdate(false))
   }
 }
 
 export function updateBackupThunk() {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
-    dispatch(actions.setLoading(true))
+    dispatch(loaderActions.toggleWriteUpdate(true))
     const bookmarks = getBookmarks(getState())
     const token = getToken(getState())
     const filename = getBackupFilename(getState())
@@ -215,7 +216,7 @@ export function updateBackupThunk() {
     } else {
       alert('Could not update bookmarks')
     }
-    dispatch(actions.setLoading(false))
+    dispatch(loaderActions.toggleWriteUpdate(false))
   }
 }
 
@@ -225,7 +226,7 @@ export function updateBackupThunk() {
 // It on the next backup
 export function restoreBackupAuthenticatedThunk(gistId: string) {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
-    dispatch(actions.setLoading(true))
+    dispatch(loaderActions.toggleReadUpdate(true))
     try {
       const token = getToken(getState())
       if (!token) {
@@ -264,7 +265,7 @@ export function restoreBackupAuthenticatedThunk(gistId: string) {
     } catch {
       alert('Could not restore bookmarks')
     }
-    dispatch(actions.setLoading(false))
+    dispatch(loaderActions.toggleReadUpdate(false))
   }
 }
 
@@ -273,7 +274,7 @@ export function restoreBackupAuthenticatedThunk(gistId: string) {
 // Gist
 export function restoreBackupAnonymouslyThunk(gistId: string) {
   return async (dispatch: ThunkDispatch) => {
-    dispatch(actions.setLoading(true))
+    dispatch(loaderActions.toggleReadCreate(true))
     try {
       const resp = await restoreGistAnonymously(gistId)
       // For now our backups only contain a single file
@@ -304,6 +305,6 @@ export function restoreBackupAnonymouslyThunk(gistId: string) {
     } catch {
       alert('Could not restore bookmarks')
     }
-    dispatch(actions.setLoading(false))
+    dispatch(loaderActions.toggleReadCreate(false))
   }
 }

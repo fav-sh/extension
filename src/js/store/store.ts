@@ -33,6 +33,11 @@ import {
 } from './modules/backup'
 
 import {
+  initialState as backupLoadersState,
+  reducer as backupLoadersReducer,
+} from './modules/backup.loaders'
+
+import {
   initialState as tagsState,
   reducer as tagsReducer,
 } from './modules/tags'
@@ -53,6 +58,7 @@ const appInitialState: AppState = {
   editing: editingState,
   auth: authState,
   backup: backupState,
+  backupLoaders: backupLoadersState,
   tags: tagsState,
   settings: settingsState,
 }
@@ -63,6 +69,7 @@ const rootReducer = combineReducers({
   editing: editingReducer,
   auth: authReducer,
   backup: backupReducer,
+  backupLoaders: backupLoadersReducer,
   tags: tagsReducer,
   settings: settingsReducer,
 })
