@@ -175,6 +175,44 @@ export function passiveUpdate() {
   }
 }
 
+// Whenever the user opens thier copy of bookmarks
+// Automatically check if there have been any changes and apply those
+// Changes
+export function passivePullUpdates() {
+  return async (dispatch: ThunkDispatch, getState: ThunkState) => {
+    dispatch(loaderActions.toggleReadUpdate(true))
+    const token = getToken(getState())
+    const gistId = getBackupGistId(getState())
+    const filename = getBackupFilename(getState())
+
+    if (token && gistId && filename) {
+      const resp = await restoreGistAuthenticated(gistId, token)
+      // Grab the content out of the response and parse it
+      const { content } = resp.data.files[filename]
+      const bookmarks = JSON.parse(content)
+      // Validate + expand bookmarks
+      let expandedBookmarks = {}
+      bookmarks.map((bookmark: any) => {
+        if (validateBookmark(bookmark)) {
+          // Once the bookmark is validated we then create a fresh
+          // guid for the bookmark and expand it
+          const freshGuid = generateBookmarkGuid()
+          const expandedBookmark = transformImportBookmark(bookmark, freshGuid)
+
+          // Convert to a structure understood by the app
+          expandedBookmarks = {
+            ...expandedBookmarks,
+            [expandedBookmark.guid]: expandedBookmark,
+          }
+        }
+      })
+      dispatch(bookmarkActions.setBookmarks(expandedBookmarks))
+    }
+
+    dispatch(loaderActions.toggleReadUpdate(false))
+  }
+}
+
 export function updateBackupThunk() {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
     dispatch(loaderActions.toggleWriteUpdate(true))
