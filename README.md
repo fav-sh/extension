@@ -73,7 +73,7 @@ Authentication is done via personal access tokens for both Chrome and Firefox. W
 
 * TARGET (chrome | firefox): Which browser to bundle for
 * NODE_ENV (development | production): Enviorment to bundle for
-* 
+* GITHUB_PERSONAL_ACCESS_TOKEN: Your access token
 
 
 ## Branding
