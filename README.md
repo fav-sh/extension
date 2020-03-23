@@ -22,6 +22,10 @@ Fav is an open souce bookmark manager that syncronizes with Github Gist. This is
 * Clone the repository using `git clone` and install the dependencies with `yarn`
 
 
+## Authentication
+
+You need a personal access token in order to authenticate with Github. For development, because memory is always wiped, put your token in an env and assign it to the variable `GITHUB_PERSONAL_ACCESS_TOKEN`. See `.env.example` for an example. This will prefill the info on that screen
+
 ## Running the Extension
 
 ### Before you Run
@@ -69,6 +73,7 @@ Authentication is done via personal access tokens for both Chrome and Firefox. W
 
 * TARGET (chrome | firefox): Which browser to bundle for
 * NODE_ENV (development | production): Enviorment to bundle for
+* 
 
 
 ## Branding
