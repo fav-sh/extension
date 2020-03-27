@@ -21,9 +21,12 @@ export type BackupState = Partial<{
   backupDescription: string
   backupUrl: string
   backupGistID: string
+  backupReadOnly: boolean
 }>
 
-export const initialState: BackupState = {}
+export const initialState: BackupState = {
+  backupReadOnly: false,
+}
 
 export const actions = {
   setFilename: (filename: string) => ({
@@ -44,6 +47,10 @@ export const actions = {
   }),
   clearBackup: () => ({
     type: 'CLEAR_BACKUP',
+  }),
+  setReadOnly: (readOnly: boolean) => ({
+    type: 'BACKUP_READ_ONLY',
+    payload: readOnly,
   }),
 }
 
@@ -68,6 +75,11 @@ export function reducer(state: BackupState = initialState, action: AppAction) {
       return {
         ...state,
         backupGistID: action.payload,
+      }
+    case 'BACKUP_READ_ONLY':
+      return {
+        ...state,
+        backupReadOnly: action.payload,
       }
     case 'CLEAR_BACKUP':
       return initialState
@@ -213,6 +225,11 @@ export function passivePullUpdates() {
   }
 }
 
+export function passivePullAnonymousUpdates() {
+  // TODO: Create a function to passively pull down
+  // updates without auth
+}
+
 export function updateBackupThunk() {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
     dispatch(loaderActions.toggleWriteUpdate(true))
@@ -325,6 +342,11 @@ export function restoreBackupAnonymouslyThunk(gistId: string) {
         }
       })
       dispatch(bookmarkActions.setBookmarks(expandedBookmarks))
+      dispatch(actions.setFilename(filename))
+      dispatch(actions.setGistId(gistId))
+      dispatch(actions.setDescription(resp.data.description))
+      dispatch(actions.setUrl(resp.data.html_url))
+      dispatch(actions.setReadOnly(true))
       alert('Import success!')
     } catch {
       alert('Could not restore bookmarks')
