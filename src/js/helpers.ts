@@ -74,3 +74,21 @@ export function transformExportBookmarks(bookmarks: BookmarkState) {
 
   return JSON.stringify(minifiedBookmarks, null, 2)
 }
+
+export function expandBookmarks(exportedBookmarks: ExportedBookmark[]) {
+  return exportedBookmarks.reduce(
+    (bookmarks: BookmarkState, bookmark: ExportedBookmark) => {
+      if (validateBookmark(bookmark)) {
+        const freshGuid = generateBookmarkGuid()
+        const expandedBookmark = transformImportBookmark(bookmark, freshGuid)
+        return {
+          ...bookmarks,
+          [expandedBookmark.guid]: expandedBookmark,
+        }
+      } else {
+        return bookmarks
+      }
+    },
+    {}
+  )
+}
