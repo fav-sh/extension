@@ -12,6 +12,7 @@ import {
   getBackup,
   updateBackupThunk,
   actions as backupActions,
+  getBackupReadOnly,
 } from '~/store/modules/backup'
 import styled from 'styled-components'
 import {
@@ -23,6 +24,7 @@ export const BackupCard = ({ noCard }: { noCard?: boolean }) => {
   const dispatch = useDispatch()
   const backup = useSelector(getBackup)
   const passiveUpdateEnabled = useSelector(getAutoUpdateBackup)
+  const readOnlyBackup = useSelector(getBackupReadOnly)
 
   const togglePassiveUpdate = () =>
     dispatch(settingsActions.toggleAutoUpdate(!passiveUpdateEnabled))
@@ -47,20 +49,24 @@ export const BackupCard = ({ noCard }: { noCard?: boolean }) => {
               {`Description: ${backup.backupDescription}`}
             </Typography>
           )}
-          <Typography variant="body2" color="textSecondary" component="p">
-            <Checkbox
-              onChange={togglePassiveUpdate}
-              checked={passiveUpdateEnabled}
-            />
-            Automatically backup on file changes
-          </Typography>
+          {readOnlyBackup ? (
+            <Typography>Anonymous backups cannot be written to</Typography>
+          ) : (
+            <Typography variant="body2" color="textSecondary" component="p">
+              <Checkbox
+                onChange={togglePassiveUpdate}
+                checked={passiveUpdateEnabled}
+              />
+              Automatically backup on file changes
+            </Typography>
+          )}
         </CardContent>
         <CardActions>
           <Button size="small" color="primary" href={backup.backupUrl}>
             Open on Web
           </Button>
           <Button size="small" color="primary" onClick={handleUpdate}>
-            Update
+            {readOnlyBackup ? 'Fetch Updates' : 'Write Updates'}
           </Button>
           <Button
             size="small"

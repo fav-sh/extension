@@ -109,6 +109,9 @@ export const getBackupUrl = (state: AppState) => state.backup.backupUrl
 
 export const getBackupGistId = (state: AppState) => state.backup.backupGistID
 
+export const getBackupReadOnly = (state: AppState) =>
+  state.backup.backupReadOnly
+
 export function createBackupThunk(
   filename: string,
   isPublic: boolean,
