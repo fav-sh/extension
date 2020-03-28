@@ -1,5 +1,9 @@
 import { AppAction, AppState, ThunkState, ThunkDispatch } from '~/types/redux'
-import { getBookmarks, actions as bookmarkActions } from './bookmarks'
+import {
+  getBookmarks,
+  actions as bookmarkActions,
+  BookmarkState,
+} from './bookmarks'
 import { getToken } from './auth'
 import {
   transformExportBookmarks,
@@ -15,6 +19,8 @@ import {
 } from '~/api/restoreBackup'
 import { getAutoUpdateBackup } from './settings'
 import { actions as loaderActions } from './backup.loaders'
+import { groomGithubResponse } from '../../api/util/groomGithubResponse'
+import { ExportedBookmark } from '~/types/Bookmark'
 
 export type BackupState = Partial<{
   backupFilename: string
@@ -225,9 +231,23 @@ export function passivePullUpdates() {
   }
 }
 
+// Just like abovce function
+// Without auth
+// Only works for public gists
 export function passivePullAnonymousUpdates() {
-  // TODO: Create a function to passively pull down
-  // updates without auth
+  return async (dispatch: ThunkDispatch, getState: ThunkState) => {
+    // 1. Get the current gist ID from state
+    const gistId = getBackupGistId(getState())
+    // 2. Get the gist
+    if (!gistId) {
+      alert('Could not restore backup, no GistID provided')
+      return
+    }
+    const gist = await restoreGistAnonymously(gistId)
+    // 3. Groom the gist
+    groomGithubResponse(gist)
+    // 4. Send everything where it needs to go
+  }
 }
 
 export function updateBackupThunk() {
@@ -318,34 +338,34 @@ export function restoreBackupAnonymouslyThunk(gistId: string) {
     dispatch(loaderActions.toggleReadCreate(true))
     try {
       const resp = await restoreGistAnonymously(gistId)
-      // For now our backups only contain a single file
-      // We get the filename by getting the first key in
-      // the files object of the gist response
-      const filename = Object.keys(resp.data.files)[0]
-      // Grab the content out of the response and parse it
-      const { content } = resp.data.files[filename]
-      const bookmarks = JSON.parse(content)
-      // Validate + expand bookmarks
-      let expandedBookmarks = {}
-      bookmarks.map((bookmark: any) => {
-        if (validateBookmark(bookmark)) {
-          // Once the bookmark is validated we then create a fresh
-          // guid for the bookmark and expand it
-          const freshGuid = generateBookmarkGuid()
-          const expandedBookmark = transformImportBookmark(bookmark, freshGuid)
+      const gistData = groomGithubResponse(resp.data)
 
-          // Convert to a structure understood by the app
-          expandedBookmarks = {
-            ...expandedBookmarks,
-            [expandedBookmark.guid]: expandedBookmark,
+      const { backup, filename, desc, url } = gistData
+
+      const expandedBookmarks = backup.reduce(
+        (bookmarks: BookmarkState, bookmark: ExportedBookmark) => {
+          if (validateBookmark(bookmark)) {
+            const freshGuid = generateBookmarkGuid()
+            const expandedBookmark = transformImportBookmark(
+              bookmark,
+              freshGuid
+            )
+            return {
+              ...bookmarks,
+              [expandedBookmark.guid]: expandedBookmark,
+            }
+          } else {
+            return bookmarks
           }
-        }
-      })
+        },
+        {}
+      )
+
       dispatch(bookmarkActions.setBookmarks(expandedBookmarks))
       dispatch(actions.setFilename(filename))
       dispatch(actions.setGistId(gistId))
-      dispatch(actions.setDescription(resp.data.description))
-      dispatch(actions.setUrl(resp.data.html_url))
+      dispatch(actions.setDescription(desc))
+      dispatch(actions.setUrl(url))
       dispatch(actions.setReadOnly(true))
       alert('Import success!')
     } catch {
