@@ -15,7 +15,6 @@ import {
   restoreGistAuthenticated,
 } from '~/api/restoreBackup'
 import { getAutoUpdateBackup } from './settings'
-import { actions as loaderActions } from './backup.loaders'
 import { groomGithubResponse } from '../../api/util/groomGithubResponse'
 
 export type BackupState = Partial<{
@@ -24,10 +23,12 @@ export type BackupState = Partial<{
   backupUrl: string
   backupGistID: string
   backupReadOnly: boolean
+  backupLoading: boolean
 }>
 
 export const initialState: BackupState = {
   backupReadOnly: false,
+  backupLoading: false,
 }
 
 export const actions = {
@@ -53,6 +54,10 @@ export const actions = {
   setReadOnly: (readOnly: boolean) => ({
     type: 'BACKUP_READ_ONLY',
     payload: readOnly,
+  }),
+  setBackupLoading: (loading: boolean) => ({
+    type: 'BACKUP_LOADING',
+    payload: loading,
   }),
 }
 
@@ -83,6 +88,11 @@ export function reducer(state: BackupState = initialState, action: AppAction) {
         ...state,
         backupReadOnly: action.payload,
       }
+    case 'BACKUP_LOADING':
+      return {
+        ...state,
+        backupLoading: action.payload,
+      }
     case 'CLEAR_BACKUP':
       return initialState
     default:
@@ -112,13 +122,15 @@ export const getBackupGistId = (state: AppState) => state.backup.backupGistID
 export const getBackupReadOnly = (state: AppState) =>
   state.backup.backupReadOnly
 
+export const getBackupLoading = (state: AppState) => state.backup.backupLoading
+
 export function createBackupThunk(
   filename: string,
   isPublic: boolean,
   description?: string
 ) {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
-    dispatch(loaderActions.toggleWriteCreate(true))
+    dispatch(actions.setBackupLoading(true))
     const bookmarks = getBookmarks(getState())
     const token = getToken(getState())
 
@@ -153,7 +165,7 @@ export function createBackupThunk(
     } else {
       alert('Could not create backup, missing token')
     }
-    dispatch(loaderActions.toggleWriteCreate(false))
+    dispatch(actions.setBackupLoading(false))
   }
 }
 
@@ -162,10 +174,11 @@ export function createBackupThunk(
 export function passiveUpdate() {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
     const passiveUpdateEnabled = getAutoUpdateBackup(getState())
-    if (!passiveUpdateEnabled) {
+    const backupReadOnly = getBackupReadOnly(getState())
+    if (!passiveUpdateEnabled || backupReadOnly) {
       return
     }
-    dispatch(loaderActions.toggleWriteUpdate(true))
+    dispatch(actions.setBackupLoading(true))
     const token = getToken(getState())
     const filename = getBackupFilename(getState())
     const gistId = getBackupGistId(getState())
@@ -188,7 +201,7 @@ export function passiveUpdate() {
         console.warn('An error has occurred updating bookmarks')
       }
     }
-    dispatch(loaderActions.toggleWriteUpdate(false))
+    dispatch(actions.setBackupLoading(false))
   }
 }
 
@@ -197,7 +210,7 @@ export function passiveUpdate() {
 // Changes
 export function passivePullUpdates() {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
-    dispatch(loaderActions.toggleReadUpdate(true))
+    dispatch(actions.setBackupLoading(true))
     const token = getToken(getState())
     const gistId = getBackupGistId(getState())
     const filename = getBackupFilename(getState())
@@ -226,7 +239,7 @@ export function passivePullUpdates() {
       dispatch(bookmarkActions.setBookmarks(expandedBookmarks))
     }
 
-    dispatch(loaderActions.toggleReadUpdate(false))
+    dispatch(actions.setBackupLoading(false))
   }
 }
 
@@ -237,7 +250,7 @@ export function passivePullAnonymousUpdates() {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
     const gistId = getBackupGistId(getState())
     if (gistId) {
-      dispatch(loaderActions.toggleReadCreate(true))
+      dispatch(actions.setBackupLoading(true))
       try {
         const resp = await restoreGistAnonymously(gistId)
         const gistData = groomGithubResponse(resp.data)
@@ -253,14 +266,14 @@ export function passivePullAnonymousUpdates() {
       } catch {
         console.warn('Coult not restore bookmarks!')
       }
-      dispatch(loaderActions.toggleReadCreate(false))
+      dispatch(actions.setBackupLoading(false))
     }
   }
 }
 
 export function updateBackupThunk() {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
-    dispatch(loaderActions.toggleWriteUpdate(true))
+    dispatch(actions.setBackupLoading(true))
     const bookmarks = getBookmarks(getState())
     const token = getToken(getState())
     const filename = getBackupFilename(getState())
@@ -285,7 +298,7 @@ export function updateBackupThunk() {
     } else {
       alert('Could not update bookmarks')
     }
-    dispatch(loaderActions.toggleWriteUpdate(false))
+    dispatch(actions.setBackupLoading(false))
   }
 }
 
@@ -295,7 +308,7 @@ export function updateBackupThunk() {
 // It on the next backup
 export function restoreBackupAuthenticatedThunk(gistId: string) {
   return async (dispatch: ThunkDispatch, getState: ThunkState) => {
-    dispatch(loaderActions.toggleReadUpdate(true))
+    dispatch(actions.setBackupLoading(true))
     try {
       const token = getToken(getState())
       if (!token) {
@@ -334,7 +347,7 @@ export function restoreBackupAuthenticatedThunk(gistId: string) {
     } catch {
       alert('Could not restore bookmarks')
     }
-    dispatch(loaderActions.toggleReadUpdate(false))
+    dispatch(actions.setBackupLoading(false))
   }
 }
 
@@ -343,7 +356,7 @@ export function restoreBackupAuthenticatedThunk(gistId: string) {
 // Gist
 export function restoreBackupAnonymouslyThunk(gistId: string) {
   return async (dispatch: ThunkDispatch) => {
-    dispatch(loaderActions.toggleReadCreate(true))
+    dispatch(actions.setBackupLoading(true))
     try {
       const resp = await restoreGistAnonymously(gistId)
       const gistData = groomGithubResponse(resp.data)
@@ -362,6 +375,6 @@ export function restoreBackupAnonymouslyThunk(gistId: string) {
     } catch {
       alert('Could not restore bookmarks')
     }
-    dispatch(loaderActions.toggleReadCreate(false))
+    dispatch(actions.setBackupLoading(false))
   }
 }

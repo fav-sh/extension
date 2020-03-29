@@ -5,7 +5,6 @@ import { AuthState } from '~/store/modules/auth'
 import { BackupState } from '~/store/modules/backup'
 import { TagsState } from '~/store/modules/tags'
 import { SettingsState } from '~/store/modules/settings'
-import { BackupLoaders } from '~/store/modules/backup.loaders'
 
 export type AppAction = {
   type: string
@@ -20,7 +19,6 @@ export type AppState = {
   backup: BackupState
   tags: TagsState
   settings: SettingsState
-  backupLoaders: BackupLoaders
 }
 
 export type ThunkDispatch = (action: any) => any

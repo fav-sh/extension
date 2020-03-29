@@ -3,22 +3,12 @@
 // The current state of their backup. Update the backup or
 // Make other changes
 import React, { useState, MouseEvent } from 'react'
-import { IconButton, Popover, CircularProgress } from '@material-ui/core'
+import { IconButton, Popover } from '@material-ui/core'
 import SyncIcon from '~/icons/sync'
 import { BackupCard } from '~/settings/gist/BackupCard'
-import { useSelector } from 'react-redux'
-import {
-  getBackupReadUpdate,
-  getBackupWriteUpdate,
-} from '~/store/modules/backup.loaders'
 import styled from 'styled-components'
 
 export const BackupPopover = () => {
-  const backupReadUpdate = useSelector(getBackupReadUpdate)
-  const backupWriteUpdate = useSelector(getBackupWriteUpdate)
-
-  const backupLoading = backupReadUpdate || backupWriteUpdate
-
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const open = Boolean(anchorEl)
 
@@ -49,7 +39,7 @@ export const BackupPopover = () => {
         }}
       >
         <PopoverContainer>
-          {backupLoading ? <CircularProgress /> : <BackupCard noCard />}
+          <BackupCard noCard />
         </PopoverContainer>
       </Popover>
     </>
@@ -57,8 +47,8 @@ export const BackupPopover = () => {
 }
 
 const PopoverContainer = styled.div`
-  height: 275px;
-  width: 400px;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
