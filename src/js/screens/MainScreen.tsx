@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
 import Header from '~/components/common/Header'
-import { IconButton, InputBase, Button } from '@material-ui/core'
+import {
+  IconButton,
+  InputBase,
+  Button,
+  InputAdornment,
+} from '@material-ui/core'
 import styled from 'styled-components'
 import { navigate } from '~/store/modules/navigation'
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,6 +23,7 @@ import MenuIcon from '~/icons/menu'
 import SettingsIcon from '~/icons/settings'
 import { BackupPopover } from '~/components/BackupPopover'
 import { getBackupExists, getBackupReadOnly } from '~/store/modules/backup'
+import { HelpPopover } from '~/components/HelpPopover'
 
 const HeaderLeftButton = ({ onClick }: { onClick: () => void }) => (
   <IconButton onClick={onClick}>
@@ -165,6 +171,11 @@ export const MainScreen = () => {
               autoFocus
               fullWidth
               style={{ color: 'white' }}
+              startAdornment={
+                <InputAdornment position="start">
+                  <HelpPopover />
+                </InputAdornment>
+              }
             />
           </Section>
           <Section>
