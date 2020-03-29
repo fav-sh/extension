@@ -5,13 +5,15 @@ import styled from 'styled-components'
 import { actions as editingActions } from '~/store/modules/editing'
 import { removeBookmarkThunk } from '~/store/modules/bookmarks'
 import { navigate } from '~/store/modules/navigation'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import EditIcon from '~/icons/edit'
 import DeleteIcon from '~/icons/delete'
+import { getBackupReadOnly } from '~/store/modules/backup'
 
 export const BookmarkCard = (bookmark: Bookmark) => {
   const dispatch = useDispatch()
+  const backupReadOnly = useSelector(getBackupReadOnly)
 
   const onEdit = () => {
     dispatch(editingActions.setEditing(bookmark))
@@ -27,12 +29,16 @@ export const BookmarkCard = (bookmark: Bookmark) => {
         <SmallLink href={bookmark.href}>{bookmark.href}</SmallLink>
       </FlexCol>
       <FlexRow>
-        <IconButton onClick={onEdit}>
-          <EditIcon />
-        </IconButton>
-        <IconButton onClick={onRemove}>
-          <DeleteIcon />
-        </IconButton>
+        {!backupReadOnly && (
+          <>
+            <IconButton onClick={onEdit}>
+              <EditIcon />
+            </IconButton>
+            <IconButton onClick={onRemove}>
+              <DeleteIcon />
+            </IconButton>
+          </>
+        )}
       </FlexRow>
     </Card>
   )

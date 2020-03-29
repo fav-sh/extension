@@ -17,7 +17,7 @@ import Sidebar from 'react-sidebar'
 import MenuIcon from '~/icons/menu'
 import SettingsIcon from '~/icons/settings'
 import { BackupPopover } from '~/components/BackupPopover'
-import { getBackupExists } from '~/store/modules/backup'
+import { getBackupExists, getBackupReadOnly } from '~/store/modules/backup'
 
 const HeaderLeftButton = ({ onClick }: { onClick: () => void }) => (
   <IconButton onClick={onClick}>
@@ -29,23 +29,27 @@ const HeaderRightButton = ({
   onClick,
   onAdd,
   backupPopoverEnabled,
+  backupReadOnly,
 }: {
   onClick: () => void
   onAdd: () => void
   backupPopoverEnabled: boolean
+  backupReadOnly?: boolean
 }) => (
   <>
     {backupPopoverEnabled && <BackupPopover />}
     <IconButton onClick={onClick}>
       <SettingsIcon />
     </IconButton>
-    <Button
-      variant="outlined"
-      style={{ color: '#fff', borderRadius: '10px', borderColor: 'white' }}
-      onClick={() => onAdd()}
-    >
-      Add Bookmark
-    </Button>
+    {!backupReadOnly && (
+      <Button
+        variant="outlined"
+        style={{ color: '#fff', borderRadius: '10px', borderColor: 'white' }}
+        onClick={() => onAdd()}
+      >
+        Add Bookmark
+      </Button>
+    )}
   </>
 )
 
@@ -61,6 +65,7 @@ export const MainScreen = () => {
   const bookmarksAsArray = Object.keys(bookmarks).map((key) => bookmarks[key])
   const activeTags = useSelector(getActiveTags)
   const backupExists = useSelector(getBackupExists)
+  const backupReadOnly = useSelector(getBackupReadOnly)
   const dispatch = useDispatch()
 
   const [showSidebar, setShowSidebar] = useState<boolean>(false)
@@ -147,6 +152,7 @@ export const MainScreen = () => {
               backupPopoverEnabled={backupExists}
               onAdd={handleAdd}
               onClick={handleSettings}
+              backupReadOnly={backupReadOnly}
             />
           </Section>
         </FlexContainer>

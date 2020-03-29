@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   SectionContainer,
   SectionHeader,
@@ -9,7 +9,7 @@ import {
 import { Button, TextField } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions as authActions, getAuthenticated } from '~/store/modules/auth'
-import { getBackup } from '~/store/modules/backup'
+import { getBackup, getBackupReadOnly } from '~/store/modules/backup'
 import styled from 'styled-components'
 import { Backup } from './Backup'
 import { BackupRestore, AnonymousRestore } from './Restore'
@@ -18,7 +18,17 @@ import { BackupCard } from './BackupCard'
 export const GistBackupRestore = () => {
   const dispatch = useDispatch()
   const backup = useSelector(getBackup)
+  const readOnly = useSelector(getBackupReadOnly)
   const [authKey, setAuthKey] = useState('')
+
+  useEffect(() => {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      process.env.GITHUB_PERSONAL_ACCESS_TOKEN
+    ) {
+      setAuthKey(process.env.GITHUB_PERSONAL_ACCESS_TOKEN)
+    }
+  }, [])
 
   const authenticated = useSelector(getAuthenticated)
   const handleAuth = async () => {
@@ -69,6 +79,11 @@ export const GistBackupRestore = () => {
           )}
         </PaddedAction>
         <AnonymousRestore />
+        {readOnly &&
+          backup &&
+          backup.backupFilename &&
+          backup.backupGistID &&
+          backup.backupUrl && <BackupCard />}
       </SectionContent>
     </SectionContainer>
   )
