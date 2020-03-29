@@ -92,3 +92,38 @@ export function expandBookmarks(exportedBookmarks: ExportedBookmark[]) {
     {}
   )
 }
+
+/** Parses search input,
+ * returns an array of strings
+ * and a search term string
+ */
+export function parseSearchInput(input: string) {
+  // Extract Search Term
+  const searchTerm = input
+    .split(' ')
+    .filter((item) => !item.includes('tag:'))
+    .join(' ')
+
+  // Extract Tags
+
+  // Split the search term by spaces
+  const splitParts = input.split(' ')
+
+  // Filter out just the tag parts
+  const tagParts = splitParts.filter((item) => item.includes('tag:'))
+
+  const tags = tagParts.reduce((tags: string[], tagPart: string) => {
+    // Take the value from the tag
+    const justTags = tagPart.split(':')[1]
+
+    // Split the tags in case there is more than one
+    const allTags = justTags.split(',')
+
+    return [...tags, ...allTags]
+  }, [])
+
+  return {
+    parsedSearchTerm: searchTerm,
+    parsedTags: tags,
+  }
+}

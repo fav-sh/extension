@@ -12,7 +12,7 @@ import intersection from 'lodash/fp/intersection'
 import { Bookmark } from '~/types/Bookmark'
 import escapeRegExp from 'lodash/fp/escapeRegExp'
 import { openSettingsWindow } from '~/browser/openSettings'
-import { isBlank } from '~/helpers'
+import { isBlank, parseSearchInput } from '~/helpers'
 import Sidebar from 'react-sidebar'
 import MenuIcon from '~/icons/menu'
 import SettingsIcon from '~/icons/settings'
@@ -55,9 +55,29 @@ const HeaderRightButton = ({
 
 // This function will filter bookmarks
 // Based on the search term enteredd
-function applySearch(searchTerm: string, bookmarks: Bookmark[]) {
-  const re = new RegExp(escapeRegExp(searchTerm), 'i')
-  return bookmarks.filter((bookmark: Bookmark) => re.test(bookmark.name))
+function applySearch(searchInput: string, bookmarks: Bookmark[]) {
+  const { parsedSearchTerm, parsedTags } = parseSearchInput(searchInput)
+  const re = new RegExp(escapeRegExp(parsedSearchTerm), 'i')
+
+  const filteredBookmarks = bookmarks.reduce(
+    (allBookmarks: Bookmark[], bookmark: Bookmark) => {
+      if (parsedSearchTerm && re.test(bookmark.name)) {
+        return [...allBookmarks, bookmark]
+      }
+      if (
+        parsedTags.length > 0 &&
+        intersection(parsedTags, bookmark.tags).length > 0
+      ) {
+        return [...allBookmarks, bookmark]
+      }
+      return allBookmarks
+    },
+    []
+  )
+
+  console.log(filteredBookmarks)
+
+  return filteredBookmarks
 }
 
 export const MainScreen = () => {
