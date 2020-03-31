@@ -4,7 +4,7 @@ Due to the recent circumstances around COVID19, Google has slowed down the rate 
 
 ## Download the Binary
 
-Download the Fav binary [here](#)
+Download the latest Fav binary for chrome [here](https://github.com/fav-sh/extension/tree/master/releases)
 
 
 ## Installation
