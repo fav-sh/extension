@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, Suspense, lazy } from 'react'
 import Header from '~/components/common/Header'
 import {
   IconButton,
@@ -9,21 +9,16 @@ import {
 import styled from 'styled-components'
 import { navigate } from '~/store/modules/navigation'
 import { useDispatch, useSelector } from 'react-redux'
-import { BookmarkCard } from '~/components/BookmarkCard'
-import { getBookmarks } from '~/store/modules/bookmarks'
 import { Categories } from './Categories'
-import { getActiveTags } from '~/store/modules/tags'
-import intersection from 'lodash/fp/intersection'
-import { Bookmark } from '~/types/Bookmark'
-import escapeRegExp from 'lodash/fp/escapeRegExp'
 import { openSettingsWindow } from '~/browser/openSettings'
-import { isBlank, parseSearchInput } from '~/helpers'
 import Sidebar from 'react-sidebar'
 import MenuIcon from '~/icons/menu'
 import SettingsIcon from '~/icons/settings'
 import { BackupPopover } from '~/components/BackupPopover'
 import { getBackupExists, getBackupReadOnly } from '~/store/modules/backup'
 import { HelpPopover } from '~/components/HelpPopover'
+
+const MainScreenBookmarks = lazy(() => import('./MainScreenBookmarks'))
 
 const HeaderLeftButton = ({ onClick }: { onClick: () => void }) => (
   <IconButton onClick={onClick}>
@@ -59,37 +54,7 @@ const HeaderRightButton = ({
   </>
 )
 
-// This function will filter bookmarks
-// Based on the search term enteredd
-function applySearch(searchInput: string, bookmarks: Bookmark[]) {
-  const { parsedSearchTerm, parsedTags } = parseSearchInput(searchInput)
-  const re = new RegExp(escapeRegExp(parsedSearchTerm), 'i')
-
-  const filteredBookmarks = bookmarks.reduce(
-    (allBookmarks: Bookmark[], bookmark: Bookmark) => {
-      if (parsedSearchTerm && re.test(bookmark.name)) {
-        return [...allBookmarks, bookmark]
-      }
-      if (
-        parsedTags.length > 0 &&
-        intersection(parsedTags, bookmark.tags).length > 0
-      ) {
-        return [...allBookmarks, bookmark]
-      }
-      return allBookmarks
-    },
-    []
-  )
-
-  console.log(filteredBookmarks)
-
-  return filteredBookmarks
-}
-
 export const MainScreen = () => {
-  const bookmarks = useSelector(getBookmarks)
-  const bookmarksAsArray = Object.keys(bookmarks).map((key) => bookmarks[key])
-  const activeTags = useSelector(getActiveTags)
   const backupExists = useSelector(getBackupExists)
   const backupReadOnly = useSelector(getBackupReadOnly)
   const dispatch = useDispatch()
@@ -108,53 +73,6 @@ export const MainScreen = () => {
 
   const handleSettings = () => {
     openSettingsWindow()
-  }
-
-  const renderBookmarks = () => {
-    let filteredBookmarks: Bookmark[] = []
-
-    // If we have tags that have been selected
-    // Filter bookmarks based on the intersection
-    // Of their tags versus the ones that have been selected
-    if (activeTags.length > 0) {
-      filteredBookmarks = bookmarksAsArray.filter(
-        (bookmark) => intersection(bookmark.tags, activeTags).length > 0
-      )
-      // If we do not have any active tags we apply all bookmarks
-      // To filtered bookmarks
-    } else {
-      filteredBookmarks = bookmarksAsArray
-    }
-
-    // After we are done filtering on tags we now check
-    // If there is anything in search that we need to filter
-    if (!isBlank(searchTerm)) {
-      filteredBookmarks = applySearch(searchTerm, filteredBookmarks)
-    }
-
-    // If there are no filtered bookmarks
-    // After we finish our filtering then return an empty
-    // Component
-    if (filteredBookmarks.length === 0) {
-      return <p>Wow such empty</p>
-    }
-
-    return (
-      <>
-        {filteredBookmarks.map((bookmark) => {
-          return (
-            <BookmarkCard
-              key={bookmark.guid}
-              guid={bookmark.guid}
-              name={bookmark.name}
-              href={bookmark.href}
-              desc={bookmark.desc}
-              tags={bookmark.tags}
-            />
-          )
-        })}
-      </>
-    )
   }
 
   return (
@@ -196,7 +114,11 @@ export const MainScreen = () => {
         rootClassName="sidebar-content"
         styles={{ sidebar: { background: 'white' } }}
       >
-        <ContentContainer>{renderBookmarks()}</ContentContainer>
+        <ContentContainer>
+          <Suspense fallback={() => <p>Loading</p>}>
+            <MainScreenBookmarks searchTerm={searchTerm} />
+          </Suspense>
+        </ContentContainer>
       </Sidebar>
     </>
   )
