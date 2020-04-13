@@ -15,7 +15,8 @@
     "start:chrome": "web-ext run -t chromium --source-dir ./dist",
     "format": "prettier --write './src/js/**/*.{ts,tsx}'",
     "clean": "rm -rf ./dist ./.cache ./web-ext-artifacts",
-    "ci": "tsc && yarn run format"
+    "ci": "tsc && yarn run format",
+    "report": "yarn clean && NODE_ENV=production TARGET=firefox parcel build ./src/manifest.json ./src/entry/settings.html --no-source-maps && firefox ./dist/report.html"
   },
   "author": "Sunny Golovine",
   "license": "MIT",
