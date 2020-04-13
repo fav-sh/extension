@@ -2,14 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
 import { getTags } from '~/store/modules/bookmarks'
-import {
-  ListItem,
-  List,
-  ListItemText,
-  Divider,
-  ListItemIcon,
-  Checkbox,
-} from '@material-ui/core'
+import ListItem from '@material-ui/core/ListItem'
+import List from '@material-ui/core/List'
+import ListItemText from '@material-ui/core/ListItemText'
+import Divider from '@material-ui/core/Divider'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import Checkbox from '@material-ui/core/Checkbox'
 import { getActiveTags } from '~/store/modules/tags'
 import includes from 'lodash/fp/includes'
 import { actions as activeTagActions } from '~/store/modules/tags'

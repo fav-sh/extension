@@ -3,7 +3,8 @@
 // The current state of their backup. Update the backup or
 // Make other changes
 import React, { useState, MouseEvent } from 'react'
-import { IconButton, Popover } from '@material-ui/core'
+import IconButton from '@material-ui/core/IconButton'
+import Popover from '@material-ui/core/Popover'
 import SyncIcon from '~/icons/sync'
 import { BackupCard } from '~/settings/gist/BackupCard'
 import styled from 'styled-components'

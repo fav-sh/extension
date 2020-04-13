@@ -1,10 +1,8 @@
-import {
-  CircularProgress,
-  FormControlLabel,
-  Radio,
-  Button,
-  Typography,
-} from '@material-ui/core'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Radio from '@material-ui/core/Radio'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
 import { SettingsTextField } from '../common'
 import { isBlank } from '~/helpers'

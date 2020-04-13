@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  CardContent,
-  Typography,
-  CardActions,
-  Button,
-  Card,
-  Checkbox,
-  CircularProgress,
-} from '@material-ui/core'
+import CardContent from '@material-ui/core/CardContent'
+import Typography from '@material-ui/core/Typography'
+import CardActions from '@material-ui/core/CardActions'
+import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import Checkbox from '@material-ui/core/Checkbox'
+import CircularProgress from '@material-ui/core/CircularProgress'
+
 import {
   getBackup,
   updateBackupThunk,

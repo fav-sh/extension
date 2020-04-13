@@ -6,7 +6,8 @@ import {
   SettingsButton,
   PaddedAction,
 } from '../common'
-import { Button, TextField } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions as authActions, getAuthenticated } from '~/store/modules/auth'
 import { getBackup, getBackupReadOnly } from '~/store/modules/backup'

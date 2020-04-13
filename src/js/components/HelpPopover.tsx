@@ -2,7 +2,9 @@
 // A popover the component the user can over over
 // to see tips on how to use teh search box.
 import React, { useState, MouseEvent } from 'react'
-import { IconButton, Popover, Typography } from '@material-ui/core'
+import IconButton from '@material-ui/core/IconButton'
+import Popover from '@material-ui/core/Popover'
+import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
 import QuestionIcon from '~/icons/question'
 

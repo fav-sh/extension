@@ -1,5 +1,5 @@
 import React from 'react'
-import { IconButton } from '@material-ui/core'
+import IconButton from '@material-ui/core/IconButton'
 import { Bookmark } from '~/types/Bookmark'
 import styled from 'styled-components'
 import { actions as editingActions } from '~/store/modules/editing'

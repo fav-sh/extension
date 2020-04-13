@@ -8,7 +8,7 @@ import {
   SettingsButton,
   PaddedAction,
 } from './common'
-import { Typography } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 import { BookmarkState, getBookmarks, actions } from '~/store/modules/bookmarks'
 import { saveAs } from 'file-saver'
 import { FileUploader } from '~/components/FileUploader'
