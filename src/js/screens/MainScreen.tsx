@@ -1,4 +1,4 @@
-import React, { useState, Suspense, lazy } from 'react'
+import React, { useState } from 'react'
 import Header from '~/components/common/Header'
 import {
   IconButton,
@@ -17,8 +17,7 @@ import SettingsIcon from '~/icons/settings'
 import { BackupPopover } from '~/components/BackupPopover'
 import { getBackupExists, getBackupReadOnly } from '~/store/modules/backup'
 import { HelpPopover } from '~/components/HelpPopover'
-
-const MainScreenBookmarks = lazy(() => import('./MainScreenBookmarks'))
+import MainScreenBookmarks from './MainScreenBookmarks'
 
 const HeaderLeftButton = ({ onClick }: { onClick: () => void }) => (
   <IconButton onClick={onClick}>
@@ -115,9 +114,7 @@ export const MainScreen = () => {
         styles={{ sidebar: { background: 'white' } }}
       >
         <ContentContainer>
-          <Suspense fallback={() => <p>Loading</p>}>
-            <MainScreenBookmarks searchTerm={searchTerm} />
-          </Suspense>
+          <MainScreenBookmarks searchTerm={searchTerm} />
         </ContentContainer>
       </Sidebar>
     </>
