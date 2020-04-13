@@ -4,6 +4,6 @@
  */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Bootstrap } from '../js/App'
+import Boostrap from '../js/bootstrap/Extension'
 
-ReactDOM.render(<Bootstrap />, document.getElementById('root'))
+ReactDOM.render(<Boostrap />, document.getElementById('root'))

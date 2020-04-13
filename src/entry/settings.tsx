@@ -4,6 +4,6 @@
  */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { SettingsBoostrap } from '../js/App'
+import Bootstrap from '../js/bootstrap/Settings'
 
-ReactDOM.render(<SettingsBoostrap />, document.getElementById('root'))
+ReactDOM.render(<Bootstrap />, document.getElementById('root'))
