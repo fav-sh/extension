@@ -11,7 +11,7 @@
     "start:firefox": "web-ext run -t firefox-desktop --source-dir ./dist",
     "start:chrome": "web-ext run -t chromium --source-dir ./dist",
     "build:firefox": "yarn clean && NODE_ENV=production TARGET=firefox parcel build ./src/manifest.json ./src/entry/settings.html --no-source-maps && web-ext build --source-dir ./dist",
-    "build:chrome": "yarn clean && NODE_ENV=production TARGET=chrome parcel build ./src/manifest.json ./src/entry/settings.html --no-source-maps && yarn publish:chrome",
+    "build:chrome": "yarn clean && NODE_ENV=production TARGET=chrome parcel build ./src/manifest.json ./src/entry/settings.html --no-source-maps",
     "format": "prettier --write './src/js/**/*.{ts,tsx}'",
     "clean": "rm -rf ./dist ./.cache ./web-ext-artifacts",
     "ci": "tsc && yarn run format",
