@@ -5,19 +5,6 @@ export type Tab = {
   url: string
 }
 
-function _getBrowserAPI() {
-  try {
-    console.log(browser)
-  } catch (browserError) {
-    try {
-      console.log('error when trying browser', browserError)
-      console.log(chrome)
-    } catch (chromeError) {
-      console.log('error when trying chrome', browserError)
-    }
-  }
-}
-
 /**
  *
  * TODO: Modify this function to support chrome
