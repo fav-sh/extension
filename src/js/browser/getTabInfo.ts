@@ -21,21 +21,27 @@ export const getActiveTab = (callback: (tabs: Tab) => void) => {
 }
 
 function browserVersion(callback: (tab: Tab) => void) {
-  return (browser as any).tabs.query({ highlighted: true }, (tabs: Tabs) => {
-    const tab: Tab = {
-      title: tabs[0].title,
-      url: tabs[0].url,
+  return (browser as any).tabs.query(
+    { highlighted: true, lastFocusedWindow: true },
+    (tabs: Tabs) => {
+      const tab: Tab = {
+        title: tabs[0].title,
+        url: tabs[0].url,
+      }
+      callback(tab)
     }
-    callback(tab)
-  })
+  )
 }
 
 function chromeVersion(callback: (tab: Tab) => void) {
-  return (chrome as any).tabs.query({ highlighted: true }, (tabs: Tabs) => {
-    const tab: Tab = {
-      title: tabs[0].title,
-      url: tabs[0].url,
+  return (chrome as any).tabs.query(
+    { highlighted: true, lastFocusedWindow: true },
+    (tabs: Tabs) => {
+      const tab: Tab = {
+        title: tabs[0].title,
+        url: tabs[0].url,
+      }
+      callback(tab)
     }
-    callback(tab)
-  })
+  )
 }
