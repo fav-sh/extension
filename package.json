@@ -37,7 +37,7 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.0.1",
-    "uuid": "^7.0.2"
+    "uuid": "^8.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
