@@ -1,7 +1,7 @@
 import { Bookmark, ExportedBookmark } from './types/Bookmark'
 import pickBy from 'lodash/fp/pickBy'
 import identity from 'lodash/fp/identity'
-import uuid from 'uuid/v1'
+import { v1 as uuid } from 'uuid'
 import { BookmarkState } from './store/modules/bookmarks'
 // Various helper methods for things around the codebase
 
