@@ -15,7 +15,8 @@ import SettingsIcon from '~/icons/settings'
 import { BackupPopover } from '~/components/MainScreen/BackupPopover'
 import { getBackupExists, getBackupReadOnly } from '~/store/modules/backup'
 import { HelpPopover } from '~/components/MainScreen/HelpPopover'
-import MainScreenBookmarks from './MainScreenBookmarks'
+import { useFilterBookmarks } from '~/hooks/useFilterBookmarks'
+import { BookmarkCard } from '~/components/MainScreen/BookmarkCard'
 
 const HeaderLeftButton = ({ onClick }: { onClick: () => void }) => (
   <IconButton onClick={onClick}>
@@ -55,10 +56,10 @@ export const MainScreen = () => {
   const backupExists = useSelector(getBackupExists)
   const backupReadOnly = useSelector(getBackupReadOnly)
   const dispatch = useDispatch()
-
   const [showSidebar, setShowSidebar] = useState<boolean>(false)
-
   const [searchTerm, setSearchTerm] = useState('')
+
+  const filteredBookmarks = useFilterBookmarks(searchTerm)
 
   const handleCategories = () => {
     setShowSidebar(!showSidebar)
@@ -70,6 +71,25 @@ export const MainScreen = () => {
 
   const handleSettings = () => {
     openSettingsWindow()
+  }
+
+  const renderBookmarks = () => {
+    return (
+      <ContentContainer>
+        {filteredBookmarks.map((bookmark) => {
+          return (
+            <BookmarkCard
+              key={bookmark.guid}
+              guid={bookmark.guid}
+              name={bookmark.name}
+              href={bookmark.href}
+              desc={bookmark.desc}
+              tags={bookmark.tags}
+            />
+          )
+        })}
+      </ContentContainer>
+    )
   }
 
   return (
@@ -111,10 +131,7 @@ export const MainScreen = () => {
         rootClassName="sidebar-content"
         styles={{ sidebar: { background: 'white' } }}
       >
-        <ContentContainer>
-          {/* <p>Placeholder</p> */}
-          <MainScreenBookmarks searchTerm={searchTerm} />
-        </ContentContainer>
+        {renderBookmarks()}
       </Sidebar>
     </>
   )
