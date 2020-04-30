@@ -2,7 +2,7 @@
 // to work with this extension. Nomally this would be a terrible
 // idea but with only 3 - 4 simple routes, this won't hurt
 import React, { useEffect } from 'react'
-import { AddScreen } from './EditorScreen/AddScreen'
+import { EditorScreen } from './EditorScreen/EditorScreen'
 import { MainScreen } from './MainScreen/MainScreen'
 import { useSelector, useDispatch } from 'react-redux'
 import { getCurrentScreen } from '~/store/modules/navigation'
@@ -15,12 +15,11 @@ export const Router = () => {
   }, [])
   const currentScreen = useSelector(getCurrentScreen)
 
-  return <MainScreen />
-  // switch (currentScreen) {
-  //   case 'add':
-  //     return <AddScreen />
-  //   case 'home':
-  //   default:
-  //     return <MainScreen />
-  // }
+  switch (currentScreen) {
+    case 'add':
+      return <EditorScreen />
+    case 'home':
+    default:
+      return <MainScreen />
+  }
 }
