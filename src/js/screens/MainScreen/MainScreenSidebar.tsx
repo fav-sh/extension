@@ -29,7 +29,7 @@ const CategoryItem = (props: CategoryItemProps) => {
   )
 }
 
-export const Categories = () => {
+export const MainScreenSidebar = () => {
   const dispatch = useDispatch()
   const tags = useSelector(getTags)
   const activeTags = useSelector(getActiveTags)
