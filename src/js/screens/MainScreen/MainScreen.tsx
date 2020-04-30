@@ -7,7 +7,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import styled from 'styled-components'
 import { navigate } from '~/store/modules/navigation'
 import { useDispatch, useSelector } from 'react-redux'
-import { Categories } from './MainScreenSidebar'
+import { MainScreenSidebar } from './MainScreenSidebar'
 import { openSettingsWindow } from '~/browser/openSettings'
 import Sidebar from 'react-sidebar'
 import MenuIcon from '~/icons/menu'
@@ -104,7 +104,7 @@ export const MainScreen = () => {
         </FlexContainer>
       </Header>
       <Sidebar
-        sidebar={<Categories />}
+        sidebar={<MainScreenSidebar />}
         open={showSidebar}
         docked={showSidebar}
         onSetOpen={() => setShowSidebar(true)}
@@ -112,6 +112,7 @@ export const MainScreen = () => {
         styles={{ sidebar: { background: 'white' } }}
       >
         <ContentContainer>
+          {/* <p>Placeholder</p> */}
           <MainScreenBookmarks searchTerm={searchTerm} />
         </ContentContainer>
       </Sidebar>

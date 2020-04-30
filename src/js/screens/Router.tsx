@@ -15,11 +15,12 @@ export const Router = () => {
   }, [])
   const currentScreen = useSelector(getCurrentScreen)
 
-  switch (currentScreen) {
-    case 'add':
-      return <AddScreen />
-    case 'home':
-    default:
-      return <MainScreen />
-  }
+  return <MainScreen />
+  // switch (currentScreen) {
+  //   case 'add':
+  //     return <AddScreen />
+  //   case 'home':
+  //   default:
+  //     return <MainScreen />
+  // }
 }
