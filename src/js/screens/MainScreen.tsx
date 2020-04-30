@@ -12,9 +12,9 @@ import { openSettingsWindow } from '~/browser/openSettings'
 import Sidebar from 'react-sidebar'
 import MenuIcon from '~/icons/menu'
 import SettingsIcon from '~/icons/settings'
-import { BackupPopover } from '~/components/BackupPopover'
+import { BackupPopover } from '~/components/MainScreen/BackupPopover'
 import { getBackupExists, getBackupReadOnly } from '~/store/modules/backup'
-import { HelpPopover } from '~/components/HelpPopover'
+import { HelpPopover } from '~/components/MainScreen/HelpPopover'
 import MainScreenBookmarks from './MainScreenBookmarks'
 
 const HeaderLeftButton = ({ onClick }: { onClick: () => void }) => (

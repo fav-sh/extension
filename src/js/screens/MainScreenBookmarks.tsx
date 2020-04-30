@@ -10,7 +10,7 @@ import { getBookmarks } from '~/store/modules/bookmarks'
 import intersection from 'lodash/fp/intersection'
 import escapeRegExp from 'lodash/fp/escapeRegExp'
 import { isBlank, parseSearchInput } from '~/helpers'
-import { BookmarkCard } from '~/components/BookmarkCard'
+import { BookmarkCard } from '~/components/MainScreen/BookmarkCard'
 
 type Props = {
   searchTerm: string
