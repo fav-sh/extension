@@ -2,8 +2,8 @@
 // to work with this extension. Nomally this would be a terrible
 // idea but with only 3 - 4 simple routes, this won't hurt
 import React, { useEffect } from 'react'
-import { AddScreen } from './AddScreen'
-import { MainScreen } from './MainScreen'
+import { EditorScreen } from './EditorScreen/EditorScreen'
+import { MainScreen } from './MainScreen/MainScreen'
 import { useSelector, useDispatch } from 'react-redux'
 import { getCurrentScreen } from '~/store/modules/navigation'
 import { passivePullUpdates } from '~/store/modules/backup'
@@ -17,7 +17,7 @@ export const Router = () => {
 
   switch (currentScreen) {
     case 'add':
-      return <AddScreen />
+      return <EditorScreen />
     case 'home':
     default:
       return <MainScreen />

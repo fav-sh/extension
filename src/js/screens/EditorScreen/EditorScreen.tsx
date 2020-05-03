@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Header, { HeaderText } from '~/components/common/Header'
 import IconButton from '@material-ui/core/IconButton'
-import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -13,6 +12,7 @@ import { getTags, addBookmarkThunk } from '~/store/modules/bookmarks'
 import { Bookmark } from '~/types/Bookmark'
 import { generateBookmarkGuid } from '~/helpers'
 import { getActiveTab, Tab } from '~/browser/getTabInfo'
+import { TextField, TextArea } from '~/components/EditorScreen/Text'
 import {
   getEditingBookmark,
   actions as editingActions,
@@ -29,7 +29,7 @@ const HeaderLeftButton = ({ onClick }: { onClick: () => void }) => (
   </IconButton>
 )
 
-export const AddScreen = () => {
+export const EditorScreen = () => {
   const existingTags = useSelector(getTags)
   const editingBookmark = useSelector(getEditingBookmark)
   const freshGuid = generateBookmarkGuid()
@@ -134,8 +134,6 @@ export const AddScreen = () => {
         <CategoriesText
           value={currentTag}
           onChange={(e) => setCurrentTag(e.target.value)}
-          label="Add New Tag"
-          variant="outlined"
           onKeyUp={(event) => {
             // This is so when the user hits the enter
             // Key after entering a tag we can submit the tag
@@ -156,25 +154,20 @@ export const AddScreen = () => {
   const renderForm = () => (
     <FormContainer>
       <FieldsContainer>
-        <Text
+        <TextField
           value={name}
           onChange={(e) => setName(e.target.value)}
-          label="Name"
-          variant="outlined"
+          placeholder="Name"
         />
-        <Text
+        <TextField
           value={href}
           onChange={(e) => setHref(e.target.value)}
-          label="Website"
-          variant="outlined"
+          placeholder="Website"
         />
-        <Text
+        <TextArea
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
-          label="Description"
-          variant="outlined"
-          multiline
-          rows="4"
+          placeholder="Description"
         />
         {renderCategories()}
       </FieldsContainer>
@@ -199,11 +192,6 @@ const ChipContainer = styled.div`
   flex-wrap: wrap;
 `
 
-const Text = styled(TextField)`
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-`
-
 const CategoriesSelect = styled(Select)`
   flex-grow: 1;
   width: 150px;
@@ -211,7 +199,7 @@ const CategoriesSelect = styled(Select)`
   margin-right: 5px;
 `
 
-const CategoriesText = styled(Text)`
+const CategoriesText = styled(TextField)`
   flex-grow: 2;
 `
 

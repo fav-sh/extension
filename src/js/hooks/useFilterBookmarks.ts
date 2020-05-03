@@ -1,22 +1,12 @@
-// This loads just the bookmarks
-// For the main screen
-// This is so we an implement lazy loading of the bookmarks
-// And speed up how fast the extension responds to a user clicking on it
-import React from 'react'
+import { useSelector } from 'react-redux'
 import { Bookmark } from '~/types/Bookmark'
 import { getActiveTags } from '~/store/modules/tags'
-import { useSelector } from 'react-redux'
 import { getBookmarks } from '~/store/modules/bookmarks'
 import intersection from 'lodash/fp/intersection'
-import escapeRegExp from 'lodash/fp/escapeRegExp'
 import { isBlank, parseSearchInput } from '~/helpers'
-import { BookmarkCard } from '~/components/MainScreen/BookmarkCard'
+import escapeRegExp from 'lodash/fp/escapeRegExp'
 
-type Props = {
-  searchTerm: string
-}
-
-export default (props: Props) => {
+export const useFilterBookmarks = (searchTerm: string) => {
   let filteredBookmarks: Bookmark[] = []
   const activeTags = useSelector(getActiveTags)
   const bookmarks = useSelector(getBookmarks)
@@ -37,38 +27,16 @@ export default (props: Props) => {
 
   // After we are done filtering on tags we now check
   // If there is anything in search that we need to filter
-  if (!isBlank(props.searchTerm)) {
-    filteredBookmarks = applySearch(props.searchTerm, filteredBookmarks)
+  if (!isBlank(searchTerm)) {
+    filteredBookmarks = _applySearch(searchTerm, filteredBookmarks)
   }
 
-  // If there are no filtered bookmarks
-  // After we finish our filtering then return an empty
-  // Component
-  if (filteredBookmarks.length === 0) {
-    return <p>Wow such empty</p>
-  }
-
-  return (
-    <>
-      {filteredBookmarks.map((bookmark) => {
-        return (
-          <BookmarkCard
-            key={bookmark.guid}
-            guid={bookmark.guid}
-            name={bookmark.name}
-            href={bookmark.href}
-            desc={bookmark.desc}
-            tags={bookmark.tags}
-          />
-        )
-      })}
-    </>
-  )
+  return filteredBookmarks
 }
 
 // This function will filter bookmarks
 // Based on the search term entered
-function applySearch(searchInput: string, bookmarks: Bookmark[]) {
+function _applySearch(searchInput: string, bookmarks: Bookmark[]) {
   const { parsedSearchTerm, parsedTags } = parseSearchInput(searchInput)
   const re = new RegExp(escapeRegExp(parsedSearchTerm), 'i')
 
