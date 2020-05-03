@@ -8,7 +8,7 @@ import MenuIcon from '~/icons/menu'
 import SettingsIcon from '~/icons/settings'
 import Button from '@material-ui/core/Button'
 import { useSelector } from 'react-redux'
-import { getBackupExists, getBackupReadOnly } from '~/store/modules/backup'
+import { getBackupExists, getBackupReadOnly } from 'store/modules/backup'
 
 type HeaderProps = {
   searchTerm: string

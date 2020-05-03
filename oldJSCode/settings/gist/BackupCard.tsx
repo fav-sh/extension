@@ -15,12 +15,12 @@ import {
   getBackupReadOnly,
   passivePullUpdates,
   getBackupLoading,
-} from '~/store/modules/backup'
+} from 'store/modules/backup'
 import styled from 'styled-components'
 import {
   actions as settingsActions,
   getAutoUpdateBackup,
-} from '~/store/modules/settings'
+} from 'store/modules/settings'
 
 export const BackupCard = ({ noCard }: { noCard?: boolean }) => {
   const dispatch = useDispatch()

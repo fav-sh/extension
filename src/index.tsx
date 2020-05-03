@@ -1,13 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import 'normalize.css'
-import GlobalStyle from './components/GlobalStyles'
-import Router from './views/router'
+import App from './App'
 
-ReactDOM.render(
-  <>
-    <GlobalStyle />
-    <Router />
-  </>,
-  document.getElementById('root')
-)
+ReactDOM.render(<App />, document.getElementById('root'))

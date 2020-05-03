@@ -9,7 +9,7 @@ import {
   PaddedAction,
 } from './common'
 import Typography from '@material-ui/core/Typography'
-import { BookmarkState, getBookmarks, actions } from '~/store/modules/bookmarks'
+import { BookmarkState, getBookmarks, actions } from 'store/modules/bookmarks'
 import { saveAs } from 'file-saver'
 import { FileUploader } from '~/components/FileUploader'
 import {
@@ -18,7 +18,7 @@ import {
   validateBookmark,
   generateBookmarkGuid,
 } from '~/helpers'
-import { ExportedBookmark } from '~/types/Bookmark'
+import { ExportedBookmark } from 'types/Bookmark'
 import { useSelector, useDispatch } from 'react-redux'
 
 export const LocalRestore = () => {

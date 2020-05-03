@@ -5,8 +5,8 @@ import React, { useEffect } from 'react'
 import { EditorScreen } from './EditorScreen/EditorScreen'
 import { MainScreen } from './MainScreen/MainScreen'
 import { useSelector, useDispatch } from 'react-redux'
-import { getCurrentScreen } from '~/store/modules/navigation'
-import { passivePullUpdates } from '~/store/modules/backup'
+import { getCurrentScreen } from 'store/modules/navigation'
+import { passivePullUpdates } from 'store/modules/backup'
 
 export const Router = () => {
   const dispatch = useDispatch()

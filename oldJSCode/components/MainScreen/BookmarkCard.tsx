@@ -1,15 +1,15 @@
 import React from 'react'
 import IconButton from '@material-ui/core/IconButton'
-import { Bookmark } from '~/types/Bookmark'
+import { Bookmark } from 'types/Bookmark'
 import styled from 'styled-components'
-import { actions as editingActions } from '~/store/modules/editing'
-import { removeBookmarkThunk } from '~/store/modules/bookmarks'
-import { navigate } from '~/store/modules/navigation'
+import { actions as editingActions } from 'store/modules/editing'
+import { removeBookmarkThunk } from 'store/modules/bookmarks'
+import { navigate } from 'store/modules/navigation'
 import { useDispatch, useSelector } from 'react-redux'
 
 import EditIcon from '~/icons/edit'
 import DeleteIcon from '~/icons/delete'
-import { getBackupReadOnly } from '~/store/modules/backup'
+import { getBackupReadOnly } from 'store/modules/backup'
 
 export const BookmarkCard = (bookmark: Bookmark) => {
   const dispatch = useDispatch()

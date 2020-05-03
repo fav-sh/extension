@@ -7,9 +7,9 @@
     "lib": ["esnext", "dom"],
     "noEmit": true,
     "strict": true,
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
-      "~/*": ["./js/*"]
+      "~/*": ["./src/*"]
     },
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
@@ -19,7 +19,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["./src/js/**/*"],
+  "include": ["src"],
   "exclude": ["node_modules"],
   "files": [
     "index.d.ts"

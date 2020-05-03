@@ -1,4 +1,4 @@
-import { AppAction, AppState, ThunkState, ThunkDispatch } from '~/types/redux'
+import { AppAction, AppState, ThunkState, ThunkDispatch } from 'types/redux'
 import { getBookmarks, actions as bookmarkActions } from './bookmarks'
 import { getToken } from './auth'
 import {
@@ -8,12 +8,12 @@ import {
   transformImportBookmark,
   expandBookmarks,
 } from '~/helpers'
-import { createBackup } from '~/api/createBackup'
-import { updateBackup } from '~/api/updateBackup'
+import { createBackup } from 'api/createBackup'
+import { updateBackup } from 'api/updateBackup'
 import {
   restoreGistAnonymously,
   restoreGistAuthenticated,
-} from '~/api/restoreBackup'
+} from 'api/restoreBackup'
 import { getAutoUpdateBackup } from './settings'
 import { groomGithubResponse } from '../../api/util/groomGithubResponse'
 

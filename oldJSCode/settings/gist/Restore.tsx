@@ -4,7 +4,7 @@ import {
   restoreBackupAnonymouslyThunk,
   restoreBackupAuthenticatedThunk,
   getBackupLoading,
-} from '~/store/modules/backup'
+} from 'store/modules/backup'
 
 import {
   SectionContainer,
