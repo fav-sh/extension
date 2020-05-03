@@ -13,14 +13,24 @@ import BookmarkCard from '../components/bookmark/BookmarkCard'
 // Sidebar
 import Sidebar from '../components/sidebar/Sidebar'
 
-const Header = ({ onToggleSidebar }: { onToggleSidebar: () => void }) => (
+export type MainViewProps = {
+  onCreate: () => void
+}
+
+const Header = ({
+  onToggleSidebar,
+  onCreate,
+}: {
+  onToggleSidebar: () => void
+  onCreate: () => void
+}) => (
   <HeaderContainer>
     <HeaderLeft>
       <MenuButton onClick={onToggleSidebar} />
       <HeaderTitle>Fav.sh</HeaderTitle>
     </HeaderLeft>
     <HeaderRight>
-      <CreateButton onClick={() => console.log('create new bookmark')} />
+      <CreateButton onClick={onCreate} />
     </HeaderRight>
   </HeaderContainer>
 )
@@ -38,11 +48,14 @@ const Content = ({ sidebarVisible }: { sidebarVisible: boolean }) => (
   </Sidebar>
 )
 
-const View = () => {
+const View = (props: MainViewProps) => {
   const [sidebarVisible, setSidebarVisible] = useState<boolean>(false)
   return (
     <>
-      <Header onToggleSidebar={() => setSidebarVisible(!sidebarVisible)} />
+      <Header
+        onCreate={props.onCreate}
+        onToggleSidebar={() => setSidebarVisible(!sidebarVisible)}
+      />
       <Content sidebarVisible={sidebarVisible} />
     </>
   )

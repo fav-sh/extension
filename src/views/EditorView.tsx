@@ -20,6 +20,11 @@ import Input from '../components/editor/Input'
 import { Dropdown, DropdownItem } from '../components/editor/Dropdown'
 import { FlexRow } from '../components/common/FlexContainer'
 
+export type EditorViewProps = {
+  onCreate: () => void
+  onCancel: () => void
+}
+
 const TagsDropdown = () => {
   const [tags, setTags] = useState<string[]>([
     'Select a Tag',
@@ -69,22 +74,22 @@ export const Content = () => (
   </ContentContainer>
 )
 
-const Header = () => (
+const Header = (props: EditorViewProps) => (
   <HeaderContainer>
     <HeaderLeft>
-      <BackButton onClick={() => {}} />
+      <BackButton onClick={props.onCancel} />
       <HeaderTitle>Create Bookmark</HeaderTitle>
     </HeaderLeft>
     <HeaderRight>
-      <SaveButton onClick={() => {}} />
+      <SaveButton onClick={props.onCreate} />
     </HeaderRight>
   </HeaderContainer>
 )
 
-const View = () => {
+const View = (props: EditorViewProps) => {
   return (
     <>
-      <Header />
+      <Header onCreate={props.onCreate} onCancel={props.onCancel} />
       <Content />
     </>
   )
