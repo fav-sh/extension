@@ -4,13 +4,8 @@ export default createGlobalStyle`
   body {
     height: 500px;
     width: 700px;
-    font-family: Roboto, sans-serif;
-  }
-
-
-  .sidebar-content {
-    display: flex;
-    flex-direction: column;
-    margin-top: 4em;
+    border: 1px solid #888888;
+    border-radius: 5px;
+    overflow: hidden;
   }
 `
