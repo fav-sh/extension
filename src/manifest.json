@@ -1,6 +1,6 @@
 {
   "name": "Fav",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Fav Bookmark Manager",
   "manifest_version": 2,
   "icons": {
@@ -15,7 +15,7 @@
       "32": "icons/32.png"
     },
     "default_title": "Fav",
-    "default_popup": "entry/extension.html"
+    "default_popup": "index.html"
   },
   "permissions": [
     "tabs",
