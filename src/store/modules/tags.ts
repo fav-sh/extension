@@ -16,9 +16,9 @@ export const actions = {
     type: 'ADD_TAG',
     payload: tag,
   }),
-  removeTag: (guid: string) => ({
+  removeTag: (tag: string) => ({
     type: 'REMOVE_TAG',
-    payload: guid,
+    payload: tag,
   }),
 }
 
