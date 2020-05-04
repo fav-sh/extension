@@ -39,6 +39,7 @@
     "redux-devtools-log-monitor": "^1.4.0",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
+    "store": "^2.0.12",
     "styled-components": "^5.0.1",
     "uuid": "^8.0.0"
   },

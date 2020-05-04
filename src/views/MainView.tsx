@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 // Header Components
 import HeaderContainer from '~/components/header/HeaderContainer'
 import HeaderLeft from '~/components/header/HeaderLeft'
@@ -11,10 +11,10 @@ import MenuButton from '~/components/buttons/MenuButton'
 import BookmarkList from '~/components/bookmark/BookmarkList'
 import BookmarkCard from '~/components/bookmark/BookmarkCard'
 // Redux Stuff
-import { useSelector, useDispatch } from 'react-redux'
-import { getBookmarks, BookmarkState } from '~/store/modules/bookmarks'
+import { useDispatch } from 'react-redux'
 import { Bookmark } from '~/types/Bookmark'
 import { actions } from '~/store/modules/editing'
+import { useFilterBookmarks } from '~/hooks/useFilterBookmarks'
 
 export type MainViewProps = {
   onCreate: () => void
@@ -24,15 +24,23 @@ export type MainViewProps = {
 const Header = ({
   onToggleSidebar,
   onCreate,
+  searchTermValue,
+  onSearchTermChange,
 }: {
+  searchTermValue: string
   onToggleSidebar: () => void
   onCreate: () => void
+  onSearchTermChange: (value: string) => void
 }) => (
   <HeaderContainer>
     <HeaderLeft>
       <MenuButton onClick={onToggleSidebar} />
       {/* <HeaderTitle>Fav.sh</HeaderTitle> */}
-      <HeaderSearch placeholder="Search for Bookmarks" />
+      <HeaderSearch
+        value={searchTermValue}
+        onChange={(e) => onSearchTermChange(e.target.value)}
+        placeholder="Search for Bookmarks"
+      />
     </HeaderLeft>
     <HeaderRight>
       <CreateButton onClick={onCreate} />
@@ -44,15 +52,15 @@ const Content = ({
   bookmarks,
   onEdit,
 }: {
-  bookmarks: BookmarkState
+  bookmarks: Bookmark[]
   onEdit: (bookmark: Bookmark) => void
 }) => {
-  if (Object.keys(bookmarks).length === 0) {
+  if (bookmarks.length === 0) {
     return <p>No bookmarks</p>
   } else {
     return (
       <BookmarkList>
-        {Object.values(bookmarks).map((bookmark) => {
+        {bookmarks.map((bookmark) => {
           return (
             <BookmarkCard
               header={bookmark.name}
@@ -68,7 +76,8 @@ const Content = ({
 
 const View = (props: MainViewProps) => {
   const dispatch = useDispatch()
-  const bookmarks = useSelector(getBookmarks)
+  const [searchTerm, setSearchTerm] = useState('')
+  const bookmarks = useFilterBookmarks(searchTerm)
 
   const handleEdit = (bookmark: Bookmark) => {
     dispatch(actions.setEditing(bookmark))
@@ -77,7 +86,12 @@ const View = (props: MainViewProps) => {
 
   return (
     <>
-      <Header onCreate={props.onCreate} onToggleSidebar={props.onTags} />
+      <Header
+        searchTermValue={searchTerm}
+        onSearchTermChange={setSearchTerm}
+        onCreate={props.onCreate}
+        onToggleSidebar={props.onTags}
+      />
       <Content bookmarks={bookmarks} onEdit={handleEdit} />
     </>
   )
