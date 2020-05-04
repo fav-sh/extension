@@ -1,3 +1,7 @@
+### 2.1.0
+
+* Completely new UI, rebuilt from ground up for speed.
+
 ### 2.0.1
 
 * Changes to Anonymous Backups

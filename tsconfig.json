@@ -1,28 +1,31 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ESNext",
+    "module": "CommonJS",
+    "lib": ["ESNext", "DOM"],
     "jsx": "react",
-    "lib": ["esnext", "dom"],
-    "noEmit": true,
     "strict": true,
-    "baseUrl": ".",
+    "removeComments": true,
+    "noEmit": true,
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ],
+    "baseUrl": "./src",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./*"]
     },
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
   },
-  "include": ["src"],
-  "exclude": ["node_modules"],
-  "files": [
-    "index.d.ts"
-  ]
+  "files": ["index.d.ts"],
+  "include": [
+    "src/**/*.*",
+  ],
 }
- 

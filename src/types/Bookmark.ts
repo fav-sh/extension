@@ -1,4 +1,4 @@
-import { Tag } from './Tag'
+import { Tag } from '~/types/Tag'
 
 export type Bookmark = {
   guid: string

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const HeaderTitle = styled.p`
   font-size: 18px;
@@ -8,6 +8,6 @@ const HeaderTitle = styled.p`
   color: #fff;
   font-family: sans-serif;
   font-weight: bold;
-`;
+`
 
-export default HeaderTitle;
+export default HeaderTitle

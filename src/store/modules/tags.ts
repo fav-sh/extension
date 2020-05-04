@@ -1,5 +1,5 @@
-import { Tag } from 'types/Tag'
-import { AppAction, AppState } from 'types/redux'
+import { Tag } from '~/types/Tag'
+import { AppAction, AppState } from '~/types/redux'
 import uniq from 'lodash/fp/uniq'
 import remove from 'lodash/fp/remove'
 

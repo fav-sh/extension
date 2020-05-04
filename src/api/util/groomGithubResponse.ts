@@ -1,4 +1,4 @@
-import { ExportedBookmark } from 
+import { ExportedBookmark } from '~/types/Bookmark'
 
 type GithubResponse = {
   created_at: string

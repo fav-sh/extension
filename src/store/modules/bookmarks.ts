@@ -1,5 +1,5 @@
-import { Bookmark } from 'types/Bookmark'
-import { AppAction, AppState, ThunkDispatch } from 'types/redux'
+import { Bookmark } from '~/types/Bookmark'
+import { AppAction, AppState, ThunkDispatch } from '~/types/redux'
 import omit from 'lodash/fp/omit'
 import uniq from 'lodash/fp/uniq'
 import { passiveUpdate } from './backup'

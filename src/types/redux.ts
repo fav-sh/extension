@@ -1,10 +1,10 @@
 import { BookmarkState } from '~/store/modules/bookmarks'
 import { NavigationState } from '~/store/modules/navigation'
 import { EditingState } from '~/store/modules/editing'
-import { AuthState } from 'store/modules/auth'
-import { BackupState } from 'store/modules/backup'
-import { TagsState } from 'store/modules/tags'
-import { SettingsState } from 'store/modules/settings'
+import { AuthState } from '~/store/modules/auth'
+import { BackupState } from '~/store/modules/backup'
+import { TagsState } from '~/store/modules/tags'
+import { SettingsState } from '~/store/modules/settings'
 
 export type AppAction = {
   type: string

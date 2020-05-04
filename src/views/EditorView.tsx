@@ -1,24 +1,24 @@
 import React, { useState } from 'react'
 // Header Components
-import HeaderContainer from '../components/header/HeaderContainer'
-import HeaderLeft from '../components/header/HeaderLeft'
-import HeaderRight from '../components/header/HeaderRight'
-import HeaderTitle from '../components/header/HeaderTitle'
+import HeaderContainer from '~/components/header/HeaderContainer'
+import HeaderLeft from '~/components/header/HeaderLeft'
+import HeaderRight from '~/components/header/HeaderRight'
+import HeaderTitle from '~/components/header/HeaderTitle'
 // Header Buttons
-import SaveButton from '../components/buttons/SaveButton'
-import BackButton from '../components/buttons/BackButton'
+import SaveButton from '~/components/buttons/SaveButton'
+import BackButton from '~/components/buttons/BackButton'
 // Editor Form Components
 import {
   ContentContainer,
   Section,
   TagsContainer,
-} from '../components/editor/Form'
-import Label from '../components/editor/Label'
-import Tag from '../components/editor/Tag'
-import TextArea from '../components/editor/TextArea'
-import Input from '../components/editor/Input'
-import { Dropdown, DropdownItem } from '../components/editor/Dropdown'
-import { FlexRow } from '../components/common/FlexContainer'
+} from '~/components/editor/Form'
+import Label from '~/components/editor/Label'
+import Tag from '~/components/editor/Tag'
+import TextArea from '~/components/editor/TextArea'
+import Input from '~/components/editor/Input'
+import { Dropdown, DropdownItem } from '~/components/editor/Dropdown'
+import { FlexRow } from '~/components/common/FlexContainer'
 
 export type EditorViewProps = {
   onCreate: () => void
@@ -26,7 +26,7 @@ export type EditorViewProps = {
 }
 
 const TagsDropdown = () => {
-  const [tags, setTags] = useState<string[]>([
+  const [tags] = useState<string[]>([
     'Select a Tag',
     'foo',
     'bar',

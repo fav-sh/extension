@@ -1,7 +1,7 @@
 import React from 'react'
-import EditorView, { EditorViewProps } from './EditorView'
-import MainView, { MainViewProps } from './MainView'
-import useRouter from '../hooks/useRouter'
+import EditorView, { EditorViewProps } from '~/views/EditorView'
+import MainView, { MainViewProps } from '~/views/MainView'
+import useRouter from '~/hooks/useRouter'
 
 export default () => {
   const { route, navigate } = useRouter()

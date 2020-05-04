@@ -1,5 +1,5 @@
-import { AppState, AppAction } from 'types/redux'
-import { Screens } from 'types/Screens'
+import { AppState, AppAction } from '~/types/redux'
+import { Screens } from '~/types/Screens'
 
 export type NavigationState = {
   screen: Screens

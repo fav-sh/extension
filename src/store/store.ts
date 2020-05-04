@@ -2,7 +2,7 @@ import { combineReducers, createStore, compose, applyMiddleware } from 'redux'
 import { persistStore, persistReducer } from 'redux-persist'
 import { DevTools } from './DevTools'
 import { AppState } from 'types/redux'
-import { createLocalStorage } from '../browser/storageAdapter'
+import { createLocalStorage } from '~/browser/storageAdapter'
 import thunk from 'redux-thunk'
 
 const localStorage = createLocalStorage()

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const HeaderRight = styled.div`
   flex-grow: 1;
@@ -6,6 +6,6 @@ const HeaderRight = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-`;
+`
 
-export default HeaderRight;
+export default HeaderRight

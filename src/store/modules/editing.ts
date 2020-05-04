@@ -1,5 +1,5 @@
-import { Bookmark } from 'types/Bookmark'
-import { AppAction, AppState } from 'types/redux'
+import { Bookmark } from '~/types/Bookmark'
+import { AppAction, AppState } from '~/types/redux'
 
 export type EditingState = {
   bookmark?: Bookmark

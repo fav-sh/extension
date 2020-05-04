@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 // Header Components
-import HeaderContainer from '../components/header/HeaderContainer'
-import HeaderLeft from '../components/header/HeaderLeft'
-import HeaderRight from '../components/header/HeaderRight'
-import HeaderTitle from '../components/header/HeaderTitle'
+import HeaderContainer from '~/components/header/HeaderContainer'
+import HeaderLeft from '~/components/header/HeaderLeft'
+import HeaderRight from '~/components/header/HeaderRight'
+import HeaderTitle from '~/components/header/HeaderTitle'
 // Header Buttons
-import CreateButton from '../components/buttons/CreateButton'
-import MenuButton from '../components/buttons/MenuButton'
+import CreateButton from '~/components/buttons/CreateButton'
+import MenuButton from '~/components/buttons/MenuButton'
 // Bookmark Stuff
-import BookmarkList from '../components/bookmark/BookmarkList'
-import BookmarkCard from '../components/bookmark/BookmarkCard'
+import BookmarkList from '~/components/bookmark/BookmarkList'
+import BookmarkCard from '~/components/bookmark/BookmarkCard'
 // Sidebar
-import Sidebar from '../components/sidebar/Sidebar'
+import Sidebar from '~/components/sidebar/Sidebar'
 
 export type MainViewProps = {
   onCreate: () => void

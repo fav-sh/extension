@@ -1,4 +1,4 @@
-import { AppAction, AppState } from 'types/redux'
+import { AppAction, AppState } from '~/types/redux'
 
 export type SettingsState = {
   autoUpdateBackup: boolean

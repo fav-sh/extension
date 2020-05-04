@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const HeaderContainer = styled.div`
   border: 1px solid #9e9e9e;
@@ -9,6 +9,6 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`;
+`
 
-export default HeaderContainer;
+export default HeaderContainer
