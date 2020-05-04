@@ -38,6 +38,7 @@ export const SettingsTextField = ({
   onChange,
   disabled,
   style,
+  label,
 }: {
   value: string
   onChange: (text: string) => void
@@ -50,9 +51,8 @@ export const SettingsTextField = ({
     onChange={(e) => onChange(e.target.value)}
     disabled={disabled}
     style={style}
+    placeholder={label}
   />
 )
 
-export const SectionHeader = styled.h4`
-  font-family: Roboto, sans-serif;
-`
+export const SectionHeader = styled.h4``

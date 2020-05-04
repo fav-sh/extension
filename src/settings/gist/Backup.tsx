@@ -37,7 +37,30 @@ export const Backup = () => {
         label="Description (Optional)"
       />
       <RadioButtonContainer>
-        <p>wip radio buttons</p>
+        <div>
+          <label htmlFor="public">Private</label>
+          <input
+            type="radio"
+            id="private"
+            name="private"
+            value="private"
+            checked={!isPublic}
+            onClick={() => setIsPublic(false)}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="public">Public</label>
+          <input
+            type="radio"
+            id="public"
+            name="public"
+            value="public"
+            checked={isPublic}
+            onClick={() => setIsPublic(true)}
+          />
+        </div>
+
         {/* <label
           checked={!isPublic}
           onClick={() => setIsPublic(false)}
@@ -72,5 +95,7 @@ const RadioButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   max-width: 400px;
-  justify-content: space-around;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  justify-content: space-evenly;
 `
