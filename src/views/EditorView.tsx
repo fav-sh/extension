@@ -19,13 +19,14 @@ import TextArea from '~/components/editor/TextArea'
 import Input from '~/components/editor/Input'
 import { Dropdown, DropdownItem } from '~/components/editor/Dropdown'
 import { FlexRow } from '~/components/common/FlexContainer'
-import { useSelector } from 'react-redux'
-import { getTags } from '~/store/modules/bookmarks'
+import { useSelector, useDispatch } from 'react-redux'
+import { getTags, addBookmarkThunk } from '~/store/modules/bookmarks'
 import { generateBookmarkGuid, isBlank } from '~/helpers'
 import { getEditingBookmark } from '~/store/modules/editing'
 import { getActiveTab } from '~/browser/getTabInfo'
 import CreateButton from '~/components/buttons/CreateButton'
 import remove from 'lodash/fp/remove'
+import { Bookmark } from '~/types/Bookmark'
 
 export type EditorViewProps = {
   onCreate: () => void
@@ -35,8 +36,10 @@ export type EditorViewProps = {
 type TagsDropdownProps = {
   tags: string[]
   existingTags: string[]
+  currentTag: string
   onAdd: (tag: string) => void
   onRemove: (tag: string) => void
+  setCurrentTag: (newValue: string) => void
 }
 
 const TagsDropdown = ({
@@ -44,8 +47,9 @@ const TagsDropdown = ({
   existingTags,
   onAdd,
   onRemove,
+  currentTag,
+  setCurrentTag,
 }: TagsDropdownProps) => {
-  const [currentTag, setCurrentTag] = useState('')
   return (
     <>
       <Label>Bookmark Tags</Label>
@@ -101,6 +105,7 @@ const Header = (props: EditorViewProps) => (
 )
 
 const View = (props: EditorViewProps) => {
+  const dispatch = useDispatch()
   const existingTags = useSelector(getTags)
   const freshGuid = generateBookmarkGuid()
   const editingBookmark = useSelector(getEditingBookmark)
@@ -130,23 +135,49 @@ const View = (props: EditorViewProps) => {
 
   const handleAddTag = (tag: string) => !isBlank(tag) && setTags([...tags, tag])
 
+  const handleCreateBookmark = () => {
+    const bookmark: Bookmark = {
+      guid,
+      name,
+      href,
+      desc,
+      tags,
+    }
+    dispatch(addBookmarkThunk(bookmark))
+    props.onCreate()
+  }
+
   return (
     <>
-      <Header onCreate={props.onCreate} onCancel={props.onCancel} />
+      <Header onCreate={handleCreateBookmark} onCancel={props.onCancel} />
       <ContentContainer>
         <Section>
           <Label>Bookmark Name</Label>
-          <Input placeholder="Awesome cats on the internet" />
+          <Input
+            placeholder="Awesome cats on the internet"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </Section>
         <Section>
           <Label>Bookmark URL</Label>
-          <Input placeholder="https://awesome.cats" />
+          <Input
+            placeholder="https://awesome.cats"
+            value={href}
+            onChange={(e) => setHref(e.target.value)}
+          />
         </Section>
         <Section>
           <Label>Bookmark Description</Label>
-          <TextArea placeholder="Check out these awesome cats" />
+          <TextArea
+            placeholder="Check out these awesome cats"
+            value={desc}
+            onChange={(e) => setDesc(e.target.value)}
+          />
         </Section>
         <TagsDropdown
+          currentTag={currentTag}
+          setCurrentTag={setCurrentTag}
           existingTags={existingTags}
           tags={tags}
           onAdd={handleAddTag}
