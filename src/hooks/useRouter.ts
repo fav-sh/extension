@@ -1,6 +1,6 @@
 import React from 'react'
 
-type Routes = 'main' | 'editor' | 'tags'
+type Routes = 'main' | 'editor' | 'tags' | 'sync'
 
 const useRouter = () => {
   const [route, setRoute] = React.useState<Routes>('main')

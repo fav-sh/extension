@@ -76,7 +76,9 @@ const Header = (
       <HeaderTitle>Create Bookmark</HeaderTitle>
     </HeaderLeft>
     <HeaderRight>
-      <DeleteButton onClick={props.onDelete} />
+      {props.editing && props.onDelete && (
+        <DeleteButton onClick={props.onDelete} />
+      )}
       <SaveButton onClick={props.onCreate} />
     </HeaderRight>
   </HeaderContainer>

@@ -43,26 +43,28 @@ export const BackupCard = ({ noCard }: { noCard?: boolean }) => {
 
   const renderContent = () => {
     return (
-      <>
+      <OuterContainer>
         <div>
           <h3>Backup Created {smoothLoading && <p>Loading</p>}</h3>
-          <p>{`Filename: ${backup.backupFilename}`}</p>
-          <p>{`Gist ID: ${backup.backupGistID}`}</p>
+          <Field>{`Filename: ${backup.backupFilename}`}</Field>
+          <Field>{`Gist ID: ${backup.backupGistID}`}</Field>
           {backup.backupDescription && (
-            <p>{`Description: ${backup.backupDescription}`}</p>
+            <Field>{`Description: ${backup.backupDescription}`}</Field>
           )}
           {!readOnlyBackup && (
             <div>
-              <p>Checkbox wip</p>
-              {/* <Checkbox
+              <input
+                type="checkbox"
                 onChange={togglePassiveUpdate}
                 checked={passiveUpdateEnabled}
               />
-              Automatically backup on file changes */}
+              <label htmlFor="passive-update-checkbox">
+                &nbsp;Automatically backup on file changes
+              </label>
             </div>
           )}
         </div>
-        <div>
+        <ButtonContainer>
           <a href={backup.backupUrl}>Open on Web</a>
           <button onClick={handleUpdate} disabled={smoothLoading}>
             {readOnlyBackup ? 'Fetch Updates' : 'Write Updates'}
@@ -73,8 +75,8 @@ export const BackupCard = ({ noCard }: { noCard?: boolean }) => {
           >
             Delete
           </button>
-        </div>
-      </>
+        </ButtonContainer>
+      </OuterContainer>
     )
   }
 
@@ -84,3 +86,26 @@ export const BackupCard = ({ noCard }: { noCard?: boolean }) => {
 
   return <div>{renderContent()}</div>
 }
+
+const OuterContainer = styled.div`
+  padding: 0.25em;
+  display: flex;
+  flex-direction: column;
+  font-family: Roboto, sans-serif;
+  max-width: 350px;
+`
+
+const Field = styled.p`
+  font-size: 14px;
+`
+
+const ButtonContainer = styled.div`
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  button,
+  a {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+`
