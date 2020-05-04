@@ -13,4 +13,5 @@ export const Button = styled.button`
 
 export type ButtonProps = {
   onClick: () => void
+  fill?: string
 }
