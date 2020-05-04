@@ -1,6 +1,7 @@
 import React from 'react'
 import EditorView, { EditorViewProps } from '~/views/EditorView'
 import MainView, { MainViewProps } from '~/views/MainView'
+import TagsView, { TagsViewProps } from '~/views/TagsView'
 import useRouter from '~/hooks/useRouter'
 
 export default () => {
@@ -13,11 +14,18 @@ export default () => {
 
   const mainViewProps: MainViewProps = {
     onCreate: () => navigate('editor'),
+    onTags: () => navigate('tags'),
+  }
+
+  const tagsViewProps: TagsViewProps = {
+    onBack: () => navigate('main'),
   }
 
   switch (route) {
     case 'editor':
       return <EditorView {...editorProps} />
+    case 'tags':
+      return <TagsView {...tagsViewProps} />
     case 'main':
     default:
       return <MainView {...mainViewProps} />

@@ -45,7 +45,7 @@ const _DeleteButton = ({ onClick }: ButtonProps) => (
 )
 
 const _Container = styled.div`
-  width: 680px;
+  width: 400px;
   height 75px;
   border-bottom: 1px solid #78909C;
   display: flex; 
@@ -67,7 +67,7 @@ const _Left = styled.div`
 `
 
 const _Right = styled.div`
-  width: 150px;
+  width: 100px;
   display: flex;
   flex-direction: row;
   margin-right: 1em;

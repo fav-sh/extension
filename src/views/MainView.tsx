@@ -10,11 +10,10 @@ import MenuButton from '~/components/buttons/MenuButton'
 // Bookmark Stuff
 import BookmarkList from '~/components/bookmark/BookmarkList'
 import BookmarkCard from '~/components/bookmark/BookmarkCard'
-// Sidebar
-import Sidebar from '~/components/sidebar/Sidebar'
 
 export type MainViewProps = {
   onCreate: () => void
+  onTags: () => void
 }
 
 const Header = ({
@@ -35,28 +34,22 @@ const Header = ({
   </HeaderContainer>
 )
 
-const Content = ({ sidebarVisible }: { sidebarVisible: boolean }) => (
-  <Sidebar visible={sidebarVisible}>
-    <BookmarkList>
-      <BookmarkCard
-        header="Test Bookmark"
-        link="https://testbookmark.com"
-        onEdit={() => {}}
-        onDelete={() => {}}
-      />
-    </BookmarkList>
-  </Sidebar>
+const Content = () => (
+  <BookmarkList>
+    <BookmarkCard
+      header="Test Bookmark"
+      link="https://testbookmark.com"
+      onEdit={() => {}}
+      onDelete={() => {}}
+    />
+  </BookmarkList>
 )
 
 const View = (props: MainViewProps) => {
-  const [sidebarVisible, setSidebarVisible] = useState<boolean>(false)
   return (
     <>
-      <Header
-        onCreate={props.onCreate}
-        onToggleSidebar={() => setSidebarVisible(!sidebarVisible)}
-      />
-      <Content sidebarVisible={sidebarVisible} />
+      <Header onCreate={props.onCreate} onToggleSidebar={props.onTags} />
+      <Content />
     </>
   )
 }
