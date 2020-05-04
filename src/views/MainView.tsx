@@ -15,10 +15,12 @@ import { useDispatch } from 'react-redux'
 import { Bookmark } from '~/types/Bookmark'
 import { actions } from '~/store/modules/editing'
 import { useFilterBookmarks } from '~/hooks/useFilterBookmarks'
+import SettingsButton from '~/components/buttons/SettingsButton'
 
 export type MainViewProps = {
   onCreate: () => void
   onTags: () => void
+  onSettings: () => void
 }
 
 const Header = ({
@@ -26,11 +28,13 @@ const Header = ({
   onCreate,
   searchTermValue,
   onSearchTermChange,
+  onSettings,
 }: {
   searchTermValue: string
   onToggleSidebar: () => void
   onCreate: () => void
   onSearchTermChange: (value: string) => void
+  onSettings: () => void
 }) => (
   <HeaderContainer>
     <HeaderLeft>
@@ -43,6 +47,7 @@ const Header = ({
       />
     </HeaderLeft>
     <HeaderRight>
+      <SettingsButton onClick={onSettings} />
       <CreateButton onClick={onCreate} />
     </HeaderRight>
   </HeaderContainer>
@@ -91,6 +96,7 @@ const View = (props: MainViewProps) => {
         onSearchTermChange={setSearchTerm}
         onCreate={props.onCreate}
         onToggleSidebar={props.onTags}
+        onSettings={props.onSettings}
       />
       <Content bookmarks={bookmarks} onEdit={handleEdit} />
     </>
