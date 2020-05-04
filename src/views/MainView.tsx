@@ -50,7 +50,6 @@ const Content = ({ bookmarks }: { bookmarks: BookmarkState }) => {
               header={bookmark.name}
               link={bookmark.href}
               onEdit={() => {}}
-              onDelete={() => {}}
             />
           )
         })}

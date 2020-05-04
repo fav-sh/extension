@@ -9,10 +9,9 @@ type CardProps = {
   header: string
   link: string
   onEdit: () => void
-  onDelete: () => void
 }
 
-const BookmarkCard = ({ header, link, onEdit, onDelete }: CardProps) => {
+const BookmarkCard = ({ header, link, onEdit }: CardProps) => {
   return (
     <_Container>
       <_Left>
@@ -21,7 +20,6 @@ const BookmarkCard = ({ header, link, onEdit, onDelete }: CardProps) => {
       </_Left>
       <_Right>
         <_EditButton onClick={onEdit} />
-        <_DeleteButton onClick={onDelete} />
       </_Right>
     </_Container>
   )
@@ -36,21 +34,15 @@ const _EditButton = ({ onClick }: ButtonProps) => (
     </svg>
   </_CardButton>
 )
-const _DeleteButton = ({ onClick }: ButtonProps) => (
-  <_CardButton onClick={onClick}>
-    <svg width="24" height="24" viewBox="0 0 24 24">
-      <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
-    </svg>
-  </_CardButton>
-)
 
 const _Container = styled.div`
-  width: 400px;
-  height 75px;
-  border-bottom: 1px solid #78909C;
-  display: flex; 
+  width: 450px;
+  height: 65px;
+  border-bottom: 1px solid #78909c;
+  display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   border-radius: 0px;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -70,7 +62,7 @@ const _Right = styled.div`
   width: 100px;
   display: flex;
   flex-direction: row;
-  margin-right: 1em;
+  justify-content: flex-end;
 `
 const _CardButton = styled.button`
   border: none;

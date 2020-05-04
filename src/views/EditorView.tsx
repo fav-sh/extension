@@ -8,25 +8,19 @@ import HeaderTitle from '~/components/header/HeaderTitle'
 import SaveButton from '~/components/buttons/SaveButton'
 import BackButton from '~/components/buttons/BackButton'
 // Editor Form Components
-import {
-  ContentContainer,
-  Section,
-  TagsContainer,
-} from '~/components/editor/Form'
+import { ContentContainer, Section } from '~/components/editor/Form'
 import Label from '~/components/editor/Label'
-import Tag from '~/components/editor/Tag'
 import TextArea from '~/components/editor/TextArea'
 import Input from '~/components/editor/Input'
-import { Dropdown, DropdownItem } from '~/components/editor/Dropdown'
-import { FlexRow } from '~/components/common/FlexContainer'
 import { useSelector, useDispatch } from 'react-redux'
 import { getTags, addBookmarkThunk } from '~/store/modules/bookmarks'
-import { generateBookmarkGuid, isBlank } from '~/helpers'
+import { generateBookmarkGuid } from '~/helpers'
 import { getEditingBookmark } from '~/store/modules/editing'
 import { getActiveTab } from '~/browser/getTabInfo'
-import CreateButton from '~/components/buttons/CreateButton'
-import remove from 'lodash/fp/remove'
 import { Bookmark } from '~/types/Bookmark'
+import styled from 'styled-components'
+
+import Creatable from 'react-select/creatable'
 
 export type EditorViewProps = {
   onCreate: () => void
@@ -36,59 +30,36 @@ export type EditorViewProps = {
 type TagsDropdownProps = {
   tags: string[]
   existingTags: string[]
-  currentTag: string
-  onAdd: (tag: string) => void
-  onRemove: (tag: string) => void
-  setCurrentTag: (newValue: string) => void
+  onChange: (tags: string[]) => void
 }
 
-const TagsDropdown = ({
-  tags,
-  existingTags,
-  onAdd,
-  onRemove,
-  currentTag,
-  setCurrentTag,
-}: TagsDropdownProps) => {
+const TagsDropdown = ({ tags, existingTags, onChange }: TagsDropdownProps) => {
+  /** tags = tags that are currently on the bookmark */
+  /** existing tags = tags that are on other bookmarks */
+  const value = tags.map((item) => ({
+    label: item,
+    value: item,
+  }))
+  const dropdownOptions = existingTags.map((item) => ({
+    label: item,
+    value: item,
+  }))
+
+  // TODO: Better type here
+  const handleChange = (newOptions: any) => {
+    const transformedOptions = newOptions.map(
+      (item: { value: string }) => item.value
+    )
+    onChange(transformedOptions)
+  }
+
   return (
-    <>
-      <Label>Bookmark Tags</Label>
-      <FlexRow>
-        {existingTags.length > 0 && (
-          <Dropdown>
-            {existingTags.map((tag: string, index: number) => {
-              return (
-                <DropdownItem
-                  key={index}
-                  value={tag}
-                  onClick={() => onAdd(tag)}
-                >
-                  {tag}
-                </DropdownItem>
-              )
-            })}
-          </Dropdown>
-        )}
-        <Input
-          style={{ marginLeft: '0.25em' }}
-          placeholder="Enter new Tag"
-          value={currentTag}
-          onChange={(e) => setCurrentTag(e.target.value)}
-        />
-        <CreateButton fill="#ccc" onClick={() => onAdd(currentTag)} />
-      </FlexRow>
-      {tags.length > 0 && (
-        <TagsContainer>
-          {tags.map((tag: string, index: number) => {
-            return (
-              <Tag key={index} onDelete={() => onRemove(tag)}>
-                {tag}
-              </Tag>
-            )
-          })}
-        </TagsContainer>
-      )}
-    </>
+    <Creatable
+      isMulti
+      options={dropdownOptions}
+      value={value}
+      onChange={handleChange}
+    />
   )
 }
 
@@ -114,7 +85,6 @@ const View = (props: EditorViewProps) => {
   const [name, setName] = useState<string>(editingBookmark?.name || '')
   const [href, setHref] = useState<string>(editingBookmark?.href || '')
   const [desc, setDesc] = useState<string>(editingBookmark?.desc || '')
-  const [currentTag, setCurrentTag] = useState<string>('')
   const [tags, setTags] = useState<string[]>(editingBookmark?.tags || [])
 
   useEffect(() => {
@@ -125,15 +95,6 @@ const View = (props: EditorViewProps) => {
       })
     }
   }, [])
-
-  useEffect(() => {
-    setCurrentTag('')
-  }, [tags])
-
-  const handleRemoveTag = (tag: string) =>
-    setTags(remove((item) => item === tag, tags))
-
-  const handleAddTag = (tag: string) => !isBlank(tag) && setTags([...tags, tag])
 
   const handleCreateBookmark = () => {
     const bookmark: Bookmark = {
@@ -176,12 +137,9 @@ const View = (props: EditorViewProps) => {
           />
         </Section>
         <TagsDropdown
-          currentTag={currentTag}
-          setCurrentTag={setCurrentTag}
           existingTags={existingTags}
           tags={tags}
-          onAdd={handleAddTag}
-          onRemove={handleRemoveTag}
+          onChange={(newTags: string[]) => setTags(newTags)}
         />
       </ContentContainer>
     </>
