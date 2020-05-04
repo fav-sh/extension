@@ -18,7 +18,7 @@ const _CategoryItem = ({ name }: { name: string }) => {
 
 export default ({ visible, children }: Props) => {
   return (
-    <OuterContainer>
+    <OuterContainer visible={visible}>
       {visible && (
         <SidebarContainer>
           <Header>Tags</Header>
@@ -39,6 +39,8 @@ export default ({ visible, children }: Props) => {
 const OuterContainer = styled.div`
   display: flex;
   flex-direction: row;
+  position: fixed;
+  width: ${(props: { visible: boolean }) => (props.visible ? 'unset' : '100%')};
 `
 
 const SidebarContainer = styled.div`
