@@ -8,17 +8,16 @@ import {
   SettingsButton,
   PaddedAction,
 } from './common'
-import Typography from '@material-ui/core/Typography'
-import { BookmarkState, getBookmarks, actions } from 'store/modules/bookmarks'
+import { BookmarkState, getBookmarks, actions } from '~/store/modules/bookmarks'
 import { saveAs } from 'file-saver'
-import { FileUploader } from '~/components/FileUploader'
+import FileUploader from '~/components/FileUploader'
 import {
   transformExportBookmark,
   transformImportBookmark,
   validateBookmark,
   generateBookmarkGuid,
 } from '~/helpers'
-import { ExportedBookmark } from 'types/Bookmark'
+import { ExportedBookmark } from '~/types/Bookmark'
 import { useSelector, useDispatch } from 'react-redux'
 
 export const LocalRestore = () => {
@@ -60,12 +59,8 @@ export const LocalRestore = () => {
     <SectionContainer>
       <SectionHeader>Restore</SectionHeader>
       <SectionContent>
-        <Typography>
-          Restore your bookmarks from a JSON file on your computer
-        </Typography>
-        <Typography>
-          NOTE: This will overwrite any bookmarks you currently have saved!
-        </Typography>
+        <p>Restore your bookmarks from a JSON file on your computer</p>
+        <p>NOTE: This will overwrite any bookmarks you currently have saved!</p>
         <PaddedAction>
           <FileUploader onFile={handleFile} />
         </PaddedAction>
@@ -103,9 +98,7 @@ export const LocalBackup = () => {
     <SectionContainer>
       <SectionHeader>Backup</SectionHeader>
       <SectionContent>
-        <Typography>
-          Backup your bookmarks to a JSON file on your computer
-        </Typography>
+        <p>Backup your bookmarks to a JSON file on your computer</p>
         <DownloadInputContainer>
           <SettingsTextField
             value={filename}

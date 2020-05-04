@@ -6,11 +6,9 @@ import {
   SettingsButton,
   PaddedAction,
 } from '../common'
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
 import { useDispatch, useSelector } from 'react-redux'
-import { actions as authActions, getAuthenticated } from 'store/modules/auth'
-import { getBackup, getBackupReadOnly } from 'store/modules/backup'
+import { actions as authActions, getAuthenticated } from '~/store/modules/auth'
+import { getBackup, getBackupReadOnly } from '~/store/modules/backup'
 import styled from 'styled-components'
 import { Backup } from './Backup'
 import { BackupRestore, AnonymousRestore } from './Restore'
@@ -44,7 +42,7 @@ export const GistBackupRestore = () => {
     <SectionContainer>
       <HeaderContainer>
         <SectionHeader>Github Gist</SectionHeader>
-        {authenticated && <Button onClick={handleLogout}>Log Out</Button>}
+        {authenticated && <button onClick={handleLogout}>Log Out</button>}
       </HeaderContainer>
       <SectionContent>
         <PaddedAction>
@@ -63,12 +61,10 @@ export const GistBackupRestore = () => {
                 Get a personal access token{' '}
                 <a href="https://github.com/settings/tokens">here</a>
               </LoginText>
-              <TextField
+              <input
                 value={authKey}
                 onChange={(e: any) => setAuthKey(e.target.value)}
-                variant="outlined"
                 placeholder="Your personal access token"
-                label="Personal Access Token"
               />
               <ButtonContainer>
                 <SettingsButton

@@ -4,7 +4,7 @@ import {
   restoreBackupAnonymouslyThunk,
   restoreBackupAuthenticatedThunk,
   getBackupLoading,
-} from 'store/modules/backup'
+} from '~/store/modules/backup'
 
 import {
   SectionContainer,
@@ -12,9 +12,8 @@ import {
   DownloadInputContainer,
   SettingsTextField,
   SettingsButton,
+  SectionHeader,
 } from '../common'
-import Typography from '@material-ui/core/Typography'
-import CircularProgress from '@material-ui/core/CircularProgress'
 
 export const AnonymousRestore = () => {
   const dispatch = useDispatch()
@@ -25,10 +24,10 @@ export const AnonymousRestore = () => {
 
   return (
     <SectionContainer>
-      <Typography variant="h6">Restore Public Backup</Typography>
-      {backupLoading && <CircularProgress />}
+      <SectionHeader>Restore Public Backup</SectionHeader>
+      {backupLoading && <p>Loading...</p>}
       <SectionContent>
-        <Typography>Restore any public bookmark file from Gist</Typography>
+        <p>Restore any public bookmark file from Gist</p>
         <DownloadInputContainer>
           <SettingsTextField
             value={gistId}
@@ -55,12 +54,10 @@ export const BackupRestore = () => {
 
   return (
     <SectionContainer>
-      <Typography variant="h6">Restore Your Backup</Typography>
-      {backupLoading && <CircularProgress />}
+      <SectionHeader>Restore Your Backup</SectionHeader>
+      {backupLoading && <p>Loading</p>}
       <SectionContent>
-        <Typography>
-          Restore one of your backups and continue backing up to it
-        </Typography>
+        <p>Restore one of your backups and continue backing up to it</p>
         <DownloadInputContainer>
           <SettingsTextField
             value={gistId}

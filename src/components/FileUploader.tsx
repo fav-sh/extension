@@ -4,7 +4,7 @@ type Props = {
   onFile: (content: any) => void
 }
 
-export const FileUploader = (props: Props) => {
+const FileUploader = (props: Props) => {
   const handleFiles = (e: ChangeEvent<HTMLInputElement>) => {
     if (e && e.target && e.target.files) {
       const file = e.target.files[0]
@@ -30,3 +30,5 @@ export const FileUploader = (props: Props) => {
     </>
   )
 }
+
+export default FileUploader

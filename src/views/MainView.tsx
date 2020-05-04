@@ -16,6 +16,7 @@ import { Bookmark } from '~/types/Bookmark'
 import { actions } from '~/store/modules/editing'
 import { useFilterBookmarks } from '~/hooks/useFilterBookmarks'
 import SettingsButton from '~/components/buttons/SettingsButton'
+import { openSettingsWindow } from '~/browser/openSettings'
 
 export type MainViewProps = {
   onCreate: () => void
@@ -28,13 +29,11 @@ const Header = ({
   onCreate,
   searchTermValue,
   onSearchTermChange,
-  onSettings,
 }: {
   searchTermValue: string
   onToggleSidebar: () => void
   onCreate: () => void
   onSearchTermChange: (value: string) => void
-  onSettings: () => void
 }) => (
   <HeaderContainer>
     <HeaderLeft>
@@ -47,7 +46,7 @@ const Header = ({
       />
     </HeaderLeft>
     <HeaderRight>
-      <SettingsButton onClick={onSettings} />
+      <SettingsButton onClick={openSettingsWindow} />
       <CreateButton onClick={onCreate} />
     </HeaderRight>
   </HeaderContainer>

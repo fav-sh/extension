@@ -3,7 +3,7 @@
 
 export function openSettingsWindow() {
   const engine = process.env.TARGET === 'chrome' ? chrome : browser
-  const url = engine.runtime.getURL('/entry/settings.html')
+  const url = engine.runtime.getURL('/settings/index.html')
   return engine.tabs.create({
     url,
     active: true,

@@ -1,8 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
 
 export const SectionContainer = styled.div`
   padding-top: 2em;
@@ -31,15 +28,14 @@ export const SettingsButton = ({
   onClick: () => void
   disabled?: boolean
 }) => (
-  <Button disabled={disabled} variant="outlined" onClick={onClick}>
+  <button disabled={disabled} onClick={onClick}>
     {text}
-  </Button>
+  </button>
 )
 
 export const SettingsTextField = ({
   value,
   onChange,
-  label,
   disabled,
   style,
 }: {
@@ -49,16 +45,14 @@ export const SettingsTextField = ({
   disabled?: boolean
   style?: object
 }) => (
-  <TextField
-    variant="outlined"
+  <input
     value={value}
     onChange={(e) => onChange(e.target.value)}
-    label={label}
     disabled={disabled}
     style={style}
   />
 )
 
-export const SectionHeader = ({ children }: { children: string }) => (
-  <Typography variant="h5">{children}</Typography>
-)
+export const SectionHeader = styled.h4`
+  font-family: Roboto, sans-serif;
+`

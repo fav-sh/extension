@@ -24,7 +24,6 @@ export const actions = {
 
 export function reducer(state: TagsState = initialState, action: AppAction) {
   switch (action.type) {
-    // TODO: Implement reducer
     case 'ADD_TAG':
       return {
         ...state,

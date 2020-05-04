@@ -1,13 +1,8 @@
-import CircularProgress from '@material-ui/core/CircularProgress'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Radio from '@material-ui/core/Radio'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
-import { SettingsTextField } from '../common'
+import { SettingsTextField, SectionHeader } from '../common'
 import { isBlank } from '~/helpers'
 import { useSelector, useDispatch } from 'react-redux'
-import { createBackupThunk, getBackupLoading } from 'store/modules/backup'
+import { createBackupThunk, getBackupLoading } from '~/store/modules/backup'
 
 import styled from 'styled-components'
 
@@ -19,7 +14,7 @@ export const Backup = () => {
   const [isPublic, setIsPublic] = useState(false)
 
   if (backupLoading) {
-    return <CircularProgress />
+    return <p>Loading...</p>
   }
 
   const handleBackup = () => {
@@ -28,7 +23,7 @@ export const Backup = () => {
 
   return (
     <PostAuthContainer>
-      <Typography variant="h6">Create a new Backup</Typography>
+      <SectionHeader>Create a new Backup</SectionHeader>
       <SettingsTextField
         style={{ marginBottom: 5 }}
         value={gistFilename}
@@ -42,7 +37,8 @@ export const Backup = () => {
         label="Description (Optional)"
       />
       <RadioButtonContainer>
-        <FormControlLabel
+        <p>wip radio buttons</p>
+        {/* <label
           checked={!isPublic}
           onClick={() => setIsPublic(false)}
           value="private"
@@ -57,15 +53,11 @@ export const Backup = () => {
           control={<Radio color="secondary" />}
           label="Public"
           labelPlacement="start"
-        />
+        /> */}
       </RadioButtonContainer>
-      <Button
-        disabled={isBlank(gistFilename)}
-        onClick={handleBackup}
-        variant="outlined"
-      >
+      <button disabled={isBlank(gistFilename)} onClick={handleBackup}>
         Create Backup
-      </Button>
+      </button>
     </PostAuthContainer>
   )
 }
