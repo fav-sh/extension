@@ -11,8 +11,10 @@ import MenuButton from '~/components/buttons/MenuButton'
 import BookmarkList from '~/components/bookmark/BookmarkList'
 import BookmarkCard from '~/components/bookmark/BookmarkCard'
 // Redux Stuff
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { getBookmarks, BookmarkState } from '~/store/modules/bookmarks'
+import { Bookmark } from '~/types/Bookmark'
+import { actions } from '~/store/modules/editing'
 
 export type MainViewProps = {
   onCreate: () => void
@@ -38,7 +40,13 @@ const Header = ({
   </HeaderContainer>
 )
 
-const Content = ({ bookmarks }: { bookmarks: BookmarkState }) => {
+const Content = ({
+  bookmarks,
+  onEdit,
+}: {
+  bookmarks: BookmarkState
+  onEdit: (bookmark: Bookmark) => void
+}) => {
   if (Object.keys(bookmarks).length === 0) {
     return <p>No bookmarks</p>
   } else {
@@ -49,7 +57,7 @@ const Content = ({ bookmarks }: { bookmarks: BookmarkState }) => {
             <BookmarkCard
               header={bookmark.name}
               link={bookmark.href}
-              onEdit={() => {}}
+              onEdit={() => onEdit(bookmark)}
             />
           )
         })}
@@ -59,11 +67,18 @@ const Content = ({ bookmarks }: { bookmarks: BookmarkState }) => {
 }
 
 const View = (props: MainViewProps) => {
+  const dispatch = useDispatch()
   const bookmarks = useSelector(getBookmarks)
+
+  const handleEdit = (bookmark: Bookmark) => {
+    dispatch(actions.setEditing(bookmark))
+    props.onCreate()
+  }
+
   return (
     <>
       <Header onCreate={props.onCreate} onToggleSidebar={props.onTags} />
-      <Content bookmarks={bookmarks} />
+      <Content bookmarks={bookmarks} onEdit={handleEdit} />
     </>
   )
 }

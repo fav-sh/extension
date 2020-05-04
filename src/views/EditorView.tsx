@@ -13,14 +13,18 @@ import Label from '~/components/editor/Label'
 import TextArea from '~/components/editor/TextArea'
 import Input from '~/components/editor/Input'
 import { useSelector, useDispatch } from 'react-redux'
-import { getTags, addBookmarkThunk } from '~/store/modules/bookmarks'
+import {
+  getTags,
+  addBookmarkThunk,
+  removeBookmarkThunk,
+} from '~/store/modules/bookmarks'
 import { generateBookmarkGuid } from '~/helpers'
 import { getEditingBookmark } from '~/store/modules/editing'
 import { getActiveTab } from '~/browser/getTabInfo'
 import { Bookmark } from '~/types/Bookmark'
-import styled from 'styled-components'
 
 import Creatable from 'react-select/creatable'
+import DeleteButton from '~/components/buttons/DeleteButton'
 
 export type EditorViewProps = {
   onCreate: () => void
@@ -63,13 +67,16 @@ const TagsDropdown = ({ tags, existingTags, onChange }: TagsDropdownProps) => {
   )
 }
 
-const Header = (props: EditorViewProps) => (
+const Header = (
+  props: EditorViewProps & { editing: boolean; onDelete: () => void }
+) => (
   <HeaderContainer>
     <HeaderLeft>
       <BackButton onClick={props.onCancel} />
       <HeaderTitle>Create Bookmark</HeaderTitle>
     </HeaderLeft>
     <HeaderRight>
+      <DeleteButton onClick={props.onDelete} />
       <SaveButton onClick={props.onCreate} />
     </HeaderRight>
   </HeaderContainer>
@@ -108,9 +115,21 @@ const View = (props: EditorViewProps) => {
     props.onCreate()
   }
 
+  const handleDelete = () => {
+    if (!!editingBookmark) {
+      dispatch(removeBookmarkThunk(editingBookmark.guid || guid))
+      props.onCancel()
+    }
+  }
+
   return (
     <>
-      <Header onCreate={handleCreateBookmark} onCancel={props.onCancel} />
+      <Header
+        editing={!!editingBookmark}
+        onCreate={handleCreateBookmark}
+        onCancel={props.onCancel}
+        onDelete={handleDelete}
+      />
       <ContentContainer>
         <Section>
           <Label>Bookmark Name</Label>
