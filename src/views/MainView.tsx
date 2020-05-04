@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 // Header Components
 import HeaderContainer from '~/components/header/HeaderContainer'
 import HeaderLeft from '~/components/header/HeaderLeft'
 import HeaderRight from '~/components/header/HeaderRight'
-import HeaderTitle from '~/components/header/HeaderTitle'
+import HeaderSearch from '~/components/header/HeaderSearch'
 // Header Buttons
 import CreateButton from '~/components/buttons/CreateButton'
 import MenuButton from '~/components/buttons/MenuButton'
@@ -26,7 +26,8 @@ const Header = ({
   <HeaderContainer>
     <HeaderLeft>
       <MenuButton onClick={onToggleSidebar} />
-      <HeaderTitle>Fav.sh</HeaderTitle>
+      {/* <HeaderTitle>Fav.sh</HeaderTitle> */}
+      <HeaderSearch placeholder="Search for Bookmarks" />
     </HeaderLeft>
     <HeaderRight>
       <CreateButton onClick={onCreate} />
