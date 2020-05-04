@@ -7,7 +7,7 @@ export const DevTools = createDevTools(
   <DockMonitor
     toggleVisibilityKey="ctrl-p"
     changePositionKey="ctrl-q"
-    defaultIsVisible={false}
+    defaultIsVisible={true}
     defaultSize={400}
     fluid={false}
   >
