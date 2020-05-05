@@ -8,10 +8,10 @@ import HeaderTitle from '~/components/header/HeaderTitle'
 import SaveButton from '~/components/buttons/SaveButton'
 import BackButton from '~/components/buttons/BackButton'
 // Editor Form Components
-import { ContentContainer, Section } from '~/components/editor/Form'
-import Label from '~/components/editor/Label'
-import TextArea from '~/components/editor/TextArea'
-import Input from '~/components/editor/Input'
+import { ContentContainer, Section } from '~/components/form/Form'
+import Label from '~/components/form/Label'
+import TextArea from '~/components/form/TextArea'
+import Input from '~/components/form/Input'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   getTags,
