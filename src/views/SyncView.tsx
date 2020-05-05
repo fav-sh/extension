@@ -6,15 +6,15 @@ import HeaderLeft from '~/components/header/HeaderLeft'
 import HeaderTitle from '~/components/header/HeaderTitle'
 import BackButton from '~/components/buttons/BackButton'
 import { useSelector } from 'react-redux'
-import { openSettingsWindow } from '~/browser/openSettings'
 import { getBackupExists } from '~/store/modules/backup'
-import { BackupCard } from '~/settings/gist/BackupCard'
+import { BackupCard } from '~/components/sync/BackupCard'
 import LinkButton from '~/components/common/LinkButton'
 import Input from '~/components/form/Input'
 import Label from '~/components/form/Label'
 import { FlexCol, FlexRow } from '~/components/common/FlexContainer'
 import HeaderRight from '~/components/header/HeaderRight'
 import LogoutButton from '~/components/buttons/LogoutButton'
+import { openLocalSyncWindow } from '~/browser/openLocalSyncWindow'
 
 export type SyncViewProps = {
   onBack: () => void
@@ -70,11 +70,8 @@ const Content = ({ showBackupCard }: { showBackupCard: boolean }) => (
     {showBackupCard && <BackupCard />}
     <GithubSettings loggedIn={true} />
     <FlexRow>
-      <LinkButton onClick={() => openSettingsWindow()}>
+      <LinkButton onClick={() => openLocalSyncWindow()}>
         Local Backup / Restore
-      </LinkButton>
-      <LinkButton onClick={() => openSettingsWindow()}>
-        Open Sync Settings
       </LinkButton>
     </FlexRow>
   </Container>

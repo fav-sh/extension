@@ -14,7 +14,7 @@ import {
   getAutoUpdateBackup,
 } from '~/store/modules/settings'
 
-export const BackupCard = ({ noCard }: { noCard?: boolean }) => {
+export const BackupCard = () => {
   const dispatch = useDispatch()
   const backup = useSelector(getBackup)
   const passiveUpdateEnabled = useSelector(getAutoUpdateBackup)
@@ -41,50 +41,42 @@ export const BackupCard = ({ noCard }: { noCard?: boolean }) => {
       ? dispatch(passivePullUpdates())
       : dispatch(updateBackupThunk())
 
-  const renderContent = () => {
-    return (
-      <OuterContainer>
-        <div>
-          <h3>Backup Created {smoothLoading && <p>Loading</p>}</h3>
-          <Field>{`Filename: ${backup.backupFilename}`}</Field>
-          <Field>{`Gist ID: ${backup.backupGistID}`}</Field>
-          {backup.backupDescription && (
-            <Field>{`Description: ${backup.backupDescription}`}</Field>
-          )}
-          {!readOnlyBackup && (
-            <div>
-              <input
-                type="checkbox"
-                onChange={togglePassiveUpdate}
-                checked={passiveUpdateEnabled}
-              />
-              <label htmlFor="passive-update-checkbox">
-                &nbsp;Automatically backup on file changes
-              </label>
-            </div>
-          )}
-        </div>
-        <ButtonContainer>
-          <a href={backup.backupUrl}>Open on Web</a>
-          <button onClick={handleUpdate} disabled={smoothLoading}>
-            {readOnlyBackup ? 'Fetch Updates' : 'Write Updates'}
-          </button>
-          <button
-            onClick={() => dispatch(backupActions.clearBackup())}
-            disabled={smoothLoading}
-          >
-            Delete
-          </button>
-        </ButtonContainer>
-      </OuterContainer>
-    )
-  }
-
-  if (noCard) {
-    return renderContent()
-  }
-
-  return <div>{renderContent()}</div>
+  return (
+    <OuterContainer>
+      <div>
+        <h3>Backup Created {smoothLoading && <p>Loading</p>}</h3>
+        <Field>{`Filename: ${backup.backupFilename}`}</Field>
+        <Field>{`Gist ID: ${backup.backupGistID}`}</Field>
+        {backup.backupDescription && (
+          <Field>{`Description: ${backup.backupDescription}`}</Field>
+        )}
+        {!readOnlyBackup && (
+          <div>
+            <input
+              type="checkbox"
+              onChange={togglePassiveUpdate}
+              checked={passiveUpdateEnabled}
+            />
+            <label htmlFor="passive-update-checkbox">
+              &nbsp;Automatically backup on file changes
+            </label>
+          </div>
+        )}
+      </div>
+      <ButtonContainer>
+        <a href={backup.backupUrl}>Open on Web</a>
+        <button onClick={handleUpdate} disabled={smoothLoading}>
+          {readOnlyBackup ? 'Fetch Updates' : 'Write Updates'}
+        </button>
+        <button
+          onClick={() => dispatch(backupActions.clearBackup())}
+          disabled={smoothLoading}
+        >
+          Delete
+        </button>
+      </ButtonContainer>
+    </OuterContainer>
+  )
 }
 
 const OuterContainer = styled.div`
