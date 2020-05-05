@@ -1,11 +1,10 @@
 import React from 'react'
-import styled from 'styled-components'
 // Header Components
 import HeaderContainer from '~/components/header/HeaderContainer'
 import HeaderLeft from '~/components/header/HeaderLeft'
 import HeaderTitle from '~/components/header/HeaderTitle'
 import BackButton from '~/components/buttons/BackButton'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { openSettingsWindow } from '~/browser/openSettings'
 import { getBackupExists } from '~/store/modules/backup'
 import { BackupCard } from '~/settings/gist/BackupCard'
@@ -32,7 +31,6 @@ const Content = ({ showBackupCard }: { showBackupCard: boolean }) => (
 
 const View = (props: SyncViewProps) => {
   const backupExists = useSelector(getBackupExists)
-  const dispatch = useDispatch()
 
   return (
     <>
