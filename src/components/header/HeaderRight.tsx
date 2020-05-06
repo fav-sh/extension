@@ -6,6 +6,7 @@ const HeaderRight = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
 `
 
 export default HeaderRight

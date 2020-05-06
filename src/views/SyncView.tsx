@@ -23,6 +23,7 @@ import {
   restoreBackupAuthenticatedThunk,
 } from '~/store/modules/backup'
 import List from '~/components/common/List'
+import Loader from '~/components/common/Loader'
 
 export type SyncViewProps = {
   onBack: () => void
@@ -34,6 +35,8 @@ const SyncView = (props: SyncViewProps) => {
   const backupExists = useSelector(getBackupExists)
 
   const loggedIn = useSelector(getAuthenticated)
+
+  const isLoading = useSelector(getBackupLoading)
 
   const [authToken, setAuthToken] = useState<string>('')
 
@@ -101,6 +104,7 @@ const SyncView = (props: SyncViewProps) => {
         <HeaderTitle>Sync</HeaderTitle>
       </HeaderLeft>
       <HeaderRight>
+        {isLoading && <Loader height={15} width={30} color="#fff" />}
         <LogoutButton onClick={handleLogout} />
       </HeaderRight>
     </HeaderContainer>
