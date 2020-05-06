@@ -16,6 +16,7 @@ import {
 } from '~/api/restoreBackup'
 import { getAutoUpdateBackup } from './settings'
 import { groomGithubResponse } from '~/api/util/groomGithubResponse'
+import { success, error } from '~/components/common/Toast'
 
 export type BackupState = Partial<{
   backupFilename: string
@@ -160,10 +161,10 @@ export function createBackupThunk(
           dispatch(actions.setDescription(description))
         }
       } catch {
-        alert('There was an error backing up your bookmarks')
+        error('There was an error backing up your bookmarks')
       }
     } else {
-      alert('Could not create backup, missing token')
+      error('Could not create backup, missing token')
     }
     dispatch(actions.setBackupLoading(false))
   }
@@ -293,10 +294,10 @@ export function updateBackupThunk() {
           description
         )
       } catch {
-        alert('Could not update bookmarks')
+        error('Could not update bookmarks')
       }
     } else {
-      alert('Could not update bookmarks')
+      error('Could not update bookmarks')
     }
     dispatch(actions.setBackupLoading(false))
   }
@@ -343,9 +344,9 @@ export function restoreBackupAuthenticatedThunk(gistId: string) {
       dispatch(actions.setGistId(gistId))
       dispatch(actions.setDescription(resp.data.description))
       dispatch(actions.setUrl(resp.data.html_url))
-      // alert('Import success!')
+      success('Import success!')
     } catch {
-      alert('Could not restore bookmarks')
+      error('Could not restore bookmarks')
     }
     dispatch(actions.setBackupLoading(false))
   }
@@ -371,9 +372,9 @@ export function restoreBackupAnonymouslyThunk(gistId: string) {
       dispatch(actions.setDescription(desc))
       dispatch(actions.setUrl(url))
       dispatch(actions.setReadOnly(true))
-      alert('Import success!')
+      success('Import success!')
     } catch {
-      alert('Could not restore bookmarks')
+      error('Could not restore bookmarks')
     }
     dispatch(actions.setBackupLoading(false))
   }

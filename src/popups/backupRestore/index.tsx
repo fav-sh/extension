@@ -17,6 +17,7 @@ import {
 import { saveAs } from 'file-saver'
 import { ExportedBookmark } from '~/types/Bookmark'
 import { actions } from '~/store/modules/bookmarks'
+import { error, success } from '~/components/common/Toast'
 
 const Heading = styled.h2`
   font-family: Roboto, sans-serif;
@@ -49,8 +50,6 @@ const App = () => {
   }
 
   const handleRestore = (content: any) => {
-    const error = () => alert('Could not import bookmarks')
-
     let bookmarks: BookmarkState = {}
     try {
       // Convert the JSON file to a JS object
@@ -59,7 +58,7 @@ const App = () => {
       // Validate every bookmark inside
       parsedBookmarks.forEach((bookmark: ExportedBookmark) => {
         if (!validateBookmark(bookmark)) {
-          error()
+          error('Could not import bookmarks')
           return
         } else {
           const bookmarkGuid = generateBookmarkGuid()
@@ -71,11 +70,11 @@ const App = () => {
       })
     } catch {
       // Catch case if the JSON file is invalid
-      error()
+      error('Could not import bookmarks')
       return
     } finally {
       dispatch(actions.setBookmarks(bookmarks))
-      // alert('Restore sucessfull!')
+      success('Restore sucessfull!')
       return
     }
   }
