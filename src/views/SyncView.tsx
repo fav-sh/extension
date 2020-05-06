@@ -22,6 +22,7 @@ import {
   getBackupLoading,
   restoreBackupAuthenticatedThunk,
 } from '~/store/modules/backup'
+import List from '~/components/common/List'
 
 export type SyncViewProps = {
   onBack: () => void
@@ -166,7 +167,7 @@ const SyncView = (props: SyncViewProps) => {
   return (
     <>
       {renderHeader()}
-      <Container>
+      <List innerPadding="1.0em">
         {backupExists && <BackupCard />}
         {renderGithubSettings()}
         <FlexRow>
@@ -174,16 +175,12 @@ const SyncView = (props: SyncViewProps) => {
             Local Backup / Restore
           </LinkButton>
         </FlexRow>
-      </Container>
+      </List>
     </>
   )
 }
 
 export default SyncView
-
-const Container = styled(FlexCol)`
-  padding: 1em;
-`
 
 const Section = styled(FlexCol)`
   margin-top: 0.5em;

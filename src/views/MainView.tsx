@@ -8,7 +8,7 @@ import HeaderSearch from '~/components/header/HeaderSearch'
 import CreateButton from '~/components/buttons/CreateButton'
 import MenuButton from '~/components/buttons/MenuButton'
 // Bookmark Stuff
-import BookmarkList from '~/components/bookmark/BookmarkList'
+import BookmarkList from '~/components/common/List'
 import BookmarkCard from '~/components/bookmark/BookmarkCard'
 // Redux Stuff
 import { useDispatch } from 'react-redux'
