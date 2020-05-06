@@ -343,7 +343,7 @@ export function restoreBackupAuthenticatedThunk(gistId: string) {
       dispatch(actions.setGistId(gistId))
       dispatch(actions.setDescription(resp.data.description))
       dispatch(actions.setUrl(resp.data.html_url))
-      alert('Import success!')
+      // alert('Import success!')
     } catch {
       alert('Could not restore bookmarks')
     }

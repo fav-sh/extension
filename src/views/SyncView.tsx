@@ -17,31 +17,36 @@ import LogoutButton from '~/components/buttons/LogoutButton'
 import { openLocalSyncWindow } from '~/browser/openLocalSyncWindow'
 import { actions as authActions, getAuthenticated } from '~/store/modules/auth'
 import { isBlank } from '~/helpers'
+import {
+  createBackupThunk,
+  getBackupLoading,
+  restoreBackupAuthenticatedThunk,
+} from '~/store/modules/backup'
 
 export type SyncViewProps = {
   onBack: () => void
 }
 
-const Header = (props: SyncViewProps & { onLogout: () => void }) => (
-  <HeaderContainer>
-    <HeaderLeft>
-      <BackButton onClick={props.onBack} />
-      <HeaderTitle>Sync</HeaderTitle>
-    </HeaderLeft>
-    <HeaderRight>
-      <LogoutButton onClick={props.onLogout} />
-    </HeaderRight>
-  </HeaderContainer>
-)
+const SyncView = (props: SyncViewProps) => {
+  const dispatch = useDispatch()
 
-const GithubSettings = ({
-  loggedIn,
-  onAuth,
-}: {
-  loggedIn: boolean
-  onAuth: (code: string) => void
-}) => {
+  const backupExists = useSelector(getBackupExists)
+
+  const loggedIn = useSelector(getAuthenticated)
+
   const [authToken, setAuthToken] = useState<string>('')
+
+  const [gistId, setGistId] = useState<string>('')
+
+  const [backupData, setBackupData] = useState<{
+    filename: string
+    public: boolean
+    description: string
+  }>({
+    filename: '',
+    public: false,
+    description: '',
+  })
 
   useEffect(() => {
     if (
@@ -52,70 +57,6 @@ const GithubSettings = ({
     }
   }, [])
 
-  // authenticated view
-  if (loggedIn) {
-    return (
-      <FlexCol>
-        <Section>
-          <Label>Create new Backup to Github</Label>
-          <PadInput placeholder="Filename" />
-          <PadInput placeholder="Description (optional)" />
-          <_Button title="Create Backup " />
-        </Section>
-
-        <Section>
-          <Label>Restore Existing Backup from Github</Label>
-          <PadInput placeholder="GistID" />
-          <_Button title="Restore Backup" />
-        </Section>
-      </FlexCol>
-    )
-  }
-
-  // login view
-  return (
-    <FlexCol>
-      <Label>Sync with Github</Label>
-      <FlexRow>
-        <Input
-          placeholder="Enter Access Token"
-          onChange={(e) => setAuthToken(e.target.value)}
-          value={authToken}
-        />
-        <button disabled={isBlank(authToken)} onClick={() => onAuth(authToken)}>
-          Submit
-        </button>
-      </FlexRow>
-    </FlexCol>
-  )
-}
-
-const Content = ({
-  showBackupCard,
-  onAuth,
-  loggedIn,
-}: {
-  showBackupCard: boolean
-  onAuth: (code: string) => void
-  loggedIn: boolean
-}) => (
-  <Container>
-    {showBackupCard && <BackupCard />}
-    <GithubSettings loggedIn={loggedIn} onAuth={onAuth} />
-    <FlexRow>
-      <LinkButton onClick={() => openLocalSyncWindow()}>
-        Local Backup / Restore
-      </LinkButton>
-    </FlexRow>
-  </Container>
-)
-
-const View = (props: SyncViewProps) => {
-  const dispatch = useDispatch()
-  const backupExists = useSelector(getBackupExists)
-  // Checks if the user has a token in the store
-  const loggedIn = useSelector(getAuthenticated)
-
   const handleLogin = (token: string) => {
     dispatch(authActions.storeToken(token))
   }
@@ -124,37 +65,121 @@ const View = (props: SyncViewProps) => {
     dispatch(authActions.logout())
   }
 
+  const handleFilename = (filename: string) =>
+    setBackupData({ ...backupData, filename })
+
+  const handleDescription = (description: string) =>
+    setBackupData({ ...backupData, description })
+
+  const handlePublic = (visibility: string) => {
+    if (visibility === 'public') {
+      setBackupData({ ...backupData, public: true })
+    } else {
+      setBackupData({ ...backupData, public: false })
+    }
+  }
+
+  const handleBackup = () => {
+    if (!isBlank(backupData.filename)) {
+      dispatch(
+        createBackupThunk(
+          backupData.filename,
+          backupData.public,
+          backupData.description
+        )
+      )
+    }
+  }
+
+  const handleRestore = () => dispatch(restoreBackupAuthenticatedThunk(gistId))
+
+  const renderHeader = () => (
+    <HeaderContainer>
+      <HeaderLeft>
+        <BackButton onClick={props.onBack} />
+        <HeaderTitle>Sync</HeaderTitle>
+      </HeaderLeft>
+      <HeaderRight>
+        <LogoutButton onClick={handleLogout} />
+      </HeaderRight>
+    </HeaderContainer>
+  )
+
+  const renderGithubSettings = () => {
+    if (loggedIn) {
+      return (
+        <FlexCol>
+          <Section>
+            <Label>Create new Backup to Github</Label>
+            <PadInput
+              value={backupData.filename}
+              onChange={(e) => handleFilename(e.target.value)}
+              placeholder="Filename"
+            />
+            <PadInput
+              value={backupData.description}
+              onChange={(e) => handleDescription(e.target.value)}
+              placeholder="Description (optional)"
+            />
+            <FlexRow justifyContent="space-between">
+              <select onChange={(e) => handlePublic(e.target.value)}>
+                <option value="private">Private</option>
+                <option value="public">Public</option>
+              </select>
+              <button onClick={handleBackup}>Create Backup</button>
+            </FlexRow>
+          </Section>
+
+          <Section>
+            <Label>Restore Existing Backup from Github</Label>
+            <PadInput
+              placeholder="GistID"
+              value={gistId}
+              onChange={(e) => setGistId(e.target.value)}
+            />
+            <button onClick={handleRestore}>Restore Backup</button>
+          </Section>
+        </FlexCol>
+      )
+    }
+
+    return (
+      <FlexCol>
+        <Label>Sync with Github</Label>
+        <FlexRow>
+          <Input
+            placeholder="Enter Access Token"
+            onChange={(e) => setAuthToken(e.target.value)}
+            value={authToken}
+          />
+          <button
+            disabled={isBlank(authToken)}
+            onClick={() => handleLogin(authToken)}
+          >
+            Submit
+          </button>
+        </FlexRow>
+      </FlexCol>
+    )
+  }
+
   return (
     <>
-      <Header onBack={props.onBack} onLogout={handleLogout} />
-      <Content
-        showBackupCard={backupExists}
-        loggedIn={loggedIn}
-        onAuth={handleLogin}
-      />
+      {renderHeader()}
+      <Container>
+        {backupExists && <BackupCard />}
+        {renderGithubSettings()}
+        <FlexRow>
+          <LinkButton onClick={() => openLocalSyncWindow()}>
+            Local Backup / Restore
+          </LinkButton>
+        </FlexRow>
+      </Container>
     </>
   )
 }
 
-export default View
-
-const _Button = ({
-  title,
-  onClick,
-}: {
-  title: string
-  onClick?: () => void
-}) => {
-  const StyledButton = styled.button`
-    font-family: Roboto, sans-serif;
-  `
-
-  return (
-    <div>
-      <StyledButton onClick={onClick}>{title}</StyledButton>
-    </div>
-  )
-}
+export default SyncView
 
 const Container = styled(FlexCol)`
   padding: 1em;

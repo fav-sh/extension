@@ -75,7 +75,7 @@ const App = () => {
       return
     } finally {
       dispatch(actions.setBookmarks(bookmarks))
-      alert('Restore sucessfull!')
+      // alert('Restore sucessfull!')
       return
     }
   }
