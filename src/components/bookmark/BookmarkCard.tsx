@@ -9,18 +9,26 @@ type CardProps = {
   header: string
   link: string
   onEdit: () => void
+  readonly?: boolean
 }
 
-const BookmarkCard = ({ header, link, onEdit }: CardProps) => {
+const BookmarkCard = ({
+  header,
+  link,
+  onEdit,
+  readonly = false,
+}: CardProps) => {
   return (
-    <_Container>
+    <_Container readonly={readonly}>
       <_Left>
         <_CardHeader href={link}>{header}</_CardHeader>
         <_CardLink href={link}>{link}</_CardLink>
       </_Left>
-      <_Right>
-        <_EditButton onClick={onEdit} />
-      </_Right>
+      {!readonly && (
+        <_Right>
+          <_EditButton onClick={onEdit} />
+        </_Right>
+      )}
     </_Container>
   )
 }
@@ -36,7 +44,8 @@ const _EditButton = ({ onClick }: ButtonProps) => (
 )
 
 const _Container = styled.div`
-  width: 450px;
+  width: ${(props: { readonly: boolean }) =>
+    props.readonly ? '420px' : '450px'};
   height: 65px;
   border-bottom: 1px solid #78909c;
   display: flex;

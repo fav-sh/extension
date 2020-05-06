@@ -13,6 +13,7 @@ import {
   actions as settingsActions,
   getAutoUpdateBackup,
 } from '~/store/modules/settings'
+import LinkButton, { Link } from '../common/LinkButton'
 
 export const BackupCard = () => {
   const dispatch = useDispatch()
@@ -64,16 +65,16 @@ export const BackupCard = () => {
         )}
       </div>
       <ButtonContainer>
-        <a href={backup.backupUrl}>Open on Web</a>
-        <button onClick={handleUpdate} disabled={smoothLoading}>
+        <Link href={backup.backupUrl}>Open on Web</Link>
+        <LinkButton onClick={handleUpdate} disabled={smoothLoading}>
           {readOnlyBackup ? 'Fetch Updates' : 'Write Updates'}
-        </button>
-        <button
+        </LinkButton>
+        <LinkButton
           onClick={() => dispatch(backupActions.clearBackup())}
           disabled={smoothLoading}
         >
           Delete
-        </button>
+        </LinkButton>
       </ButtonContainer>
     </OuterContainer>
   )
@@ -83,21 +84,22 @@ const OuterContainer = styled.div`
   padding: 0.25em;
   display: flex;
   flex-direction: column;
+  align-self: center;
   font-family: Roboto, sans-serif;
-  max-width: 350px;
+  max-width: 450px;
+  border: 1px solid #ccc;
+  padding: 0.5em;
+  margin-bottom: 2em;
 `
 
 const Field = styled.p`
-  font-size: 14px;
+  font-size: 16px;
+  margin-top: 0.1em;
+  padding: 0;
 `
 
 const ButtonContainer = styled.div`
   margin-top: 1em;
   display: flex;
-  flex-direction: column;
-  button,
-  a {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
+  flex-direction: row;
 `

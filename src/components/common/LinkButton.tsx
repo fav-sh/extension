@@ -8,3 +8,13 @@ export default styled.button`
   padding: 1em;
   color: #448aff;
 `
+
+export const Link = styled.a`
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-family: Roboto, sans-serif;
+  padding: 1em;
+  color: #448aff;
+  text-decoration: none;
+`

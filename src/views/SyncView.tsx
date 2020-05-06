@@ -21,9 +21,12 @@ import {
   createBackupThunk,
   getBackupLoading,
   restoreBackupAuthenticatedThunk,
+  restoreBackupAnonymouslyThunk,
 } from '~/store/modules/backup'
 import List from '~/components/common/List'
 import Loader from '~/components/common/Loader'
+import Text from '~/components/common/Text'
+import Heading from '~/components/common/Heading'
 
 export type SyncViewProps = {
   onBack: () => void
@@ -40,7 +43,11 @@ const SyncView = (props: SyncViewProps) => {
 
   const [authToken, setAuthToken] = useState<string>('')
 
+  // Gist ID for authenticated Gists
   const [gistId, setGistId] = useState<string>('')
+
+  // Gist ID from anonymous Gists
+  const [anonGistId, setAnonGistId] = useState<string>('')
 
   const [backupData, setBackupData] = useState<{
     filename: string
@@ -97,6 +104,9 @@ const SyncView = (props: SyncViewProps) => {
 
   const handleRestore = () => dispatch(restoreBackupAuthenticatedThunk(gistId))
 
+  const handleRestoreAnonymousGist = () =>
+    dispatch(restoreBackupAnonymouslyThunk(anonGistId))
+
   const renderHeader = () => (
     <HeaderContainer>
       <HeaderLeft>
@@ -150,7 +160,12 @@ const SyncView = (props: SyncViewProps) => {
 
     return (
       <FlexCol>
-        <Label>Sync with Github</Label>
+        <CustomHeading>Backup / Restore to a Gist</CustomHeading>
+        <Text>
+          To backup to a Gist, you need a personal access token. You can get one
+          from Github <a href="#">here</a>
+        </Text>
+        <Label> Github Personal Access Token</Label>
         <FlexRow>
           <Input
             placeholder="Enter Access Token"
@@ -168,12 +183,38 @@ const SyncView = (props: SyncViewProps) => {
     )
   }
 
+  const renderGithubAnonymousSettings = () => (
+    <FlexColPadTop>
+      <CustomHeading>Restore from Anonymous Gist</CustomHeading>
+      <Text>
+        You can restore bookmarks from a public Gist without having to provide a
+        personal access token. Note that this will download bookmarks in
+        "readonly" mode and you will not be able to add/edit/remove bookmarks.
+      </Text>
+      <Label>Enter Gist ID</Label>
+      <FlexRow>
+        <Input
+          placeholder="Gist ID"
+          onChange={(e) => setAnonGistId(e.target.value)}
+          value={anonGistId}
+        />
+        <button
+          disabled={isBlank(anonGistId)}
+          onClick={() => handleRestoreAnonymousGist()}
+        >
+          Submit
+        </button>
+      </FlexRow>
+    </FlexColPadTop>
+  )
+
   return (
     <>
       {renderHeader()}
       <List innerPadding="1.0em">
         {backupExists && <BackupCard />}
         {renderGithubSettings()}
+        {renderGithubAnonymousSettings()}
         <FlexRow>
           <LinkButton onClick={() => openLocalSyncWindow()}>
             Local Backup / Restore
@@ -194,4 +235,13 @@ const Section = styled(FlexCol)`
 const PadInput = styled(Input)`
   margin-top: 0.25em;
   margin-bottom: 0.25em;
+`
+
+const CustomHeading = styled(Heading)`
+  margin: 0;
+  padding: 0;
+`
+
+const FlexColPadTop = styled(FlexCol)`
+  margin-top: 3.5em;
 `
