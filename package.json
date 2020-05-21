@@ -45,7 +45,7 @@
     "@babel/preset-react": "^7.9.4",
     "@material-ui/types": "^5.0.0",
     "@types/axios": "^0.14.0",
-    "@types/chrome": "^0.0.110",
+    "@types/chrome": "^0.0.114",
     "@types/file-saver": "^2.0.1",
     "@types/firefox-webext-browser": "^70.0.1",
     "@types/lodash": "^4.14.149",

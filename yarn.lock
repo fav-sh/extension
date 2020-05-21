@@ -1207,10 +1207,10 @@
   resolved "https://registry.yarnpkg.com/@types/base16/-/base16-1.0.1.tgz#76dc8630675e99d1d5be78dfef59307254831203"
   integrity sha1-dtyGMGdemdHVvnjf71kwclSDEgM=
 
-"@types/chrome@^0.0.110":
-  version "0.0.110"
-  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.110.tgz#e1179fc5e286615308b44ecfc806fe0b81c8708a"
-  integrity sha512-oUCGfina2v3eFgCA05vEL6ZlUZcoWaLQCmVRMYeqiDR4RcV9db8WrOQtSypwknathvcdmiatXGK9AiDO9lVDCg==
+"@types/chrome@^0.0.114":
+  version "0.0.114"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.114.tgz#8ceb33fa261f4b9e307fa7344ba8182d8d410d4e"
+  integrity sha512-i7qRr74IrxHtbnrZSKUuP5Uvd5EOKwlwJq/yp7+yTPihOXnPhNQO4Z5bqb1XTnrjdbUKEJicaVVbhcgtRijmLA==
   dependencies:
     "@types/filesystem" "*"
     "@types/har-format" "*"
