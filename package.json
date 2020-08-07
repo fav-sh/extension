@@ -47,7 +47,7 @@
     "@types/axios": "^0.14.0",
     "@types/chrome": "^0.0.117",
     "@types/file-saver": "^2.0.1",
-    "@types/firefox-webext-browser": "^70.0.1",
+    "@types/firefox-webext-browser": "^78.0.0",
     "@types/lodash": "^4.14.149",
     "@types/react": "^16.9.27",
     "@types/react-redux": "^7.1.7",
