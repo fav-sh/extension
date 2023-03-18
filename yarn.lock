@@ -1229,10 +1229,10 @@
   resolved "https://registry.yarnpkg.com/@types/filewriter/-/filewriter-0.0.28.tgz#c054e8af4d9dd75db4e63abc76f885168714d4b3"
   integrity sha1-wFTor02d11205jq8dviFFocU1LM=
 
-"@types/firefox-webext-browser@^82.0.0":
-  version "82.0.0"
-  resolved "https://registry.yarnpkg.com/@types/firefox-webext-browser/-/firefox-webext-browser-82.0.0.tgz#4d0f5cfebd7321d2cbf0ccfb6032570f0138b958"
-  integrity sha512-zKHePkjMx42KIUUZCPcUiyu1tpfQXH9VR4iDYfns3HvmKVJzt/TAFT+DFVroos8BI9RH78YgF3Hi/wlC6R6cKA==
+"@types/firefox-webext-browser@^111.0.0":
+  version "111.0.0"
+  resolved "https://registry.yarnpkg.com/@types/firefox-webext-browser/-/firefox-webext-browser-111.0.0.tgz#16311d8da94e21a715d1688ba8547069eb89cf5a"
+  integrity sha512-KboW0ughUYzuYAvzWGJsiSMmH9AgJDvnstjsNrXMgf6cpJ5g1eBGzkqpjPzVqkOyTH/mFl7gd15+XyaVQhKywA==
 
 "@types/har-format@*":
   version "1.2.4"
