@@ -20,7 +20,7 @@
   "author": "Sunny Golovine",
   "license": "MIT",
   "dependencies": {
-    "@material-ui/core": "^4.9.8",
+    "@mui/material": "^5.0.0",
     "axios": "^0.21.1",
     "file-saver": "^2.0.2",
     "github-api": "^3.3.0",
