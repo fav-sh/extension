@@ -1199,10 +1199,10 @@
   resolved "https://registry.yarnpkg.com/@types/base16/-/base16-1.0.1.tgz#76dc8630675e99d1d5be78dfef59307254831203"
   integrity sha1-dtyGMGdemdHVvnjf71kwclSDEgM=
 
-"@types/chrome@^0.0.128":
-  version "0.0.128"
-  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.128.tgz#5dbd8b2539a367353fbe4386f119b510105f8b6a"
-  integrity sha512-eGc599TDtersMBW1cSnExHm0IHrXrO5xdk6Sa2Dq30ED+hR1rpT1ez0NNcCgvGO52nmktGfyvd3Uyquzv3LL4g==
+"@types/chrome@^0.0.278":
+  version "0.0.278"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.278.tgz#f7fefc0dd4b66a54bdea2950c5fd7397c729938d"
+  integrity sha512-PDIJodOu7o54PpSOYLybPW/MDZBCjM1TKgf31I3Q/qaEbNpIH09rOM3tSEH3N7Q+FAqb1933LhF8ksUPYeQLNg==
   dependencies:
     "@types/filesystem" "*"
     "@types/har-format" "*"
